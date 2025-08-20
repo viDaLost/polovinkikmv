@@ -11,10 +11,12 @@
     body {
       margin: 0;
       font-family: 'Cormorant Garamond', serif;
-      background: linear-gradient(to bottom, #f9f5f0, #f3ece4);
+      background: #f9f5f0 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+      background-size: 300px;
       color: #4a3b2d;
       line-height: 1.6;
       text-align: center;
+      overflow-x: hidden;
     }
 
     h1 {
@@ -98,12 +100,35 @@
     footer p {
       margin: 0.3em 0;
     }
+
+    /* Декоративный разделитель */
+    .divider {
+      width: 120px;
+      height: 30px;
+      margin: 40px auto;
+      background: url('https://www.transparenttextures.com/patterns/green-gobbler.png');
+      background-size: contain;
+      opacity: 0.3;
+      border-radius: 50px;
+    }
+
+    /* Анимация появления */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
 
   <!-- Главный экран -->
-  <section>
+  <section class="fade-in">
     <img src="logo.png" alt="Логотип Половинки" class="logo">
     <h1>Половинки</h1>
     <h2>Домашняя кондитерская</h2>
@@ -112,24 +137,50 @@
     Каждый орешек — это маленькая история радости, которую хочется разделить на двоих.</p>
   </section>
 
+  <div class="divider"></div>
+
   <!-- Описание десерта -->
-  <section>
+  <section class="fade-in">
     <p>Мы готовим только одно лакомство, доведённое до совершенства — орешки.</p>
     <p>В каждом — баланс хрустящей скорлупки и нежной начинки.</p>
     <p>Это десерт, который возвращает к детству, но в новом, изысканном звучании.</p>
   </section>
 
+  <div class="divider"></div>
+
   <!-- Контакты -->
-  <section>
+  <section class="fade-in">
     <a href="tel:+79633883334" class="btn">Сделать заказ</a>
     <p>Или напишите нам в <a href="https://t.me/kamill_lli" target="_blank" style="color:#8b6a52; text-decoration: underline;">Telegram</a></p>
   </section>
 
   <!-- Футер -->
-  <footer>
+  <footer class="fade-in">
     <p><strong>Половинки</strong> — домашняя кондитерская</p>
     <p>Каждый орешек — это момент, которым хочется поделиться</p>
   </footer>
+
+  <script>
+    // Анимация появления при скролле
+    const faders = document.querySelectorAll('.fade-in');
+
+    const appearOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
 
 </body>
 </html>
