@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Половинки</title>
+  <!-- Подключение премиальных шрифтов -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
   <style>
     /* Общий стиль */
@@ -42,8 +43,23 @@
 
     /* Логотип */
     .logo {
-      max-width: 700px;
+      max-width: 120px;   /* базовый размер */
+      height: auto;
       margin-bottom: 1em;
+    }
+
+    /* Для маленьких экранов (мобилки) */
+    @media (max-width: 600px) {
+      .logo {
+        max-width: 90px;
+      }
+    }
+
+    /* Для больших экранов (ноутбуки и десктоп) */
+    @media (min-width: 1024px) {
+      .logo {
+        max-width: 140px;
+      }
     }
 
     /* Кнопка */
