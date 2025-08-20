@@ -4,16 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Половинки</title>
-  <!-- Подключение премиальных шрифтов -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    /* Общий стиль */
     body {
       margin: 0;
       font-family: 'Cormorant Garamond', serif;
-      background: #f9f5f0 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-      background-size: 300px;
-      color: #4a3b2d;
+      background-color: #f6f1eb;
+      color: #3e2c23;
       line-height: 1.6;
       text-align: center;
       overflow-x: hidden;
@@ -43,35 +40,16 @@
       padding: 3em 1.5em;
     }
 
-    /* Логотип */
     .logo {
-      max-width: 800px;   /* базовый размер */
+      max-width: 800px;
       height: auto;
       margin-bottom: 1em;
     }
 
-    /* Для маленьких экранов (портретная ориентация телефонов) */
-    @media (max-width: 800px) and (orientation: portrait) {
-      .logo {
-        max-width: 220px;
-      }
-    }
+    @media (max-width: 800px) and (orientation: portrait) { .logo { max-width: 220px; } }
+    @media (max-width: 1024px) and (orientation: landscape) { .logo { max-width: 220px; } }
+    @media (min-width: 1024px) { .logo { max-width: 220px; } }
 
-    /* Для телефонов в горизонтальном положении */
-    @media (max-width: 1024px) and (orientation: landscape) {
-      .logo {
-        max-width: 220px;
-      }
-    }
-
-    /* Для больших экранов (ноутбуки и десктоп) */
-    @media (min-width: 1024px) {
-      .logo {
-        max-width: 220px;
-      }
-    }
-
-    /* Кнопка */
     .btn {
       display: inline-block;
       padding: 0.9em 2em;
@@ -85,11 +63,8 @@
       transition: background 0.3s ease;
     }
 
-    .btn:hover {
-      background-color: #c49f7a;
-    }
+    .btn:hover { background-color: #c49f7a; }
 
-    /* Футер */
     footer {
       padding: 2em 1em;
       background-color: #ede2d7;
@@ -97,32 +72,33 @@
       color: #5a4a3a;
     }
 
-    footer p {
-      margin: 0.3em 0;
-    }
+    footer p { margin: 0.3em 0; }
 
-    /* Декоративный разделитель */
+    /* Элегантный разделитель с анимацией */
     .divider {
-      width: 120px;
-      height: 30px;
+      width: 60px;
+      height: 2px;
       margin: 40px auto;
-      background: url('https://www.transparenttextures.com/patterns/green-gobbler.png');
-      background-size: contain;
-      opacity: 0.3;
-      border-radius: 50px;
+      background-color: #d8b899;
+      border-radius: 1px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
     }
 
-    /* Анимация появления */
+    .divider.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Анимация появления секций */
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.8s ease-out;
     }
 
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -161,15 +137,15 @@
   </footer>
 
   <script>
-    // Анимация появления при скролле
     const faders = document.querySelectorAll('.fade-in');
+    const dividers = document.querySelectorAll('.divider');
 
     const appearOptions = {
       threshold: 0.2,
       rootMargin: "0px 0px -50px 0px"
     };
 
-    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add("visible");
@@ -177,9 +153,8 @@
       });
     }, appearOptions);
 
-    faders.forEach(fader => {
-      appearOnScroll.observe(fader);
-    });
+    faders.forEach(fader => appearOnScroll.observe(fader));
+    dividers.forEach(divider => appearOnScroll.observe(divider));
   </script>
 
 </body>
