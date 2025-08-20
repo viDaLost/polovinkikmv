@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Половинки</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    /* Основные стили */
+    /* Общий стиль */
     body {
       margin: 0;
-      font-family: "Georgia", "Times New Roman", serif;
-      background-color: #f5f0ea;
+      font-family: 'Cormorant Garamond', serif;
+      background: linear-gradient(to bottom, #f9f5f0, #f3ece4);
       color: #4a3b2d;
       line-height: 1.6;
       text-align: center;
@@ -19,6 +20,7 @@
       font-size: 2.8rem;
       margin-bottom: 0.3em;
       font-weight: 600;
+      font-family: 'Playfair Display', serif;
     }
 
     h2 {
@@ -31,14 +33,20 @@
     p {
       max-width: 650px;
       margin: 0 auto 1em;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
     }
 
     section {
       padding: 3em 1.5em;
     }
 
-    /* Кнопка заказа */
+    /* Логотип */
+    .logo {
+      max-width: 120px;
+      margin-bottom: 1em;
+    }
+
+    /* Кнопка */
     .btn {
       display: inline-block;
       padding: 0.9em 2em;
@@ -59,7 +67,7 @@
     /* Футер */
     footer {
       padding: 2em 1em;
-      background-color: #eee5da;
+      background-color: #ede2d7;
       font-size: 0.9rem;
       color: #5a4a3a;
     }
@@ -73,8 +81,10 @@
 
   <!-- Главный экран -->
   <section>
-    <h1>Половинка</h1>
-    <h2>Орешки — десерт, в котором встречаются вкус и воспоминания</h2>
+    <img src="logo.png" alt="Логотип Половинки" class="logo">
+    <h1>Половинки</h1>
+    <h2>Домашняя кондитерская</h2>
+    <p><em>Орешки — десерт, в котором встречаются вкус и воспоминания</em></p>
     <p>Нежное тесто, золотистая выпечка и тягучая начинка из варёной сгущёнки. 
     Каждый орешек — это маленькая история радости, которую хочется разделить на двоих.</p>
   </section>
@@ -94,7 +104,7 @@
 
   <!-- Футер -->
   <footer>
-    <p><strong>Половинки</strong></p>
+    <p><strong>Половинки</strong> — домашняя кондитерская</p>
     <p>Каждый орешек — это момент, которым хочется поделиться</p>
   </footer>
 
