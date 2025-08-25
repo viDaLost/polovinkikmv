@@ -6,11 +6,25 @@
   <title>Половинки</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    :root{
+      --bg:#f6f1eb;
+      --fg:#3e2c23;
+      --muted:#6b5646;
+      --accent:#d8b899;
+      --accent-2:#c49f7a;
+      --panel:#fff9f3;
+      --footer:#ede2d7;
+      --ring:rgba(212, 175, 150, .45);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: 'Cormorant Garamond', serif;
-      background-color: #f6f1eb;
-      color: #3e2c23;
+      background-color: var(--bg);
+      color: var(--fg);
       line-height: 1.6;
       text-align: center;
       overflow-x: hidden;
@@ -27,7 +41,7 @@
       font-size: 1.3rem;
       font-weight: 400;
       margin-bottom: 1.5em;
-      color: #6b5646;
+      color: var(--muted);
     }
 
     p {
@@ -53,25 +67,31 @@
     .btn {
       display: inline-block;
       padding: 0.9em 2em;
-      margin-top: 1.5em;
-      background-color: #d8b899;
+      margin-top: 1.0em;
+      background-color: var(--accent);
       color: white;
       font-size: 1rem;
       border-radius: 30px;
       text-decoration: none;
       font-weight: 500;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform .1s ease;
     }
+    .btn:hover { background-color: var(--accent-2); }
+    .btn:active { transform: translateY(1px); }
 
-    .btn:hover { background-color: #c49f7a; }
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--accent);
+    }
+    .btn-outline:hover { background: var(--panel); }
 
     footer {
       padding: 2em 1em;
-      background-color: #ede2d7;
+      background-color: var(--footer);
       font-size: 0.9rem;
       color: #5a4a3a;
     }
-
     footer p { margin: 0.3em 0; }
 
     /* Элегантный разделитель с анимацией */
@@ -79,17 +99,13 @@
       width: 60px;
       height: 2px;
       margin: 40px auto;
-      background-color: #d8b899;
+      background-color: var(--accent);
       border-radius: 1px;
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.8s ease-out;
     }
-
-    .divider.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .divider.visible { opacity: 1; transform: translateY(0); }
 
     /* Анимация появления секций */
     .fade-in {
@@ -97,8 +113,77 @@
       transform: translateY(20px);
       transition: all 0.8s ease-out;
     }
-
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ======= ФОРМА ЗАКАЗА ======= */
+    .card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 1.25em;
+      box-shadow: 0 10px 30px rgba(62,44,35,.08);
+      text-align: left;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width:720px){ .grid { grid-template-columns: 1fr; } }
+
+    label {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
+    .row { margin-bottom: 12px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px dashed rgba(0,0,0,.12);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 1.05rem;
+    }
+
+    .actions {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;
+    }
+
+    .note {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -109,8 +194,10 @@
     <h1>Половинки</h1>
     <h2>Домашняя кондитерская</h2>
     <p><em>Орешки — десерт, в котором встречаются вкус и воспоминания</em></p>
-    <p>Нежное тесто, золотистая выпечка и тягучая начинка из вареной сгущёнки,с добавлением грецких орехов.
+    <p>Нежное тесто, золотистая выпечка и тягучая начинка из вареной сгущёнки, с добавлением грецких орехов.
     Каждый орешек — это маленькая история радости, которую хочется разделить на двоих.</p>
+
+    <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
   </section>
 
   <div class="divider"></div>
@@ -124,9 +211,89 @@
 
   <div class="divider"></div>
 
+  <!-- Форма заказа -->
+  <section id="order" class="fade-in" aria-labelledby="order-title">
+    <h1 id="order-title" style="margin-bottom:.2em;">Оформление заказа</h1>
+    <p class="muted" style="margin-bottom:1.2em;">
+      Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>160 ₽ за коробку</strong>
+    </p>
+
+    <div class="card" role="region" aria-label="Форма заказа">
+      <form id="order-form" autocomplete="on" novalidate>
+        <div class="grid">
+          <div class="row">
+            <label for="name">Имя и фамилия*</label>
+            <input id="name" name="name" required placeholder="Например: Камилла">
+          </div>
+
+          <div class="row">
+            <label for="phone">Телефон для связи*</label>
+            <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\d\+\-\s\(\)]{7,}$">
+          </div>
+
+          <div class="row">
+            <label for="qty">Количество коробочек*</label>
+            <select id="qty" name="qty" required>
+              <option value="1" selected>1 коробка — 6 шт</option>
+              <option value="2">2 коробки — 12 шт</option>
+              <option value="3">3 коробки — 18 шт</option>
+              <option value="4">4 коробки — 24 шт</option>
+              <option value="5">5 коробок — 30 шт</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="date">Желаемая дата получения*</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+
+          <div class="row">
+            <label for="time">Время (ориентир)</label>
+            <input type="time" id="time" name="time">
+          </div>
+
+          <div class="row">
+            <label for="method">Способ получения</label>
+            <select id="method" name="method">
+              <option value="pickup" selected>Самовывоз</option>
+              <option value="delivery">Доставка</option>
+            </select>
+          </div>
+
+          <div class="row" id="address-row" style="display:none;">
+            <label for="address">Адрес доставки</label>
+            <input id="address" name="address" placeholder="Город, улица, дом, подъезд">
+          </div>
+
+          <div class="row" style="grid-column: 1 / -1;">
+            <label for="comment">Комментарий к заказу</label>
+            <textarea id="comment" name="comment" rows="3" placeholder="Пожелания по времени, подписать открытку и т.д."></textarea>
+          </div>
+        </div>
+
+        <div class="summary" aria-live="polite">
+          <span>Итого: <strong id="total-text">160 ₽</strong></span>
+          <span class="muted">160 ₽ × <span id="qty-text">1</span> короб.</span>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn">Отправить заказ</button>
+          <a id="pay-link" class="btn btn-outline" href="#" target="_blank" rel="noopener"
+             title="Оплата появится после подключения платёжного провайдера">Оплатить картой / СБП</a>
+        </div>
+
+        <p class="note">
+          Нажимая «Отправить заказ», вы откроете Telegram с предзаполненным сообщением — подтвердим детали и, при необходимости, пришлём ссылку на оплату.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- Контакты -->
   <section class="fade-in">
-    <a href="tel:+79633883334" class="btn">Сделать заказ</a>
+    <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
     <p>Или напишите нам в <a href="https://t.me/kamill_lli" target="_blank" style="color:#8b6a52; text-decoration: underline;">Telegram</a></p>
   </section>
 
@@ -137,14 +304,10 @@
   </footer>
 
   <script>
+    // Анимации появления как у тебя
     const faders = document.querySelectorAll('.fade-in');
     const dividers = document.querySelectorAll('.divider');
-
-    const appearOptions = {
-      threshold: 0.2,
-      rootMargin: "0px 0px -50px 0px"
-    };
-
+    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
     const appearOnScroll = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -152,9 +315,96 @@
         observer.unobserve(entry.target);
       });
     }, appearOptions);
-
     faders.forEach(fader => appearOnScroll.observe(fader));
     dividers.forEach(divider => appearOnScroll.observe(divider));
+
+    // ===== Логика формы заказа =====
+    const PRICE_PER_BOX = 160; // ₽ за коробку (6 шт)
+    const qtyEl = document.getElementById('qty');
+    const totalTextEl = document.getElementById('total-text');
+    const qtyTextEl = document.getElementById('qty-text');
+    const methodEl = document.getElementById('method');
+    const addressRow = document.getElementById('address-row');
+    const form = document.getElementById('order-form');
+    const payLink = document.getElementById('pay-link');
+
+    // Подсказка: сюда впишешь ссылку провайдера на оплату (создаётся динамически на стороне провайдера)
+    // Пример: payLink.dataset.base = "https://example-payments/your-link?id=";
+    payLink.dataset.base = ""; // оставить пустым до подключения
+
+    function formatRUB(v){
+      try { return new Intl.NumberFormat('ru-RU', { style:'currency', currency:'RUB', maximumFractionDigits:0 }).format(v); }
+      catch { return v.toFixed(0) + ' ₽'; }
+    }
+
+    function updateSummary(){
+      const qty = parseInt(qtyEl.value, 10) || 1;
+      const total = qty * PRICE_PER_BOX;
+      totalTextEl.textContent = formatRUB(total);
+      qtyTextEl.textContent = String(qty);
+    }
+
+    qtyEl.addEventListener('change', updateSummary);
+    updateSummary();
+
+    methodEl.addEventListener('change', () => {
+      addressRow.style.display = methodEl.value === 'delivery' ? '' : 'none';
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Простая валидация
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const qty = parseInt(qtyEl.value, 10) || 1;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const method = methodEl.value;
+      const address = (document.getElementById('address').value || '').trim();
+      const comment = (document.getElementById('comment').value || '').trim();
+
+      if(!name || !phone || !date){
+        alert('Пожалуйста, заполните имя, телефон и дату получения.');
+        return;
+      }
+      if(method === 'delivery' && !address){
+        alert('Укажите адрес доставки.');
+        return;
+      }
+
+      const total = qty * PRICE_PER_BOX;
+
+      // Сообщение для Telegram
+      const lines = [
+        '🧺 *Новый заказ*',
+        'Товар: Коробочка орешков (6 шт)',
+        `Количество: ${qty} шт короб.`,
+        `Сумма: ${total} ₽`,
+        `Получение: ${method === 'pickup' ? 'Самовывоз' : 'Доставка'}`,
+        (method === 'delivery' ? `Адрес: ${address}` : null),
+        `Дата: ${date}${time ? ' ' + time : ''}`,
+        `Клиент: ${name}`,
+        `Телефон: ${phone}`,
+        comment ? `Комментарий: ${comment}` : null
+      ].filter(Boolean).join('%0A');
+
+      // Откроет диалог с твоим аккаунтом в Telegram и заполнит текст
+      const tgUser = 'kamill_lli';
+      const url = `https://t.me/${tgUser}?start=order`;
+      const textUrl = `https://t.me/${tgUser}?text=${lines}`;
+
+      // Лучше использовать параметр text (поддерживается в большинстве клиентов)
+      window.open(textUrl, '_blank');
+
+      // Если сразу хочешь редиректить на оплату (когда подключишь провайдера)
+      // то здесь можно сформировать платёжную ссылку и открыть её второй вкладкой.
+      const base = payLink.dataset.base;
+      if(base){
+        // Например, если провайдер принимает сумму и описание прямо в URL (вариативно):
+        // window.open(`${base}&amount=${total}&description=${encodeURIComponent('Орешки, 6 шт × ' + qty)}`, '_blank');
+      }
+    });
   </script>
 
 </body>
