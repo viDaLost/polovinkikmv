@@ -219,16 +219,22 @@
     </p>
 
     <div class="card" role="region" aria-label="Форма заказа">
-      <form id="order-form" autocomplete="on" novalidate>
+      <!-- action/ method заданы на случай, если JS отключён -->
+      <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
         <div class="grid">
           <div class="row">
             <label for="name">Имя и фамилия*</label>
-            <input id="name" name="name" required placeholder="Например: Камилла">
+            <input id="name" name="name" required>
           </div>
 
           <div class="row">
             <label for="phone">Телефон для связи*</label>
-            <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\d\+\-\s\(\)]{7,}$">
+            <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\\d\\+\\-\\s\\(\\)]{7,}$">
+          </div>
+
+          <div class="row">
+            <label for="social">Соцсети (WhatsApp/Telegram)</label>
+            <input id="social" name="social" placeholder="+7 999 123-45-67 или @username">
           </div>
 
           <div class="row">
@@ -253,7 +259,7 @@
           </div>
 
           <div class="row">
-            <label for="method">Способ получения</label>
+            <label for="method">Способ получения ( Если заказ  где меньше  15 упаковок орешков, то доставка платная)</label>
             <select id="method" name="method">
               <option value="pickup" selected>Самовывоз</option>
               <option value="delivery">Доставка</option>
@@ -277,14 +283,10 @@
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn">Отправить заказ</button>
-          <a id="pay-link" class="btn btn-outline" href="#" target="_blank" rel="noopener"
-             title="Оплата появится после подключения платёжного провайдера">Оплатить картой / СБП</a>
+          <button id="submit-btn" type="submit" class="btn">Отправить заказ</button>
         </div>
 
-        <p class="note">
-          Нажимая «Отправить заказ», вы откроете Telegram с предзаполненным сообщением — подтвердим детали и, при необходимости, пришлём ссылку на оплату.
-        </p>
+        <p id="form-status" class="note" style="display:none;"></p>
       </form>
     </div>
   </section>
@@ -292,9 +294,12 @@
   <div class="divider"></div>
 
   <!-- Контакты -->
-  <section class="fade-in">
-    <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
-    <p>Или напишите нам в <a href="https://t.me/kamill_lli" target="_blank" style="color:#8b6a52; text-decoration: underline;">Telegram</a></p>
+  <section class="fade-in" aria-labelledby="contacts-title">
+    <h1 id="contacts-title" style="margin-bottom:.6em;">Контакты</h1>
+    <div class="actions" style="justify-content:center;">
+      <a class="btn" href="tel:+79633883334" aria-label="Позвонить нам">Наш телефон</a>
+      <a class="btn btn-outline" href="https://t.me/kamill_lli" target="_blank" rel="noopener" aria-label="Открыть наш Telegram">Наш Telegram</a>
+    </div>
   </section>
 
   <!-- Футер -->
@@ -304,7 +309,7 @@
   </footer>
 
   <script>
-    // Анимации появления как у тебя
+    // Анимации появления
     const faders = document.querySelectorAll('.fade-in');
     const dividers = document.querySelectorAll('.divider');
     const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
@@ -326,11 +331,8 @@
     const methodEl = document.getElementById('method');
     const addressRow = document.getElementById('address-row');
     const form = document.getElementById('order-form');
-    const payLink = document.getElementById('pay-link');
-
-    // Подсказка: сюда впишешь ссылку провайдера на оплату (создаётся динамически на стороне провайдера)
-    // Пример: payLink.dataset.base = "https://example-payments/your-link?id=";
-    payLink.dataset.base = ""; // оставить пустым до подключения
+    const statusEl = document.getElementById('form-status');
+    const submitBtn = document.getElementById('submit-btn');
 
     function formatRUB(v){
       try { return new Intl.NumberFormat('ru-RU', { style:'currency', currency:'RUB', maximumFractionDigits:0 }).format(v); }
@@ -351,12 +353,13 @@
       addressRow.style.display = methodEl.value === 'delivery' ? '' : 'none';
     });
 
-    form.addEventListener('submit', (e) => {
+    // Отправка через Formspree без перезагрузки
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Простая валидация
       const name = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      const social = document.getElementById('social').value.trim();
       const qty = parseInt(qtyEl.value, 10) || 1;
       const date = document.getElementById('date').value;
       const time = document.getElementById('time').value;
@@ -375,34 +378,53 @@
 
       const total = qty * PRICE_PER_BOX;
 
-      // Сообщение для Telegram
-      const lines = [
-        '🧺 *Новый заказ*',
-        'Товар: Коробочка орешков (6 шт)',
-        `Количество: ${qty} шт короб.`,
-        `Сумма: ${total} ₽`,
-        `Получение: ${method === 'pickup' ? 'Самовывоз' : 'Доставка'}`,
-        (method === 'delivery' ? `Адрес: ${address}` : null),
-        `Дата: ${date}${time ? ' ' + time : ''}`,
-        `Клиент: ${name}`,
-        `Телефон: ${phone}`,
-        comment ? `Комментарий: ${comment}` : null
-      ].filter(Boolean).join('%0A');
+      // Готовим данные для Formspree
+      const payload = {
+        product: 'Коробочка орешков (6 шт)',
+        unit_price: PRICE_PER_BOX + ' ₽',
+        quantity: qty,
+        total: total + ' ₽',
+        date,
+        time,
+        method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
+        address: method === 'delivery' ? address : '',
+        name,
+        phone,
+        social,
+        comment
+      };
 
-      // Откроет диалог с твоим аккаунтом в Telegram и заполнит текст
-      const tgUser = 'kamill_lli';
-      const url = `https://t.me/${tgUser}?start=order`;
-      const textUrl = `https://t.me/${tgUser}?text=${lines}`;
+      // UI: блокируем кнопку, показываем статус
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем...';
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'Отправляем заказ...';
 
-      // Лучше использовать параметр text (поддерживается в большинстве клиентов)
-      window.open(textUrl, '_blank');
+      try {
+        const resp = await fetch('https://formspree.io/f/xgvleerr', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
 
-      // Если сразу хочешь редиректить на оплату (когда подключишь провайдера)
-      // то здесь можно сформировать платёжную ссылку и открыть её второй вкладкой.
-      const base = payLink.dataset.base;
-      if(base){
-        // Например, если провайдер принимает сумму и описание прямо в URL (вариативно):
-        // window.open(`${base}&amount=${total}&description=${encodeURIComponent('Орешки, 6 шт × ' + qty)}`, '_blank');
+        if (resp.ok) {
+          // Успех: показываем красивое сообщение и чистим форму
+          form.reset();
+          updateSummary();
+          addressRow.style.display = 'none';
+          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся через ваши соцсети или по номеру телефона для оплаты заказа или для его подтверждения.';
+        } else {
+          statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами по телефону/в Telegram.';
+        }
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заказ';
       }
     });
   </script>
