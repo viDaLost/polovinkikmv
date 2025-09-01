@@ -1,5 +1,3 @@
-Готово — вставил ваш новый REVIEWS_API. Скопируйте файл целиком:
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -186,19 +184,6 @@
       color: var(--muted);
       margin-top: 8px;
     }
-
-    /* ==== ДОБАВЛЕНО для отзывов ==== */
-    #stars span { padding: 0 3px; transition: transform .1s ease; cursor:pointer; font-size:22px; }
-    #stars span:hover { transform: scale(1.15); }
-    .review-item { border-bottom: 1px solid rgba(0,0,0,.06); padding: 12px 0; }
-    .review-item:last-child { border-bottom: 0; }
-    .review-head { display:flex; justify-content:space-between; gap:8px; align-items:center; }
-    .review-name { font-weight:600; }
-    .review-date { color: var(--muted); font-size:.9rem; }
-    .review-text { margin-top:6px; white-space:pre-wrap; }
-    .review-stars { font-size:18px; }
-    .review-del { background:transparent; border:1px solid rgba(0,0,0,.12); padding:6px 10px; border-radius:10px; cursor:pointer; }
-    .review-del:hover { background:#fff; }
   </style>
 </head>
 <body>
@@ -234,6 +219,7 @@
     </p>
 
     <div class="card" role="region" aria-label="Форма заказа">
+      <!-- action/ method заданы на случай, если JS отключён -->
       <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
         <div class="grid">
           <div class="row">
@@ -308,43 +294,12 @@
   <div class="divider"></div>
   <div class="divider"></div>
 
-  <!-- === ДОБАВЛЕНО: Раздел ОТЗЫВЫ === -->
-  <section id="reviews" class="fade-in" aria-labelledby="reviews-title">
-    <h1 id="reviews-title" style="margin-bottom:.2em;">Отзывы</h1>
-    <p class="muted" style="margin-bottom:1.2em;">Оставьте пару слов — нам это очень ценно.</p>
-
-    <!-- Список отзывов -->
-    <div id="reviews-list" class="card" style="margin-bottom:14px;">
-      <div class="muted">Загружаем отзывы...</div>
-    </div>
-
-    <!-- Форма добавления -->
-    <div class="card" role="region" aria-label="Форма отзыва">
-      <form id="review-form" autocomplete="on">
-        <div class="row">
-          <label for="r-name">Имя (необязательно)</label>
-          <input id="r-name" name="name" placeholder="Ваше имя">
-        </div>
-
-        <div class="row">
-          <label>Оценка</label>
-          <div id="stars" aria-label="Рейтинг 1–5">
-            <span data-s="1">☆</span><span data-s="2">☆</span><span data-s="3">☆</span><span data-s="4">☆</span><span data-s="5">☆</span>
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="r-text">Отзыв*</label>
-          <textarea id="r-text" name="text" rows="3" placeholder="Что вам понравилось? Что можно улучшить?" required></textarea>
-        </div>
-
-        <div class="actions">
-          <button type="submit" class="btn">Отправить отзыв</button>
-          <button type="button" id="admin-btn" class="btn btn-outline" title="Режим админа (удаление)">Я админ</button>
-        </div>
-        <p id="r-status" class="note" style="display:none;"></p>
-      </form>
-    </div>
+  <!-- Режим работы -->
+  <section class="fade-in" aria-labelledby="schedule-title">
+    <h1 id="schedule-title" style="margin-bottom:.6em;">Режим работы</h1>
+    <p class="muted">С воскресенья по четверг — <strong>09:00–20:00</strong></p>
+    <p class="muted">Пятница — <strong>09:00–15:00</strong></p>
+    <p class="muted">Суббота — <strong>выходной</strong></p>
   </section>
 
   <div class="divider"></div>
@@ -357,7 +312,6 @@
       <a class="btn btn-outline" href="https://t.me/kamill_lli" target="_blank" rel="noopener" aria-label="Открыть наш Telegram">Наш Telegram</a>
     </div>
   </section>
-
   <!-- Футер -->
   <footer class="fade-in">
     <p><strong>Половинки</strong> — домашняя кондитерская</p>
@@ -434,6 +388,7 @@
 
       const total = qty * PRICE_PER_BOX;
 
+      // Готовим данные для Formspree
       const payload = {
         product: 'Коробочка орешков (6 шт)',
         unit_price: PRICE_PER_BOX + ' ₽',
@@ -466,6 +421,7 @@
         });
 
         if (resp.ok) {
+          // Успех: показываем красивое сообщение и чистим форму
           form.reset();
           updateSummary();
           addressRow.style.display = 'none';
@@ -482,120 +438,9 @@
       }
     });
   </script>
-  <!-- === ДОБАВЛЕНО: JS для отзывов (диагностика ошибок) === -->
-<script>
-  const REVIEWS_API = 'https://script.google.com/macros/s/AKfycbxBpZgwJFDyRLpUhccCIKXn-BtQbYy9F-9pYTBGyFrAvWlLVCDdZhZv-Ck6dB5gNLPYLA/exec';
 
-  function starsToText(n){ n = Math.max(1, Math.min(5, Number(n)||5)); return '★'.repeat(n) + '☆'.repeat(5-n); }
-  function formatDateTime(d){ try{ return new Date(d).toLocaleString('ru-RU',{dateStyle:'medium', timeStyle:'short'}); }catch{ return d; } }
-  function escapeHtml(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+</body>
+</html>
 
-  let ADMIN_MODE = false;
-  let ADMIN_KEY  = null;
-
-  async function loadReviews(){
-    const list = document.getElementById('reviews-list');
-    if (!list) return;
-    list.innerHTML = '<div class="muted">Загружаем отзывы...</div>';
-    try{
-      const r = await fetch(REVIEWS_API + '?action=list');
-      const text = await r.text();
-      let data; try { data = JSON.parse(text); } catch { throw new Error('Сервер вернул не JSON: ' + text.slice(0,200)); }
-      if (!data.ok) throw new Error(data.error || 'Ошибка сервера');
-      if (!data.reviews.length){ list.innerHTML = '<div class="muted">Отзывов пока нет. Будьте первым!</div>'; return; }
-      list.innerHTML = '';
-      data.reviews.forEach(it=>{
-        const div = document.createElement('div');
-        div.className = 'review-item';
-        div.innerHTML = `
-          <div class="review-head">
-            <div>
-              <div class="review-name">${escapeHtml(it.name || 'Гость')}</div>
-              <div class="review-date">${formatDateTime(it.createdAt)}</div>
-            </div>
-            <div class="review-stars" title="${it.rating || 5}">${starsToText(it.rating)}</div>
-          </div>
-          <div class="review-text">${escapeHtml(it.text || '')}</div>
-          ${ADMIN_MODE ? `<div style="margin-top:8px;"><button class="review-del" data-id="${it.id}">Удалить</button></div>` : ''}
-        `;
-        list.appendChild(div);
-      });
-      if (ADMIN_MODE){
-        list.querySelectorAll('.review-del').forEach(btn=>{
-          btn.addEventListener('click', ()=> deleteReview(btn.getAttribute('data-id')));
-        });
-      }
-    }catch(e){
-      console.error('LOAD ERROR:', e);
-      list.innerHTML = '<div class="muted">Не удалось загрузить отзывы: ' + escapeHtml(e.message) + '</div>';
-    }
-  }
-
-  (function initReviewForm(){
-    const form = document.getElementById('review-form');
-    if (!form) return;
-    const status = document.getElementById('r-status');
-    const stars = document.querySelectorAll('#stars span');
-    let rating = 5;
-    function paint(n){ stars.forEach((el,i)=> el.textContent = (i < n) ? '★' : '☆'); }
-    stars.forEach(el=> el.addEventListener('click', ()=>{ rating = Number(el.dataset.s); paint(rating); }));
-    paint(rating);
-
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const name = document.getElementById('r-name').value.trim();
-      const text = document.getElementById('r-text').value.trim();
-      if (!text) { alert('Напишите текст отзыва.'); return; }
-
-      status.style.display='block'; status.textContent='Отправляем...';
-      try{
-        const resp = await fetch(REVIEWS_API, {
-          method:'POST',
-          headers:{ 'Content-Type':'text/plain' }, // избегаем preflight
-          body: JSON.stringify({ action:'add', name, rating, text })
-        });
-        const respText = await resp.text();
-        let data; try { data = JSON.parse(respText); } catch { throw new Error('Сервер вернул не JSON: ' + respText.slice(0,200)); }
-        if (!data.ok) throw new Error(data.error || 'Ошибка отправки');
-
-        form.reset(); rating = 5; paint(rating);
-        status.textContent='Спасибо! Ваш отзыв добавлен.';
-        loadReviews();
-      }catch(err){
-        console.error('SUBMIT ERROR:', err);
-        status.textContent='Не удалось отправить: ' + err.message;
-      } finally {
-        setTimeout(()=>{ status.style.display='none'; }, 4000);
-      }
-    });
-
-    // Режим админа
-    document.getElementById('admin-btn').addEventListener('click', ()=>{
-      const key = prompt('Введите админ-ключ для удаления:');
-      if (!key) return;
-      ADMIN_KEY = key; ADMIN_MODE = true;
-      loadReviews();
-      alert('Режим админа включён: под отзывами появятся кнопки «Удалить».');
-    });
-  })();
-
-  async function deleteReview(id){
-    if (!ADMIN_MODE || !ADMIN_KEY) return;
-    if (!confirm('Удалить этот отзыв?')) return;
-    try{
-      const resp = await fetch(REVIEWS_API, {
-        method:'POST',
-        headers:{ 'Content-Type':'text/plain' },
-        body: JSON.stringify({ action:'delete', id, adminKey: ADMIN_KEY })
-      });
-      const t = await resp.text();
-      let data; try { data = JSON.parse(t); } catch { throw new Error('Сервер вернул не JSON: ' + t.slice(0,200)); }
-      if (!data.ok) throw new Error(data.error || 'Ошибка удаления');
-      loadReviews();
-    }catch(e){ alert('Не удалось удалить: ' + e.message); }
-  }
-
-  document.addEventListener('DOMContentLoaded', loadReviews);
-</script>
-
-  <!-- === ДОБАВЛЕНО: JS для 
+Мне нужно на этот сайт добавить раздел с отзывами что бы люди прямо с сайта добавляли свой отзыв а я как админ если что мог бы их удалять 
+Какой самы простой способ это реализовать с телефона 
