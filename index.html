@@ -206,7 +206,8 @@
     </p>
 
     <div class="card" role="region" aria-label="Форма заказа">
-      <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
+      <!-- ставим action на ваш GAS как запасной вариант если JS выключен -->
+      <form id="order-form" action="https://script.google.com/macros/s/AKfycbzvDpIK6wKwV0LEzKVD_o55M3vzpmCr-Y-me-U7dvV1sr4aNubON--Ck5mwtQZMsO-MDQ/exec" method="POST" autocomplete="on" novalidate>
         <div class="grid">
           <div class="row">
             <label for="name">Имя и фамилия*</label>
@@ -389,17 +390,68 @@
       if(method === 'delivery' && !address){ alert('Укажите адрес доставки.'); return; }
 
       const total = qty * PRICE_PER_BOX;
-      const payload = { product:'Коробочка орешков (6 шт)', unit_price: PRICE_PER_BOX+' ₽', quantity: qty, total: total+' ₽', date, time,
-        method: method === 'pickup' ? 'Самовывоз' : 'Доставка', address: method === 'delivery' ? address : '', name, phone, social, comment };
+
+      // полезная нагрузка для вашего GAS
+      const gasPayload = {
+        name, phone, social,
+        qty, quantity: qty,
+        date, time,
+        method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
+        address: method === 'delivery' ? address : '',
+        comment,
+        total: formatRUB(total)
+      };
 
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
       statusEl.style.display = 'block'; statusEl.textContent = 'Отправляем заказ...';
+
+      // основной канал — ваш GAS; при неудаче — резерв Formspree
+      const GAS_URL = 'https://script.google.com/macros/s/AKfycbzvDpIK6wKwV0LEzKVD_o55M3vzpmCr-Y-me-U7dvV1sr4aNubON--Ck5mwtQZMsO-MDQ/exec';
+      const FORMSPREE = 'https://formspree.io/f/xgvleerr';
+
       try{
-        const resp = await fetch('https://formspree.io/f/xgvleerr',{method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'}, body: JSON.stringify(payload)});
-        if (resp.ok){ form.reset(); updateSummary(); addressRow.style.display = 'none'; statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…'; }
-        else { statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.'; }
-      }catch(e){ console.error(e); statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.'; }
-      finally{ submitBtn.disabled = false; submitBtn.textContent = 'Отправить заказ'; }
+        let ok = false;
+
+        // 1) пробуем GAS
+        try{
+          const r1 = await fetch(GAS_URL, {
+            method:'POST',
+            headers:{ 'Content-Type':'application/json' },
+            body: JSON.stringify(gasPayload)
+          });
+          ok = r1.ok;
+        }catch(_){ ok = false; }
+
+        // 2) если GAS не ответил — шлём в Formspree, чтобы заказ не потерялся
+        if (!ok){
+          await fetch(FORMSPREE, {
+            method:'POST',
+            headers:{ 'Accept':'application/json', 'Content-Type':'application/json' },
+            body: JSON.stringify({
+              product: 'Коробочка орешков (6 шт)',
+              unit_price: PRICE_PER_BOX + ' ₽',
+              quantity: qty,
+              total: formatRUB(total),
+              date, time,
+              method: gasPayload.method,
+              address: gasPayload.address,
+              name, phone, social, comment
+            })
+          });
+        }
+
+        // Успех (в любом из каналов)
+        form.reset();
+        updateSummary();
+        addressRow.style.display = 'none';
+        statusEl.innerHTML = 'Спасибо за заказ! Мы свяжемся для подтверждения.';
+      }catch(err){
+        console.error(err);
+        statusEl.textContent = 'Не удалось отправить заказ. Свяжитесь с нами по телефону или в Telegram.';
+      }finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заказ';
+      }
     });
   </script>
 
@@ -502,6 +554,8 @@
     }
 
     // Отправка нового отзыва
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewStatus = document.getElementById('reviewStatus');
     reviewForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const fd = new FormData(reviewForm);
