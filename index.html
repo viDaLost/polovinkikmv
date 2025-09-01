@@ -1,3 +1,5 @@
+Готово — вставил ваш новый REVIEWS_API. Скопируйте файл целиком:
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -483,7 +485,7 @@
 
   <!-- === ДОБАВЛЕНО: JS для отзывов === -->
   <script>
-    const REVIEWS_API = 'https://script.google.com/macros/s/AKfycby2Lo_bNlM-81e4GUBENFgyPKUoDGx2LNkwXICMDLg57LyGqtyAt5mUSHEYivn--um-aA/exec';
+    const REVIEWS_API = 'https://script.google.com/macros/s/AKfycbxBpZgwJFDyRLpUhccCIKXn-BtQbYy9F-9pYTBGyFrAvWlLVCDdZhZv-Ck6dB5gNLPYLA/exec';
 
     function starsToText(n){ n = Math.max(1, Math.min(5, Number(n)||5)); return '★'.repeat(n) + '☆'.repeat(5-n); }
     function formatDateTime(d){ try{ return new Date(d).toLocaleString('ru-RU',{dateStyle:'medium', timeStyle:'short'}); }catch{ return d; } }
