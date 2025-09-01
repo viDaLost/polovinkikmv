@@ -7,71 +7,183 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#f6f1eb; --fg:#3e2c23; --muted:#6b5646;
-      --accent:#d8b899; --accent-2:#c49f7a; --panel:#fff9f3;
-      --footer:#ede2d7; --ring:rgba(212,175,150,.45);
+      --bg:#f6f1eb;
+      --fg:#3e2c23;
+      --muted:#6b5646;
+      --accent:#d8b899;
+      --accent-2:#c49f7a;
+      --panel:#fff9f3;
+      --footer:#ede2d7;
+      --ring:rgba(212, 175, 150, .45);
     }
 
     * { box-sizing: border-box; }
     html, body { scroll-behavior: smooth; }
-    body {
-      margin: 0; font-family: 'Cormorant Garamond', serif;
-      background-color: var(--bg); color: var(--fg); line-height: 1.6;
-      text-align: center; overflow-x: hidden;
-    }
-    h1 { font-size: 2.8rem; margin-bottom: .3em; font-weight: 600; font-family: 'Playfair Display', serif; }
-    h2 { font-size: 1.3rem; font-weight: 400; margin-bottom: 1.5em; color: var(--muted); }
-    p { max-width: 650px; margin: 0 auto 1em; font-size: 1.1rem; }
-    section { padding: 3em 1.5em; }
 
-    .logo { max-width: 800px; height: auto; margin-bottom: 1em; }
-    @media (max-width:800px) and (orientation:portrait){ .logo{ max-width:220px; } }
-    @media (max-width:1024px) and (orientation:landscape){ .logo{ max-width:220px; } }
-    @media (min-width:1024px){ .logo{ max-width:220px; } }
+    body {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.3em;
+      font-weight: 600;
+      font-family: 'Playfair Display', serif;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 1.5em;
+      color: var(--muted);
+    }
+
+    p {
+      max-width: 650px;
+      margin: 0 auto 1em;
+      font-size: 1.1rem;
+    }
+
+    section {
+      padding: 3em 1.5em;
+    }
+
+    .logo {
+      max-width: 800px;
+      height: auto;
+      margin-bottom: 1em;
+    }
+
+    @media (max-width: 800px) and (orientation: portrait) { .logo { max-width: 220px; } }
+    @media (max-width: 1024px) and (orientation: landscape) { .logo { max-width: 220px; } }
+    @media (min-width: 1024px) { .logo { max-width: 220px; } }
 
     .btn {
-      display:inline-block; padding:.9em 2em; margin-top:1em;
-      background:var(--accent); color:#fff; font-size:1rem; border-radius:30px;
-      text-decoration:none; font-weight:500; transition:background .3s, transform .1s;
+      display: inline-block;
+      padding: 0.9em 2em;
+      margin-top: 1.0em;
+      background-color: var(--accent);
+      color: white;
+      font-size: 1rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s ease, transform .1s ease;
     }
-    .btn:hover{ background:var(--accent-2); } .btn:active{ transform:translateY(1px); }
-    .btn-outline{ background:transparent; color:var(--fg); border:1px solid var(--accent); }
-    .btn-outline:hover{ background:var(--panel); }
+    .btn:hover { background-color: var(--accent-2); }
+    .btn:active { transform: translateY(1px); }
 
-    footer { padding:2em 1em; background:var(--footer); font-size:.9rem; color:#5a4a3a; }
-    footer p { margin:.3em 0; }
-
-    .divider{ width:60px; height:2px; margin:40px auto; background:var(--accent); border-radius:1px; opacity:0; transform:translateY(20px); transition:all .8s ease-out; }
-    .divider.visible{ opacity:1; transform:translateY(0); }
-    .fade-in{ opacity:0; transform:translateY(20px); transition:all .8s ease-out; }
-    .fade-in.visible{ opacity:1; transform:translateY(0); }
-
-    .card{
-      max-width:760px; margin:0 auto; background:var(--panel); border-radius:18px;
-      padding:1.25em; box-shadow:0 10px 30px rgba(62,44,35,.08); text-align:left;
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--accent);
     }
-    .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+    .btn-outline:hover { background: var(--panel); }
 
-    label{ display:block; font-size:.95rem; color:var(--muted); margin-bottom:6px; }
-    input,select,textarea{
-      width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(0,0,0,.06);
-      background:#fff; font-size:1rem; font-family:inherit; outline:none; transition: box-shadow .2s, border-color .2s;
+    footer {
+      padding: 2em 1em;
+      background-color: var(--footer);
+      font-size: 0.9rem;
+      color: #5a4a3a;
     }
-    input:focus,select:focus,textarea:focus{ border-color:var(--accent); box-shadow:0 0 0 4px var(--ring); }
+    footer p { margin: 0.3em 0; }
 
-    .row{ margin-bottom:12px; }
-    .muted{ color:var(--muted); font-size:.95rem; }
-    .summary{
-      display:flex; align-items:center; justify-content:space-between;
-      background:#fff; border:1px dashed rgba(0,0,0,.12); padding:14px 16px; border-radius:12px; margin-top:8px; font-size:1.05rem;
+    /* Элегантный разделитель с анимацией */
+    .divider {
+      width: 60px;
+      height: 2px;
+      margin: 40px auto;
+      background-color: var(--accent);
+      border-radius: 1px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
     }
-    .actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
-    .note{ font-size:.95rem; color:var(--muted); margin-top:8px; }
+    .divider.visible { opacity: 1; transform: translateY(0); }
 
-    /* Чуть подправим IntenseDebate под шрифт/отступы */
-    #idc-container, #idc-loading{ font-family:'Cormorant Garamond', serif; }
-    #idc-container{ padding: 4px 0; }
+    /* Анимация появления секций */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ======= ФОРМА ЗАКАЗА ======= */
+    .card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 1.25em;
+      box-shadow: 0 10px 30px rgba(62,44,35,.08);
+      text-align: left;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width:720px){ .grid { grid-template-columns: 1fr; } }
+
+    label {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
+    .row { margin-bottom: 12px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px dashed rgba(0,0,0,.12);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 1.05rem;
+    }
+
+    .actions {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;
+    }
+
+    .note {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -84,6 +196,7 @@
     <p><em>Орешки — десерт, в котором встречаются вкус и воспоминания</em></p>
     <p>Нежное тесто, золотистая выпечка и тягучая начинка из вареной сгущёнки, с добавлением грецких орехов.
     Каждый орешек — это маленькая история радости, которую хочется разделить на двоих.</p>
+
     <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
   </section>
 
@@ -106,20 +219,24 @@
     </p>
 
     <div class="card" role="region" aria-label="Форма заказа">
+      <!-- action/ method заданы на случай, если JS отключён -->
       <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
         <div class="grid">
           <div class="row">
             <label for="name">Имя и фамилия*</label>
             <input id="name" name="name" required>
           </div>
+
           <div class="row">
             <label for="phone">Телефон для связи*</label>
             <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\\d\\+\\-\\s\\(\\)]{7,}$">
           </div>
+
           <div class="row">
             <label for="social">Соцсети (WhatsApp/Telegram)</label>
             <input id="social" name="social" placeholder="+7 999 123-45-67 или @username">
           </div>
+
           <div class="row">
             <label for="qty">Количество коробочек*</label>
             <select id="qty" name="qty" required>
@@ -130,25 +247,30 @@
               <option value="5">5 коробок — 30 шт</option>
             </select>
           </div>
+
           <div class="row">
             <label for="date">Желаемая дата получения*</label>
             <input type="date" id="date" name="date" required>
           </div>
+
           <div class="row">
             <label for="time">Время (ориентир)</label>
             <input type="time" id="time" name="time">
           </div>
+
           <div class="row">
-            <label for="method">Способ получения (Если заказ меньше 15 упаковок орешков, то доставка платная)</label>
+            <label for="method">Способ получения ( Если заказ меньше  15 упаковок орешков, то доставка платная)</label>
             <select id="method" name="method">
               <option value="pickup" selected>Самовывоз</option>
               <option value="delivery">Доставка</option>
             </select>
           </div>
+
           <div class="row" id="address-row" style="display:none;">
             <label for="address">Адрес доставки</label>
             <input id="address" name="address" placeholder="Город, улица, дом, подъезд">
           </div>
+
           <div class="row" style="grid-column: 1 / -1;">
             <label for="comment">Комментарий к заказу</label>
             <textarea id="comment" name="comment" rows="3" placeholder="Пожелания по времени, подписать открытку и т.д."></textarea>
@@ -190,40 +312,6 @@
       <a class="btn btn-outline" href="https://t.me/kamill_lli" target="_blank" rel="noopener" aria-label="Открыть наш Telegram">Наш Telegram</a>
     </div>
   </section>
-
-  <!-- Счётчик отзывов (ссылка на секцию) -->
-  <div class="fade-in" style="margin:24px 0;">
-    <a href="#reviews" id="IDCommentsReplace" class="btn btn-outline">Отзывы</a>
-  </div>
-  <script>
-    // Настройка IntenseDebate для счётчика
-    var idcomments_acct = 'cfb22eee34a7e7ae104eec34e25102d5';
-    var idcomments_post_id  = 'polovinki_home';
-    var idcomments_post_url = (location.origin + location.pathname);
-  </script>
-  <script src="https://www.intensedebate.com/js/genericLinkWrapperV2.js"></script>
-
-  <!-- ===== ОТЗЫВЫ ===== -->
-  <section id="reviews" class="fade-in" aria-labelledby="reviews-title">
-    <h1 id="reviews-title" style="margin-bottom:.6em;">Отзывы</h1>
-    <p class="muted" style="margin-bottom:1.2em;">Напишите пару слов о вкусе и сервисе — нам это очень важно 💛</p>
-    <div class="card" role="region" aria-label="Отзывы и комментарии">
-      <script>
-        // Настройка IntenseDebate для формы + ленты
-        var idcomments_acct = 'cfb22eee34a7e7ae104eec34e25102d5';
-        var idcomments_post_id  = 'polovinki_home';
-        var idcomments_post_url = (location.origin + location.pathname);
-        document.addEventListener('DOMContentLoaded', function(){
-          var span = document.getElementById('IDCommentsPostTitle');
-          if (span) span.textContent = document.title || 'Половинки — отзывы';
-        });
-      </script>
-      <span id="IDCommentsPostTitle" style="display:none"></span>
-      <script src="https://www.intensedebate.com/js/genericCommentWrapperV2.js"></script>
-      <noscript>Для отправки отзыва включите JavaScript.</noscript>
-    </div>
-  </section>
-
   <!-- Футер -->
   <footer class="fade-in">
     <p><strong>Половинки</strong> — домашняя кондитерская</p>
@@ -260,12 +348,14 @@
       try { return new Intl.NumberFormat('ru-RU', { style:'currency', currency:'RUB', maximumFractionDigits:0 }).format(v); }
       catch { return v.toFixed(0) + ' ₽'; }
     }
+
     function updateSummary(){
       const qty = parseInt(qtyEl.value, 10) || 1;
       const total = qty * PRICE_PER_BOX;
       totalTextEl.textContent = formatRUB(total);
       qtyTextEl.textContent = String(qty);
     }
+
     qtyEl.addEventListener('change', updateSummary);
     updateSummary();
 
@@ -297,6 +387,8 @@
       }
 
       const total = qty * PRICE_PER_BOX;
+
+      // Готовим данные для Formspree
       const payload = {
         product: 'Коробочка орешков (6 шт)',
         unit_price: PRICE_PER_BOX + ' ₽',
@@ -312,7 +404,7 @@
         comment
       };
 
-      // UI
+      // UI: блокируем кнопку, показываем статус
       submitBtn.disabled = true;
       submitBtn.textContent = 'Отправляем...';
       statusEl.style.display = 'block';
@@ -321,14 +413,19 @@
       try {
         const resp = await fetch('https://formspree.io/f/xgvleerr', {
           method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(payload)
         });
+
         if (resp.ok) {
+          // Успех: показываем красивое сообщение и чистим форму
           form.reset();
           updateSummary();
           addressRow.style.display = 'none';
-          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся для подтверждения/оплаты.';
+          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся через ваши соцсети или по номеру телефона для оплаты заказа или для его подтверждения.';
         } else {
           statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами по телефону/в Telegram.';
         }
