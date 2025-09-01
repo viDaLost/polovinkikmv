@@ -206,8 +206,7 @@
     </p>
 
     <div class="card" role="region" aria-label="Форма заказа">
-      <!-- ставим action на ваш GAS как запасной вариант если JS выключен -->
-      <form id="order-form" action="https://script.google.com/macros/s/AKfycbzvDpIK6wKwV0LEzKVD_o55M3vzpmCr-Y-me-U7dvV1sr4aNubON--Ck5mwtQZMsO-MDQ/exec" method="POST" autocomplete="on" novalidate>
+      <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
         <div class="grid">
           <div class="row">
             <label for="name">Имя и фамилия*</label>
@@ -280,7 +279,7 @@
     <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
       <!-- форма -->
       <form id="reviewForm" class="review-form" novalidate>
-        <input type="text" name="name" placeholder="Ваше имя (необязательно)" maxlength="60">
+        <input type="text" name="name" placeholder="Ваше имя" maxlength="60" required>
         <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
           <label for="rating" class="muted" style="margin:0;">Оценка:</label>
@@ -390,68 +389,17 @@
       if(method === 'delivery' && !address){ alert('Укажите адрес доставки.'); return; }
 
       const total = qty * PRICE_PER_BOX;
-
-      // полезная нагрузка для вашего GAS
-      const gasPayload = {
-        name, phone, social,
-        qty, quantity: qty,
-        date, time,
-        method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
-        address: method === 'delivery' ? address : '',
-        comment,
-        total: formatRUB(total)
-      };
+      const payload = { product:'Коробочка орешков (6 шт)', unit_price: PRICE_PER_BOX+' ₽', quantity: qty, total: total+' ₽', date, time,
+        method: method === 'pickup' ? 'Самовывоз' : 'Доставка', address: method === 'delivery' ? address : '', name, phone, social, comment };
 
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
       statusEl.style.display = 'block'; statusEl.textContent = 'Отправляем заказ...';
-
-      // основной канал — ваш GAS; при неудаче — резерв Formspree
-      const GAS_URL = 'https://script.google.com/macros/s/AKfycbzvDpIK6wKwV0LEzKVD_o55M3vzpmCr-Y-me-U7dvV1sr4aNubON--Ck5mwtQZMsO-MDQ/exec';
-      const FORMSPREE = 'https://formspree.io/f/xgvleerr';
-
       try{
-        let ok = false;
-
-        // 1) пробуем GAS
-        try{
-          const r1 = await fetch(GAS_URL, {
-            method:'POST',
-            headers:{ 'Content-Type':'application/json' },
-            body: JSON.stringify(gasPayload)
-          });
-          ok = r1.ok;
-        }catch(_){ ok = false; }
-
-        // 2) если GAS не ответил — шлём в Formspree, чтобы заказ не потерялся
-        if (!ok){
-          await fetch(FORMSPREE, {
-            method:'POST',
-            headers:{ 'Accept':'application/json', 'Content-Type':'application/json' },
-            body: JSON.stringify({
-              product: 'Коробочка орешков (6 шт)',
-              unit_price: PRICE_PER_BOX + ' ₽',
-              quantity: qty,
-              total: formatRUB(total),
-              date, time,
-              method: gasPayload.method,
-              address: gasPayload.address,
-              name, phone, social, comment
-            })
-          });
-        }
-
-        // Успех (в любом из каналов)
-        form.reset();
-        updateSummary();
-        addressRow.style.display = 'none';
-        statusEl.innerHTML = 'Спасибо за заказ! Мы свяжемся для подтверждения.';
-      }catch(err){
-        console.error(err);
-        statusEl.textContent = 'Не удалось отправить заказ. Свяжитесь с нами по телефону или в Telegram.';
-      }finally{
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Отправить заказ';
-      }
+        const resp = await fetch('https://formspree.io/f/xgvleerr',{method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'}, body: JSON.stringify(payload)});
+        if (resp.ok){ form.reset(); updateSummary(); addressRow.style.display = 'none'; statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…'; }
+        else { statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.'; }
+      }catch(e){ console.error(e); statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.'; }
+      finally{ submitBtn.disabled = false; submitBtn.textContent = 'Отправить заказ'; }
     });
   </script>
 
@@ -553,19 +501,29 @@
       }
     }
 
-    // Отправка нового отзыва
-    const reviewForm = document.getElementById('reviewForm');
-    const reviewStatus = document.getElementById('reviewStatus');
+    // Отправка нового отзыва (с обязательным именем)
     reviewForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const fd = new FormData(reviewForm);
-      const payload = { name: fd.get('name')||'', text: fd.get('text')||'', rating: Number(fd.get('rating')||5), honeypot: fd.get('company')||'' };
+      const name = (fd.get('name') || '').trim();
+      const text = (fd.get('text') || '').trim();
+
+      if (!name) { reviewStatus.textContent = 'Введите ваше имя.'; return; }
+      if (!text) { reviewStatus.textContent = 'Введите текст отзыва.'; return; }
+
+      const payload = { 
+        name, 
+        text, 
+        rating: Number(fd.get('rating')||5), 
+        honeypot: fd.get('company')||'' 
+      };
+
       reviewStatus.textContent = 'Отправляем…';
       try{
         const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
         const raw = await res.text(); let data; try { data = JSON.parse(raw);} catch { throw new Error('bad json'); }
         if (data.ok){
-          reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
+          reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модуляции.';
           reviewForm.reset();
           if (data.approved) fetchReviews();
         } else { reviewStatus.textContent = 'Ошибка: не удалось сохранить отзыв.'; }
