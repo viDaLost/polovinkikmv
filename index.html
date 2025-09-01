@@ -502,85 +502,94 @@
   </script>
 
   <!-- ===== JS отзывов (добавлено) ===== -->
-  <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwttgTmIqr4a1JTWC1mmudOU9cAauy7X67Qu7j6hVeAHOLOTI6f9YNN8kFcuS2in1qy/exec';
+  <!-- ===== JS отзывов (диагностика) ===== -->
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwttgTmIqr4a1JTWC1mmudOU9cAauy7X67Qu7j6hVeAHOLOTI6f9YNN8kFcuS2in1qy/exec';
 
-    const listEl = document.getElementById('reviewsList');
-    const statusReviewEl = document.getElementById('reviewStatus');
-    const formReviewEl = document.getElementById('reviewForm');
+  const listEl = document.getElementById('reviewsList');
+  const statusReviewEl = document.getElementById('reviewStatus');
+  const formReviewEl = document.getElementById('reviewForm');
 
-    function stars(n){ return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
-    function escapeHtml(s){
-      return String(s || '').replace(/[&<>"']/g, ch => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[ch]));
-    }
+  function stars(n){ return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+  function escapeHtml(s){
+    return String(s || '').replace(/[&<>"']/g, ch => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[ch]));
+  }
 
-    async function fetchReviews() {
-      if (!listEl) return;
-      listEl.innerHTML = '<div class="muted">Загружаю отзывы…</div>';
-      try {
-        const res = await fetch(`${SCRIPT_URL}?limit=50`, { method:'GET' });
-        const data = await res.json();
-        const items = data.items || [];
-        if (!items.length) {
-          listEl.innerHTML = '<div class="muted">Пока нет отзывов — будьте первым!</div>';
-          return;
-        }
-        listEl.innerHTML = items.map(o => `
-          <article class="review-item">
-            <div class="review-head">
-              <strong>${escapeHtml(o.name || 'Гость')}</strong>
-              <span title="${new Date(o.createdAt)}" class="muted" style="font-size:12px">
-                ${new Date(o.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-            <div class="stars">${stars(Number(o.rating||5))}</div>
-            <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
-          </article>
-        `).join('');
-      } catch (e) {
-        console.error(e);
-        listEl.innerHTML = '<div style="color:#ef4444">Не удалось загрузить отзывы.</div>';
+  async function fetchReviews() {
+    if (!listEl) return;
+    listEl.innerHTML = '<div class="muted">Загружаю отзывы…</div>';
+    try {
+      const res = await fetch(`${SCRIPT_URL}?limit=50`, { method:'GET' });
+      console.log('[REVIEWS][GET] status:', res.status, res.statusText);
+      const text = await res.text();
+      console.log('[REVIEWS][GET] raw:', text);
+      let data;
+      try { data = JSON.parse(text); } catch (e) {
+        throw new Error('Сервер вернул не-JSON (возможно, страница логина или ошибка доступа).');
       }
+      const items = data.items || [];
+      if (!items.length) {
+        listEl.innerHTML = '<div class="muted">Пока нет отзывов — будьте первым!</div>';
+        return;
+      }
+      listEl.innerHTML = items.map(o => `
+        <article class="review-item">
+          <div class="review-head">
+            <strong>${escapeHtml(o.name || 'Гость')}</strong>
+            <span title="${new Date(o.createdAt)}" class="muted" style="font-size:12px">
+              ${new Date(o.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+          <div class="stars">${stars(Number(o.rating||5))}</div>
+          <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
+        </article>
+      `).join('');
+    } catch (e) {
+      console.error('[REVIEWS][GET][ERR]', e);
+      listEl.innerHTML = '<div style="color:#ef4444">Не удалось загрузить отзывы.</div>';
     }
+  }
 
-    if (formReviewEl) {
-      formReviewEl.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const fd = new FormData(formReviewEl);
-        const payload = {
-          name: fd.get('name') || '',
-          text: fd.get('text') || '',
-          rating: Number(fd.get('rating') || 5),
-          honeypot: fd.get('company') || ''
-        };
-        statusReviewEl.textContent = 'Отправляем…';
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method:'POST',
-            headers:{ 'Content-Type':'application/json' },
-            body: JSON.stringify(payload)
-          });
-          const data = await res.json();
-          if (data.ok) {
-            statusReviewEl.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
-            formReviewEl.reset();
-            if (data.approved) fetchReviews();
-          } else {
-            statusReviewEl.textContent = 'Ошибка: не удалось сохранить отзыв.';
-          }
-        } catch (err) {
-          console.error(err);
-          statusReviewEl.textContent = 'Сеть недоступна или сервер недоступен.';
+  if (formReviewEl) {
+    formReviewEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(formReviewEl);
+      const payload = {
+        name: fd.get('name') || '',
+        text: fd.get('text') || '',
+        rating: Number(fd.get('rating') || 5),
+        honeypot: fd.get('company') || ''
+      };
+      statusReviewEl.textContent = 'Отправляем…';
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify(payload)
+        });
+        console.log('[REVIEWS][POST] status:', res.status, res.statusText);
+        const text = await res.text();
+        console.log('[REVIEWS][POST] raw:', text);
+        let data;
+        try { data = JSON.parse(text); } catch {
+          throw new Error('Сервер вернул не-JSON (возможно, страница логина или ошибка доступа).');
         }
-      });
-    }
+        if (data.ok) {
+          statusReviewEl.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
+          formReviewEl.reset();
+          if (data.approved) fetchReviews();
+        } else {
+          statusReviewEl.textContent = 'Ошибка: не удалось сохранить отзыв.';
+        }
+      } catch (err) {
+        console.error('[REVIEWS][POST][ERR]', err);
+        statusReviewEl.textContent = 'Сеть недоступна или сервер недоступен.';
+      }
+    });
+  }
 
-    // старт загрузки отзывов
-    fetchReviews();
-  </script>
-  <!-- ===== /JS отзывов ===== -->
-
-</body>
-</html>
+  fetchReviews();
+</script>
+<!-- ===== /JS отзывов ===== -->
