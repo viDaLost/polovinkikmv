@@ -184,6 +184,35 @@
       color: var(--muted);
       margin-top: 8px;
     }
+
+    /* ======= ОТЗЫВЫ (добавлено) ======= */
+    #reviews-section .reviews-card{
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 1.25em;
+      box-shadow: 0 10px 30px rgba(62,44,35,.08);
+      text-align: left;
+    }
+    #reviews-section .reviews-grid{
+      display:grid; gap:12px; margin-top:14px;
+    }
+    #reviews-section .review-item{
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:12px;
+      background:#fff;
+      padding:14px;
+    }
+    #reviews-section .review-head{
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+    }
+    #reviews-section .stars{ font-size:14px; color:#efb80b; margin:4px 0; }
+    #reviews-section .review-form{ display:grid; gap:12px; margin-bottom:16px; }
+    #reviews-section .review-btn{
+      padding:12px 16px; border:0; border-radius:12px; background:#111827; color:#fff; cursor:pointer;
+    }
+    #reviews-section small.muted { color:var(--muted); }
   </style>
 </head>
 <body>
@@ -312,6 +341,39 @@
       <a class="btn btn-outline" href="https://t.me/kamill_lli" target="_blank" rel="noopener" aria-label="Открыть наш Telegram">Наш Telegram</a>
     </div>
   </section>
+
+  <div class="divider"></div>
+
+  <!-- ======== ОТЗЫВЫ (добавлено) ======== -->
+  <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
+    <h1 id="reviews-title" style="margin-bottom:.2em;">Отзывы</h1>
+    <p class="muted" style="margin-bottom:1.2em;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
+
+    <div class="reviews-card" role="region" aria-label="Форма и список отзывов">
+      <form id="reviewForm" class="review-form" novalidate>
+        <input type="text" name="name" placeholder="Ваше имя (необязательно)" maxlength="60">
+        <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+          <label for="rating" class="muted" style="margin:0;">Оценка:</label>
+          <select id="rating" name="rating" style="padding:10px;border:1px solid rgba(0,0,0,.06);border-radius:10px">
+            <option value="5">★★★★★ — 5</option>
+            <option value="4">★★★★☆ — 4</option>
+            <option value="3">★★★☆☆ — 3</option>
+            <option value="2">★★☆☆☆ — 2</option>
+            <option value="1">★☆☆☆☆ — 1</option>
+          </select>
+          <!-- honeypot -->
+          <input type="text" name="company" style="display:none">
+          <button type="submit" class="review-btn">Отправить отзыв</button>
+          <small id="reviewStatus" class="muted" aria-live="polite"></small>
+        </div>
+      </form>
+
+      <div id="reviewsList" class="reviews-grid" aria-live="polite"></div>
+    </div>
+  </section>
+  <!-- ======== /ОТЗЫВЫ ======== -->
+
   <!-- Футер -->
   <footer class="fade-in">
     <p><strong>Половинки</strong> — домашняя кондитерская</p>
@@ -438,6 +500,87 @@
       }
     });
   </script>
+
+  <!-- ===== JS отзывов (добавлено) ===== -->
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwttgTmIqr4a1JTWC1mmudOU9cAauy7X67Qu7j6hVeAHOLOTI6f9YNN8kFcuS2in1qy/exec';
+
+    const listEl = document.getElementById('reviewsList');
+    const statusReviewEl = document.getElementById('reviewStatus');
+    const formReviewEl = document.getElementById('reviewForm');
+
+    function stars(n){ return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+    function escapeHtml(s){
+      return String(s || '').replace(/[&<>"']/g, ch => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[ch]));
+    }
+
+    async function fetchReviews() {
+      if (!listEl) return;
+      listEl.innerHTML = '<div class="muted">Загружаю отзывы…</div>';
+      try {
+        const res = await fetch(`${SCRIPT_URL}?limit=50`, { method:'GET' });
+        const data = await res.json();
+        const items = data.items || [];
+        if (!items.length) {
+          listEl.innerHTML = '<div class="muted">Пока нет отзывов — будьте первым!</div>';
+          return;
+        }
+        listEl.innerHTML = items.map(o => `
+          <article class="review-item">
+            <div class="review-head">
+              <strong>${escapeHtml(o.name || 'Гость')}</strong>
+              <span title="${new Date(o.createdAt)}" class="muted" style="font-size:12px">
+                ${new Date(o.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+            <div class="stars">${stars(Number(o.rating||5))}</div>
+            <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
+          </article>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        listEl.innerHTML = '<div style="color:#ef4444">Не удалось загрузить отзывы.</div>';
+      }
+    }
+
+    if (formReviewEl) {
+      formReviewEl.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(formReviewEl);
+        const payload = {
+          name: fd.get('name') || '',
+          text: fd.get('text') || '',
+          rating: Number(fd.get('rating') || 5),
+          honeypot: fd.get('company') || ''
+        };
+        statusReviewEl.textContent = 'Отправляем…';
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method:'POST',
+            headers:{ 'Content-Type':'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.ok) {
+            statusReviewEl.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
+            formReviewEl.reset();
+            if (data.approved) fetchReviews();
+          } else {
+            statusReviewEl.textContent = 'Ошибка: не удалось сохранить отзыв.';
+          }
+        } catch (err) {
+          console.error(err);
+          statusReviewEl.textContent = 'Сеть недоступна или сервер недоступен.';
+        }
+      });
+    }
+
+    // старт загрузки отзывов
+    fetchReviews();
+  </script>
+  <!-- ===== /JS отзывов ===== -->
 
 </body>
 </html>
