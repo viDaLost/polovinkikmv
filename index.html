@@ -294,6 +294,26 @@
   <div class="divider"></div>
   <div class="divider"></div>
 
+  <!-- ОТЗЫВЫ -->
+  <section id="reviews" class="fade-in" aria-labelledby="reviews-title">
+    <h1 id="reviews-title" style="margin-bottom:.6em;">Отзывы</h1>
+    <p class="muted">Оставьте отзыв — он появится ниже автоматически 👇</p>
+
+    <!-- Встроенная форма Google -->
+    <div class="card" style="margin-bottom:1em;">
+      <iframe
+        src="https://docs.google.com/forms/d/e/1FAIpQLSf4VRDOWWDG5MpNYRm5U85rN05rm757jVgCUM8a0x_o4M7IYA/viewform?embedded=true"
+        width="100%" height="520" frameborder="0" marginheight="0" marginwidth="0">
+        Загрузка…
+      </iframe>
+    </div>
+
+    <!-- Здесь будет список отзывов -->
+    <div id="reviews-list" aria-live="polite"></div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- Режим работы -->
   <section class="fade-in" aria-labelledby="schedule-title">
     <h1 id="schedule-title" style="margin-bottom:.6em;">Режим работы</h1>
@@ -312,11 +332,15 @@
       <a class="btn btn-outline" href="https://t.me/kamill_lli" target="_blank" rel="noopener" aria-label="Открыть наш Telegram">Наш Telegram</a>
     </div>
   </section>
+
   <!-- Футер -->
   <footer class="fade-in">
     <p><strong>Половинки</strong> — домашняя кондитерская</p>
     <p>Каждый орешек — это момент, которым хочется поделиться</p>
   </footer>
+
+  <!-- PapaParse для парсинга CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
     // Анимации появления
@@ -436,6 +460,74 @@
         submitBtn.disabled = false;
         submitBtn.textContent = 'Отправить заказ';
       }
+    });
+
+    /* ===== ОТЗЫВЫ: загрузка из Google Sheets (CSV) ===== */
+    const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQzuRGHZ_li9ttKlasMPdelaWnWY3mondMMNGW0o9pGwtsVJC5zMDsQ-WL6vq1z4RTK0SrE5fAzltBU/pub?output=csv';
+    const reviewsListEl = document.getElementById('reviews-list');
+
+    function escapeHTML(s){
+      return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+
+    function renderReviews(rows){
+      reviewsListEl.innerHTML = '';
+      if(!rows.length){
+        reviewsListEl.innerHTML = '<p class="muted">Пока нет отзывов — будьте первым!</p>';
+        return;
+      }
+      rows.forEach(r => {
+        // Поддерживаем разные названия колонок (RU/EN)
+        const name = escapeHTML(r['Ваше имя'] || r['name'] || 'Гость');
+        const text = escapeHTML(r['Ваш отзыв'] || r['text'] || '');
+        const status = String(r['status'] || 'published').toLowerCase();
+        if(status && status !== 'published') return;
+
+        const tsRaw = r['Время отправки'] || r['Timestamp'] || '';
+        const dstr = tsRaw ? new Date(tsRaw).toLocaleString('ru-RU', {
+          day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
+        }) : '';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginBottom = '10px';
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;">
+            <strong style="font-size:1.05rem">${name}</strong>
+            <span class="muted" style="white-space:nowrap">${escapeHTML(dstr)}</span>
+          </div>
+          <div style="margin-top:.4em; font-size:1rem; white-space:pre-wrap;">${text}</div>
+        `;
+        reviewsListEl.appendChild(card);
+      });
+    }
+
+    async function loadReviews(){
+      try{
+        const url = SHEET_CSV_URL + (SHEET_CSV_URL.includes('?') ? '&' : '?') + '_=' + Date.now();
+        const res = await fetch(url, { mode:'cors', cache:'no-store' });
+        const csv = await res.text();
+        Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+            const rows = (result.data || []).map(r => {
+              const ts = r['Время отправки'] || r['Timestamp'] || '';
+              return { ...r, _ts: ts ? new Date(ts).getTime() : 0 };
+            }).sort((a,b) => b._ts - a._ts);
+            renderReviews(rows);
+          }
+        });
+      }catch(e){
+        console.error(e);
+        reviewsListEl.innerHTML = '<p class="muted">Не удалось загрузить отзывы. Обновите страницу.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadReviews();
+      // Можно периодически обновлять список:
+      // setInterval(loadReviews, 30000);
     });
   </script>
 
