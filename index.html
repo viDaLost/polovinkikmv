@@ -168,7 +168,7 @@
 
   <!-- Контакты -->
   <section class="fade-in" aria-labelledby="contacts-title">
-    <h1 id="contacts-title" style="margin-bottom:.6em;">Контакты</h1>
+    <h1 id="contacts-title" style="margin-bottom:.6ем;">Контакты</h1>
     <div class="actions" style="justify-content:center;">
       <a class="btn" href="tel:+79633883334" aria-label="Позвонить нам">Наш телефон</a>
       <a class="btn btn-outline" href="https://t.me/kamill_lli" target="_blank" rel="noopener" aria-label="Открыть наш Telegram">Наш Telegram</a>
@@ -240,8 +240,8 @@
     const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQzuRGHZ_li9ttKlasMPdelaWnWY3mondMMNGW0o9pGwtsVJC5zMDsQ-WL6vq1z4RTK0SrE5fAzltBU/pub?gid=36924179&single=true&output=csv';
     const reviewsListEl = document.getElementById('reviews-list');
 
-    // Если хочешь вручную указать имена столбцов, раскомментируй и заполни:
-    // const OVERRIDE = { name: 'Имя', text: 'Ваш отзыв', time: 'Отметка времени' };
+    // ЯВНО указываем названия столбцов из таблицы
+    const OVERRIDE = { name: 'Имя', text: 'Отзыв', time: 'Отметка времени' };
 
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -277,11 +277,11 @@
     }
 
     function renderReviews(rows, headers){
-      const nameKey = (typeof OVERRIDE !== 'undefined' && OVERRIDE.name) ||
+      const nameKey = OVERRIDE.name ||
         findKey(headers, ['Ваше имя','Имя','Имя и фамилия','name'], ['имя','name','фамил']);
-      const timeKey = (typeof OVERRIDE !== 'undefined' && OVERRIDE.time) ||
+      const timeKey = OVERRIDE.time ||
         findKey(headers, ['Отметка времени','Время отправки','Timestamp'], ['врем','time','timestamp']);
-      const textKey = (typeof OVERRIDE !== 'undefined' && OVERRIDE.text) ||
+      const textKey = OVERRIDE.text ||
         guessTextKey(headers, rows, [nameKey, timeKey].filter(Boolean));
 
       reviewsListEl.innerHTML = '';
@@ -320,8 +320,7 @@
         const hint = `
           <div class="card" style="margin-top:10px;">
             <div class="muted">Ответы есть, но не удалось найти колонку с текстом отзыва.<br>
-            Заголовки в таблице: <em>${headers.map(esc).join(' · ')}</em><br>
-            Вы можете переименовать вопрос формы в «Ваш отзыв» или раскомментировать OVERRIDE в коде и указать точные имена колонок.</div>
+            Заголовки в таблице: <em>${headers.map(esc).join(' · ')}</em></div>
           </div>`;
         reviewsListEl.innerHTML = hint;
       }
