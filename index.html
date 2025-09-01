@@ -236,39 +236,73 @@
     });
 
     /* ===== ОТЗЫВЫ: загрузка из Google Sheets (CSV) ===== */
-    // Точный лист с ответами (твой gid=36924179)
+    // Точный лист с ответами (gid=36924179)
     const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQzuRGHZ_li9ttKlasMPdelaWnWY3mondMMNGW0o9pGwtsVJC5zMDsQ-WL6vq1z4RTK0SrE5fAzltBU/pub?gid=36924179&single=true&output=csv';
     const reviewsListEl = document.getElementById('reviews-list');
+
+    // Если хочешь вручную указать имена столбцов, раскомментируй и заполни:
+    // const OVERRIDE = { name: 'Имя', text: 'Ваш отзыв', time: 'Отметка времени' };
+
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-    // находить колонку по известным вариантам/подстроке
-    function findKey(headers, variants, substr){
-      const set = new Set(headers.map(h => (h||'').trim()));
-      for(const v of variants){ if(set.has(v)) return v; }
-      if(substr){ const i = headers.findIndex(h => (h||'').toLowerCase().includes(substr)); if(i>=0) return headers[i]; }
+    function findKey(headers, variants = [], substrings = []) {
+      const norm = h => (h||'').trim();
+      const set = new Set(headers.map(norm));
+      for (const v of variants) if (set.has(v)) return v;
+      const hLow = headers.map(h => (h||'').toLowerCase());
+      for (const sub of substrings) {
+        const i = hLow.findIndex(h => h.includes(sub));
+        if (i >= 0) return headers[i];
+      }
       return '';
     }
 
+    function guessTextKey(headers, rows, excludeKeys) {
+      const key1 = findKey(
+        headers,
+        ['Ваш отзыв','Отзыв','Комментарий','text','comment','feedback','review'],
+        ['отзыв','коммент','feedback','review','сообщ','message','текст']
+      );
+      if (key1 && !excludeKeys.includes(key1)) return key1;
+
+      const scores = headers
+        .filter(h => !excludeKeys.includes(h))
+        .map(h => {
+          const sum = rows.reduce((acc, r) => acc + String(r[h]||'').trim().length, 0);
+          return { h, sum };
+        })
+        .sort((a,b) => b.sum - a.sum);
+
+      return (scores[0] && scores[0].sum > 0) ? scores[0].h : '';
+    }
+
     function renderReviews(rows, headers){
-      const tsKey   = findKey(headers, ['Отметка времени','Время отправки','Timestamp'], 'время');
-      const nameKey = findKey(headers, ['Ваше имя','Имя','Имя и фамилия','name'], 'имя');
-      const textKey = findKey(headers, ['Ваш отзыв','Отзыв','Комментарий','text','comment'], 'отзыв');
+      const nameKey = (typeof OVERRIDE !== 'undefined' && OVERRIDE.name) ||
+        findKey(headers, ['Ваше имя','Имя','Имя и фамилия','name'], ['имя','name','фамил']);
+      const timeKey = (typeof OVERRIDE !== 'undefined' && OVERRIDE.time) ||
+        findKey(headers, ['Отметка времени','Время отправки','Timestamp'], ['врем','time','timestamp']);
+      const textKey = (typeof OVERRIDE !== 'undefined' && OVERRIDE.text) ||
+        guessTextKey(headers, rows, [nameKey, timeKey].filter(Boolean));
 
       reviewsListEl.innerHTML = '';
-      if(!rows.length){ reviewsListEl.innerHTML = '<p class="muted">Пока нет отзывов — будьте первым!</p>'; return; }
+      if (!rows.length) {
+        reviewsListEl.innerHTML = '<p class="muted">Пока нет отзывов — будьте первым!</p>';
+        return;
+      }
 
       const sorted = rows.map(r => {
-        const t = tsKey ? r[tsKey] : '';
-        return { r, _ts: t ? new Date(t).getTime() : 0 };
+        const ts = timeKey ? r[timeKey] : '';
+        return { r, _ts: ts ? new Date(ts).getTime() : 0 };
       }).sort((a,b)=> b._ts - a._ts);
 
       let shown = 0;
-      for(const {r} of sorted){
+      for (const {r} of sorted){
         const name = esc(nameKey ? r[nameKey] : '') || 'Гость';
         const text = esc(textKey ? r[textKey] : '');
-        if(!text) continue;
-        const ts   = tsKey ? r[tsKey] : '';
+        if (!text) continue;
+        const ts   = timeKey ? r[timeKey] : '';
         const dstr = ts ? new Date(ts).toLocaleString('ru-RU', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+
         const card = document.createElement('div');
         card.className='card'; card.style.marginBottom='10px';
         card.innerHTML = `
@@ -276,11 +310,21 @@
             <strong style="font-size:1.05rem">${name}</strong>
             <span class="muted" style="white-space:nowrap">${esc(dstr)}</span>
           </div>
-          <div style="margin-top:.4em;white-space:pre-wrap;">${text}</div>`;
+          <div style="margin-top:.4em;white-space:pre-wrap;">${text}</div>
+        `;
         reviewsListEl.appendChild(card);
         shown++;
       }
-      if(!shown){ reviewsListEl.innerHTML = '<p class="muted">Ответы есть, но не найден текст отзыва. Проверьте названия столбцов («Имя», «Отзыв»).</p>'; }
+
+      if (!shown) {
+        const hint = `
+          <div class="card" style="margin-top:10px;">
+            <div class="muted">Ответы есть, но не удалось найти колонку с текстом отзыва.<br>
+            Заголовки в таблице: <em>${headers.map(esc).join(' · ')}</em><br>
+            Вы можете переименовать вопрос формы в «Ваш отзыв» или раскомментировать OVERRIDE в коде и указать точные имена колонок.</div>
+          </div>`;
+        reviewsListEl.innerHTML = hint;
+      }
     }
 
     async function loadReviews(){
@@ -289,8 +333,10 @@
         const res = await fetch(url, {mode:'cors', cache:'no-store'});
         if(!res.ok) throw new Error('CSV HTTP '+res.status);
         const csv = await res.text();
+
         Papa.parse(csv, {
-          header:true, skipEmptyLines:true,
+          header:true,
+          skipEmptyLines:true,
           complete: (result)=>{
             const rows = result.data || [];
             const headers = (result.meta && result.meta.fields) ? result.meta.fields : Object.keys(rows[0]||{});
@@ -306,7 +352,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadReviews();
-      // при желании: автообновление каждые 30 сек
+      // При желании: автообновление каждые 30 сек
       // setInterval(loadReviews, 30000);
     });
   </script>
