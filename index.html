@@ -28,6 +28,8 @@
       line-height: 1.6;
       text-align: center;
       overflow-x: hidden;
+      /* место под нижнюю полоску отзывов */
+      padding-bottom: calc(110px + env(safe-area-inset-bottom));
     }
 
     h1 {
@@ -185,7 +187,7 @@
       margin-top: 8px;
     }
 
-    /* ======= ОТЗЫВЫ (добавлено) ======= */
+    /* ======= ОТЗЫВЫ (центральная секция) ======= */
     #reviews-section .reviews-card{
       max-width: 760px;
       margin: 0 auto;
@@ -213,6 +215,75 @@
       padding:12px 16px; border:0; border-radius:12px; background:#111827; color:#fff; cursor:pointer;
     }
     #reviews-section small.muted { color:var(--muted); }
+
+    /* ======= НИЖНЯЯ ПОЛОСКА ОТЗЫВОВ (новое) ======= */
+    .reviews-strip {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(237,226,215,.75) 10%, var(--footer) 100%);
+      border-top: 1px solid rgba(0,0,0,.06);
+      z-index: 50;
+      backdrop-filter: blur(4px);
+    }
+    .strip-head {
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      margin: 0 4px 8px; font-size: 14px; color: var(--muted);
+    }
+    .strip-toggle {
+      appearance: none; border: 1px solid rgba(0,0,0,.12); background:#fff;
+      padding: 6px 10px; border-radius: 999px; font-size: 12px; cursor:pointer;
+    }
+    .strip-track {
+      display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
+      gap: 10px; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; padding: 2px 6px 2px 2px;
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (min-width:480px){
+      .strip-track { grid-auto-columns: 320px; }
+    }
+    .strip-track::-webkit-scrollbar { height: 6px; }
+    .strip-track::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 10px; }
+
+    .review-mini {
+      scroll-snap-align: start;
+      background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:14px;
+      padding: 10px 12px; text-align: left; box-shadow: 0 6px 16px rgba(0,0,0,.06);
+      display: flex; flex-direction: column; gap: 6px; min-height: 88px;
+    }
+    .review-mini .mini-head{
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      font-size: 13px; color: var(--muted);
+    }
+    .review-mini .mini-name{ font-weight:600; color: var(--fg); }
+    .review-mini .mini-stars{ font-size: 13px; color:#efb80b; }
+    .review-mini .mini-text{
+      font-size: 14px; color: var(--fg); line-height: 1.35;
+      display:-webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .edge-fade {
+      pointer-events:none; position:absolute; inset-inline:0; bottom: calc(10px + env(safe-area-inset-bottom));
+      height: 98px; background:
+        linear-gradient(90deg, var(--footer) 0%, rgba(237,226,215,0) 6% 94%, var(--footer) 100%);
+      z-index: 51;
+      border-top-left-radius: 16px; border-top-right-radius: 16px;
+    }
+    .reviews-strip.hidden { display: none; }
+
+    /* ======= МОДАЛКА ОТЗЫВА ======= */
+    dialog.review-modal {
+      border: 0; padding: 0; border-radius: 16px; width: min(640px, 92vw);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25); background:#fff;
+    }
+    dialog.review-modal::backdrop { background: rgba(0,0,0,.35); }
+    .modal-body { padding: 18px; text-align: left; }
+    .modal-title { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .modal-title h3 { margin: 0; font-family: 'Playfair Display', serif; }
+    .modal-stars { color:#efb80b; font-size:14px; }
+    .modal-text { white-space: pre-wrap; margin-top: 8px; font-size: 16px; }
+    .modal-close {
+      border:1px solid rgba(0,0,0,.12); background:#fff; border-radius:10px; padding:8px 12px; cursor:pointer;
+    }
   </style>
 </head>
 <body>
@@ -344,7 +415,7 @@
 
   <div class="divider"></div>
 
-  <!-- ======== ОТЗЫВЫ (добавлено) ======== -->
+  <!-- ======== ОТЗЫВЫ (центральная секция) ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <h1 id="reviews-title" style="margin-bottom:.2em;">Отзывы</h1>
     <p class="muted" style="margin-bottom:1.2em;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
@@ -369,10 +440,38 @@
         </div>
       </form>
 
-      <div id="reviewsList" class="reviews-grid" aria-live="polite"></div>
+      <div id="reviewsList" class="reviews-grid" aria-live="полite"></div>
     </div>
   </section>
   <!-- ======== /ОТЗЫВЫ ======== -->
+
+  <!-- ======== НИЖНЯЯ ПОЛОСКА ОТЗЫВОВ ======== -->
+  <div id="reviewsStrip" class="reviews-strip" role="region" aria-label="Отзывы клиентов">
+    <div class="strip-head">
+      <span>Отзывы клиентов</span>
+      <div style="display:flex; gap:8px; align-items:center">
+        <a href="#reviews-section" class="strip-toggle" style="text-decoration:none;">Все отзывы</a>
+        <button id="stripToggle" class="strip-toggle" type="button" aria-expanded="true">Скрыть</button>
+      </div>
+    </div>
+    <div id="reviewsTrack" class="strip-track" aria-live="polite"></div>
+    <div class="edge-fade" aria-hidden="true"></div>
+  </div>
+
+  <dialog id="reviewModal" class="review-modal">
+    <div class="modal-body">
+      <div class="modal-title">
+        <h3 id="modalName">Гость</h3>
+        <div>
+          <span id="modalStars" class="modal-stars">★★★★★</span>
+          <button id="modalClose" class="modal-close" type="button">Закрыть</button>
+        </div>
+      </div>
+      <small id="modalDate" class="muted"></small>
+      <div id="modalText" class="modal-text"></div>
+    </div>
+  </dialog>
+  <!-- ======== /НИЖНЯЯ ПОЛОСКА ОТЗЫВОВ ======== -->
 
   <!-- Футер -->
   <footer class="fade-in">
@@ -509,40 +608,118 @@
     const statusReviewEl = document.getElementById('reviewStatus');
     const formReviewEl = document.getElementById('reviewForm');
 
-    function stars(n){ return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
-    function escapeHtml(s){
-      return String(s || '').replace(/[&<>"']/g, ch => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[ch]));
-    }
+    // элементы полоски и модалки
+    const stripEl = document.getElementById('reviewsStrip');
+    const trackEl = document.getElementById('reviewsTrack');
+    const stripToggle = document.getElementById('stripToggle');
+    const modal = document.getElementById('reviewModal');
+    const modalName = document.getElementById('modalName');
+    const modalStars = document.getElementById('modalStars');
+    const modalDate = document.getElementById('modalDate');
+    const modalText = document.getElementById('modalText');
+    const modalClose = document.getElementById('modalClose');
 
+    const STRIP_COUNT = 5; // показывать внизу только последние 5
+
+    function stars(n){ n = Math.max(0, Math.min(5, Number(n||0))); return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+    function escapeHtml(s){
+      return String(s || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+    function shortText(s, n=160){ s = String(s||'').trim(); return s.length>n ? s.slice(0,n-1)+'…' : s; }
+
+    // ===== Тоггл полоски с запоминанием =====
+    const STRIP_HIDDEN_KEY = 'reviews_strip_hidden';
+    function isStripHidden(){ return localStorage.getItem(STRIP_HIDDEN_KEY) === '1'; }
+    function setStripHidden(v){
+      localStorage.setItem(STRIP_HIDDEN_KEY, v ? '1' : '0');
+      stripEl.classList.toggle('hidden', v);
+      stripToggle.setAttribute('aria-expanded', String(!v));
+      stripToggle.textContent = v ? 'Показать' : 'Скрыть';
+      document.body.style.paddingBottom = v ? 'env(safe-area-inset-bottom)' : 'calc(110px + env(safe-area-inset-bottom))';
+    }
+    // применяем начальное состояние
+    setStripHidden(isStripHidden());
+    stripToggle.addEventListener('click', ()=> setStripHidden(!isStripHidden()));
+
+    // ===== Модалка =====
+    function openModal(item){
+      modalName.textContent = item.name || 'Гость';
+      modalStars.textContent = stars(item.rating||5);
+      modalDate.textContent = new Date(item.createdAt).toLocaleDateString();
+      modalText.textContent = item.text || '';
+      if (typeof modal.showModal === 'function') modal.showModal();
+      else modal.setAttribute('open','open');
+    }
+    modalClose.addEventListener('click', () => { if (modal.close) modal.close(); else modal.removeAttribute('open'); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) { if (modal.close) modal.close(); else modal.removeAttribute('open'); }});
+
+    // ===== Загрузка и рендер отзывов =====
     async function fetchReviews() {
-      if (!listEl) return;
-      listEl.innerHTML = '<div class="muted">Загружаю отзывы…</div>';
+      if (listEl) listEl.innerHTML = '<div class="muted">Загружаю отзывы…</div>';
+      if (trackEl) trackEl.innerHTML = '';
+
       try {
         const res = await fetch(`${SCRIPT_URL}?limit=50`, { method:'GET' });
         const text = await res.text();
         let data; try { data = JSON.parse(text); } catch { throw new Error('Сервер вернул не-JSON'); }
-        const items = data.items || [];
-        if (!items.length) {
-          listEl.innerHTML = '<div class="muted">Пока нет отзывов — будьте первым!</div>';
-          return;
+        // сортируем по дате (новые сначала)
+        const items = (data.items || []).sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+
+        // —— Центральная секция: все отзывы
+        if (listEl){
+          if (!items.length) {
+            listEl.innerHTML = '<div class="muted">Пока нет отзывов — будьте первым!</div>';
+          } else {
+            listEl.innerHTML = items.map(o => `
+              <article class="review-item">
+                <div class="review-head">
+                  <strong>${escapeHtml(o.name || 'Гость')}</strong>
+                  <span title="${new Date(o.createdAt)}" class="muted" style="font-size:12px">
+                    ${new Date(o.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div class="stars">${stars(Number(o.rating||5))}</div>
+                <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
+              </article>
+            `).join('');
+          }
         }
-        listEl.innerHTML = items.map(o => `
-          <article class="review-item">
-            <div class="review-head">
-              <strong>${escapeHtml(o.name || 'Гость')}</strong>
-              <span title="${new Date(o.createdAt)}" class="muted" style="font-size:12px">
-                ${new Date(o.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-            <div class="stars">${stars(Number(o.rating||5))}</div>
-            <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
-          </article>
-        `).join('');
+
+        // —— Нижняя полоска: только последние STRIP_COUNT
+        if (trackEl){
+          if (!items.length){
+            trackEl.innerHTML = `<div class="review-mini">
+              <div class="mini-head"><span class="mini-name">Отзывы</span></div>
+              <div class="mini-text">Пока нет отзывов — оставьте первый!</div>
+            </div>`;
+          } else {
+            const stripItems = items.slice(0, STRIP_COUNT);
+            trackEl.innerHTML = stripItems.map((o,i)=> `
+              <button class="review-mini" type="button" data-idx="${i}"
+                aria-label="Отзыв пользователя ${escapeHtml(o.name || 'Гость')}">
+                <div class="mini-head">
+                  <span class="mini-name">${escapeHtml(o.name || 'Гость')}</span>
+                  <span class="mini-stars">${stars(Number(o.rating||5))}</span>
+                </div>
+                <div class="mini-text">${escapeHtml(shortText(o.text, 160))}</div>
+              </button>
+            `).join('');
+
+            // клики по мини-карточкам -> модалка
+            trackEl.querySelectorAll('.review-mini').forEach(btn=>{
+              btn.addEventListener('click', ()=>{
+                const idx = Number(btn.getAttribute('data-idx'));
+                const it = stripItems[idx];
+                openModal(it);
+              });
+            });
+          }
+        }
+
       } catch (e) {
         console.error(e);
-        listEl.innerHTML = '<div style="color:#ef4444">Не удалось загрузить отзывы.</div>';
+        if (listEl) listEl.innerHTML = '<div style="color:#ef4444">Не удалось загрузить отзывы.</div>';
+        if (trackEl) trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Не удалось загрузить отзывы.</div></div>';
       }
     }
 
@@ -561,7 +738,7 @@
           // ВАЖНО: без заголовка Content-Type, чтобы не было CORS preflight
           const res = await fetch(SCRIPT_URL, {
             method:'POST',
-            body: JSON.stringify(payload) // строка; Apps Script прочитает e.postData.contents
+            body: JSON.stringify(payload) // Apps Script читает e.postData.contents
           });
           const text = await res.text();
           let data; try { data = JSON.parse(text); } catch { throw new Error('Сервер вернул не-JSON'); }
