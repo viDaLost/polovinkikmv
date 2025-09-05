@@ -1,20 +1,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Половинки</title>
 
-  <!-- === Favicon & Icons === -->
+  <title>Половинки — домашняя кондитерская.</title>
+  <meta name="description" content="Половинки КМВ — домашняя кондитерская. Орешки с варёной сгущёнкой и грецким орехом. Закажите онлайн: самовывоз и доставка по КМВ.">
+
+  <!-- Индексация -->
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://polovinkikmv.ru/">
+
+  <!-- Favicon & PWA -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#f6f1eb">
 
-  <!-- === Fonts === -->
+  <!-- Open Graph (не влияет на ранжирование, но красиво в мессенджерах) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://polovinkikmv.ru/">
+  <meta property="og:title" content="Половинки — домашняя кондитерская КМВ">
+  <meta property="og:description" content="Орешки с варёной сгущёнкой. Закажите онлайн: самовывоз и доставка по КМВ.">
+  <meta property="og:image" content="https://polovinkikmv.ru/android-chrome-512x512.png">
+
+  <!-- Шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Schema.org: LocalBusiness/Bakery -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Bakery",
+    "name": "Половинки — домашняя кондитерская КМВ",
+    "url": "https://polovinkikmv.ru/",
+    "logo": "https://polovinkikmv.ru/android-chrome-512x512.png",
+    "image": "https://polovinkikmv.ru/android-chrome-512x512.png",
+    "areaServed": "Кавказские Минеральные Воды",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "КМВ",
+      "addressCountry": "RU"
+    }
+  }
+  </script>
+
   <style>
-    :root {
+    :root{
       --bg:#f6f1eb;
       --fg:#3e2c23;
       --muted:#6b5646;
@@ -24,10 +56,8 @@
       --footer:#ede2d7;
       --ring:rgba(212, 175, 150, .45);
     }
-
     * { box-sizing: border-box; }
     html, body { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       font-family: 'Cormorant Garamond', serif;
