@@ -209,7 +209,7 @@
   <section id="order" class="fade-in" aria-labelledby="order-title">
     <h1 id="order-title" style="margin-bottom:.2em;">Оформление заказа</h1>
     <p class="muted" style="margin-bottom:1.2em;">
-      Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>170 ₽ за коробку</strong>
+      Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>250₽ за коробку</strong>
     </p>
 
     <div class="card" role="region" aria-label="Форма заказа">
@@ -263,8 +263,8 @@
         </div>
 
         <div class="summary" aria-live="polite">
-          <span>Итого: <strong id="total-text">170 ₽</strong></span>
-          <span class="muted">170 ₽ × <span id="qty-text">1</span> короб.</span>
+          <span>Итого: <strong id="total-text">250 ₽</strong></span>
+          <span class="muted">250 ₽ × <span id="qty-text">1</span> короб.</span>
         </div>
 
         <div class="actions">
@@ -291,11 +291,11 @@
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
           <label for="rating" class="muted" style="margin:0;">Оценка:</label>
           <select id="rating" name="rating" style="padding:10px;border:1px solid rgba(0,0,0,.06);border-radius:10px">
-            <option value="5">★★★★★ — 5</option>
-            <option value="4">★★★★☆ — 4</option>
-            <option value="3">★★★☆☆ — 3</option>
-            <option value="2">★★☆☆☆ — 2</option>
-            <option value="1">★☆☆☆☆ — 1</option>
+            <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5</option>
+            <option value="4">⭐️⭐️⭐️⭐️ — 4</option>
+            <option value="3">⭐️⭐️⭐️ — 3</option>
+            <option value="2">⭐️⭐️ — 2</option>
+            <option value="1">⭐️ — 1</option>
           </select>
           <input type="text" name="company" style="display:none">
           <button type="submit" class="review-btn">Отправить отзыв</button>
@@ -324,7 +324,7 @@
       <div class="modal-title">
         <h3 id="modalName">Гость</h3>
         <div>
-          <span id="modalStars" class="modal-stars">★★★★★</span>
+          <span id="modalStars" class="modal-stars">⭐️⭐️⭐️⭐️⭐️</span>
           <button id="modalClose" class="modal-close" type="button">Закрыть</button>
         </div>
       </div>
@@ -365,7 +365,7 @@
     dividers.forEach(divider => appearOnScroll.observe(divider));
 
     // ===== Логика формы заказа =====
-    const PRICE_PER_BOX = 170;
+    const PRICE_PER_BOX = 250;
     const qtyEl = document.getElementById('qty');
     const totalTextEl = document.getElementById('total-text');
     const qtyTextEl = document.getElementById('qty-text');
