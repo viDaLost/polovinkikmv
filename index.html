@@ -35,7 +35,7 @@
     "name": "Половинки — домашняя кондитерская КМВ",
     "url": "https://polovinkikmv.ru/",
     "logo": "https://polovinkikmv.ru/android-chrome-512x512.png",
-    "image": "https://polовинkikmv.ru/android-chrome-512x512.png",
+    "image": "https://polovinkikmv.ru/android-chrome-512x512.png",
     "areaServed": "Кавказские Минеральные Воды",
     "address": {
       "@type": "PostalAddress",
@@ -90,8 +90,8 @@
     .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); }
     .btn-outline:hover { background: var(--panel); }
 
-    footer { padding: 2em 1em; background-color: var(--footer); font-size: 0.9rem; color: #5a4a3а; }
-    footer p { margin: 0.3ем 0; }
+    footer { padding: 2em 1em; background-color: var(--footer); font-size: 0.9rem; color: #5a4a3a; }
+    footer p { margin: 0.3em 0; }
 
     /* Разделители/анимации */
     .divider { width: 60px; height: 2px; margin: 40px auto; background-color: var(--accent); border-radius: 1px;
@@ -140,7 +140,7 @@
 
     /* ======= ЛЕНТА ВНУТРИ СЕКЦИИ (НЕ фиксированная) ======= */
     .reviews-strip {
-      margin: 14px авто 0;
+      margin: 14px auto 0;
       max-width: 760px;
       background: var(--footer);
       border: 1px solid rgba(0,0,0,.06);
@@ -314,7 +314,7 @@
   <!-- ======== ОТЗЫВЫ ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <h1 id="reviews-title" style="margin-bottom:.2em;">Отзывы</h1>
-    <p class="muted" style="margin-bottom:1.2ем;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
+    <p class="muted" style="margin-bottom:1.2em;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
 
     <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
       <!-- форма -->
@@ -428,7 +428,7 @@
     const submitBtn = document.getElementById('submit-btn');
 
     // === ПАРАМЕТРЫ Telegram через Google Apps Script ===
-    const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyhkTdX-nE1aEnB9GMrSvK8kaE3Z4NDV-M2fJh2pUROCU-sGcjhCAoIVB-tsNzzq26m/exec';
+    const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
     const TG_SECRET = 'PolovinkiKmV25';
 
     function formatRUB(v){ try { return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(v);} catch { return v.toFixed(0)+' ₽'; } }
@@ -469,7 +469,8 @@
         const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
         fetch(TG_ENDPOINT, {
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          // text/plain — CORS-safelisted, не вызывает preflight
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
           body: JSON.stringify(tgPayload)
         }).catch(err => console.error('TG relay failed:', err));
 
@@ -509,7 +510,7 @@
 
     // Модалка мини-отзыва
     function openMini(item){
-      modalName.textContent = item.name или 'Гость';
+      modalName.textContent = item.name || 'Гость';
       modalStars.textContent = stars(item.rating||5);
       modalDate.textContent = new Date(item.createdAt).toLocaleDateString();
       modalText.textContent = item.text || '';
@@ -613,5 +614,3 @@
   <!-- ===== /JS отзывов ===== -->
 </body>
 </html>
-
-Готово. В этом файле ничего не урезано, а форма теперь шлёт в Formspree и параллельно в ваш Apps Script по указанному URL, чтобы бот присылал уведомления в канал.
