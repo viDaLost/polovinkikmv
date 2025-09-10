@@ -1,3 +1,5 @@
+Вот полный файл с добавленной кнопкой Instagram сразу под блоком отзывов (ничего из вашего кода не убирал; добавил лишь стили для иконки и саму кнопку).
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -209,6 +211,9 @@
       border:1px solid rgba(0,0,0,.08); border-radius:12px; background:#fff; padding:14px; margin-top:12px;
     }
     .all-review-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+
+    /* ===== Доп. стиль для кнопки Instagram (иконка) ===== */
+    .social-btn svg { width: 18px; height: 18px; margin-right: 8px; vertical-align: -3px; }
   </style>
 </head>
 <body>
@@ -345,6 +350,25 @@
         <div id="reviewsTrack" class="strip-track" aria-live="polite"></div>
       </div>
     </div>
+
+    <!-- === КНОПКА INSTAGRAM ПОД ОТЗЫВАМИ === -->
+    <div class="actions" style="justify-content:center">
+      <a
+        class="btn btn-outline social-btn"
+        href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy"
+        target="_blank"
+        rel="noopener nofollow"
+        aria-label="Открыть Instagram Половинки в новом окне"
+      >
+        <!-- Иконка Instagram (SVG) -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" />
+        </svg>
+        <span>Мы в Instagram</span>
+      </a>
+    </div>
+    <!-- === /КНОПКА INSTAGRAM === -->
+
   </section>
   <!-- ======== /ОТЗЫВЫ ======== -->
 
