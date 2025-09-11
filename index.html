@@ -218,7 +218,24 @@
 
   <!-- Главный экран -->
   <section class="fade-in">
-    <img src="logo.png" alt="Логотип Половинки" class="logo">
+    <!-- ЗАМЕНА: логотип-видео вместо изображения -->
+    <video
+      class="logo"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="logo-poster.avif"
+      aria-label="Анимированный логотип Половинки"
+      width="800"
+      height="800"
+    >
+      <source src="logo-1080.webm" type="video/webm">
+      <source src="logo-720.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+
     <h1>Половинки</h1>
     <h2>Домашняя кондитерская</h2>
     <p><em>Орешки — десерт, в котором встречаются вкус и воспоминания</em></p>
@@ -483,7 +500,7 @@
 
   <!-- ===== JS отзывов ===== -->
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkOeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkОeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec';
 
     const reviewForm = document.getElementById('reviewForm');
     const reviewStatus = document.getElementById('reviewStatus');
