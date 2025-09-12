@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +19,7 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#f6f1eb">
 
-  <!-- Open Graph (не влияет на ранжирование, но красиво в мессенджерах) -->
+  <!-- Open Graph (для превью в мессенджерах) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polovinkikmv.ru/">
   <meta property="og:title" content="Половинки — домашняя кондитерская КМВ">
@@ -33,7 +35,7 @@
     "@context": "https://schema.org",
     "@type": "Bakery",
     "name": "Половинки — домашняя кондитерская КМВ",
-    "name": "Половинки",
+    "alternateName": "Половинки",
     "url": "https://polovinkikmv.ru/",
     "logo": "https://polovinkikmv.ru/android-chrome-512x512.png",
     "image": "https://polovinkikmv.ru/android-chrome-512x512.png",
@@ -47,6 +49,7 @@
   </script>
 
   <style>
+    /* ====== БАЗОВЫЕ ТОКЕНЫ/ЦВЕТА ====== */
     :root{
       --bg:#f6f1eb;
       --fg:#3e2c23;
@@ -56,7 +59,19 @@
       --panel:#fff9f3;
       --footer:#ede2d7;
       --ring:rgba(212, 175, 150, .45);
+
+      /* Типографика с плавной адаптацией */
+      --h1: clamp(28px, 4vw, 44px);
+      --h2: clamp(18px, 2.2vw, 22px);
+      --p: clamp(16px, 1.6vw, 18px);
+
+      /* Контейнер */
+      --container: min(1120px, 92vw);
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(62,44,35,.08);
     }
+
+    /* ====== СБРОС/ОСНОВА ====== */
     * { box-sizing: border-box; }
     html, body { scroll-behavior: smooth; }
     body {
@@ -69,80 +84,123 @@
       overflow-x: hidden;
     }
 
-    h1 { font-size: 2.8rem; margin-bottom: 0.3em; font-weight: 600; font-family: 'Playfair Display', serif; }
-    h2 { font-size: 1.3rem; font-weight: 400; margin-bottom: 1.5em; color: var(--muted); }
-    p  { max-width: 650px; margin: 0 auto 1em; font-size: 1.1rem; }
-    section { padding: 3em 1.5em; }
+    .container { width: var(--container); margin-inline: auto; }
 
-    .logo { max-width: 800px; height: auto; margin-bottom: 1em; }
-    @media (max-width: 800px) and (orientation: portrait) { .logo { max-width: 220px; } }
-    @media (max-width: 1024px) and (orientation: landscape) { .logo { max-width: 220px; } }
-    @media (min-width: 1024px) { .logo { max-width: 220px; } }
+    h1 { font-size: var(--h1); margin: 0 0 .3em; font-weight: 600; font-family: 'Playfair Display', serif; }
+    h2 { font-size: var(--h2); font-weight: 400; margin: 0 0 1.2em; color: var(--muted); }
+    p  { font-size: var(--p); margin: 0 auto 1em; }
+    section { padding: clamp(24px, 5vw, 56px) 0; }
+
+    /* ====== HERO (главный экран) ====== */
+    .hero { text-align: left; }
+    .hero-grid {
+      display: grid;
+      gap: clamp(16px, 3vw, 40px);
+      align-items: center;
+    }
+    /* Мобильный — один столбец; десктоп — 2 */
+    @media (min-width: 1024px){
+      .hero-grid { grid-template-columns: 1fr 1.1fr; }
+    }
+
+    .logo-wrap { display: grid; place-items: center; }
+    .logo {
+      width: clamp(160px, 28vw, 280px);
+      max-width: 100%;
+      height: auto;
+      margin: 0;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,.05));
+    }
+
+    .lead { max-width: 68ch; }
 
     .btn {
       display: inline-block; padding: 0.9em 2em; margin-top: 1.0em;
-      background-color: var(--accent); color: white; font-size: 1rem;
-      border-radius: 30px; text-decoration: none; font-weight: 500;
-      transition: background .3s ease, transform .1s ease;
+      background-color: var(--accent); color: white; font-size: clamp(14px, 1.4vw, 16px);
+      border-radius: 30px; text-decoration: none; font-weight: 600; letter-spacing:.2px;
+      transition: background .25s ease, transform .08s ease, box-shadow .25s ease;
+      box-shadow: 0 6px 18px rgba(212,175,150,.35);
     }
-    .btn:hover { background-color: var(--accent-2); }
-    .btn:active { transform: translateY(1px); }
+    .btn:hover { background-color: var(--accent-2); box-shadow: 0 8px 24px rgba(212,175,150,.45); transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); box-shadow: 0 6px 18px rgba(212,175,150,.35); }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
 
-    .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); }
+    .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); box-shadow: none; }
     .btn-outline:hover { background: var(--panel); }
 
-    footer { padding: 2em 1em; background-color: var(--footer); font-size: 0.9rem; color: #5a4a3a; }
+    footer { padding: 28px 0; background-color: var(--footer); font-size: .95rem; color: #5a4a3a; }
     footer p { margin: 0.3em 0; }
 
-    /* Разделители/анимации */
-    .divider { width: 60px; height: 2px; margin: 40px auto; background-color: var(--accent); border-radius: 1px;
+    /* ===== Разделители/анимации ===== */
+    .divider { width: 60px; height: 2px; margin: 26px auto 0; background-color: var(--accent); border-radius: 1px;
       opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
     .divider.visible { opacity: 1; transform: translateY(0); }
     .fade-in { opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ======= ФОРМА ЗАКАЗА ======= */
-    .card {
-      max-width: 760px; margin: 0 auto; background: var(--panel); border-radius: 18px; padding: 1.25em;
-      box-shadow: 0 10px 30px rgba(62,44,35,.08); text-align: left;
+    @media (prefers-reduced-motion: reduce){
+      .fade-in, .divider { transition: none; opacity: 1; transform: none; }
+      html, body { scroll-behavior: auto; }
     }
 
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width:720px){ .grid { grid-template-columns: 1fr; } }
+    /* ======= КАРТОЧКИ/ФОРМА ЗАКАЗА ======= */
+    .card {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: clamp(16px, 2.6vw, 24px);
+      box-shadow: var(--shadow);
+      text-align: left;
+    }
 
-    label { display: block; font-size: 0.95rem; color: var(--muted); margin-bottom: 6px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width:720px){ .grid { grid-template-columns: 1fr 1fr; } }
+
+    label { display: block; font-size: .98rem; color: var(--muted); margin-bottom: 6px; }
 
     input, select, textarea {
       width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(0,0,0,.06);
       background: #fff; font-size: 1rem; font-family: inherit; outline: none; transition: box-shadow .2s, border-color .2s;
     }
-    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
+    input:focus-visible, select:focus-visible, textarea:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
 
-    .row { margin-bottom: 12px; }
-    .muted { color: var(--muted); font-size: .95rem; }
+    .row { margin-bottom: 10px; }
+    .muted { color: var(--muted); font-size: .98rem; }
 
     .summary {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
       background: #fff; border: 1px dashed rgba(0,0,0,.12); padding: 14px 16px; border-radius: 12px; margin-top: 8px;
-      font-size: 1.05rem;
+      font-size: clamp(15px, 1.5vw, 17px);
+      flex-wrap: wrap;
     }
     .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
     .note { font-size: .95rem; color: var(--muted); margin-top: 8px; }
 
     /* ======= СЕКЦИЯ «ОТЗЫВЫ» ======= */
     #reviews-section .reviews-card{
-      max-width: 760px; margin: 0 auto; background: var(--panel); border-radius: 18px; padding: 1.25em;
-      box-shadow: 0 10px 30px rgba(62,44,35,.08); text-align: left;
+      width: min(900px, 100%);
+      margin: 0 auto;
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: clamp(16px, 2.6vw, 24px);
+      box-shadow: var(--shadow);
+      text-align: left;
     }
     #reviews-section .review-form{ display:grid; gap:12px; margin-bottom:16px; }
     #reviews-section .review-btn{ padding:12px 16px; border:0; border-radius:12px; background:#111827; color:#fff; cursor:pointer; }
+    #reviews-section .review-btn:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(17,24,39,.2); }
     #reviews-section small.muted { color:var(--muted); }
     #reviews-section .stars{ color:#efb80b; }
 
-    /* ======= ЛЕНТА ВНУТРИ СЕКЦИИ (НЕ фиксированная) ======= */
+    /* ======= ЛЕНТА ОТЗЫВОВ ======= */
     .reviews-strip {
       margin: 14px auto 0;
-      max-width: 760px;
+      width: min(900px, 100%);
       background: var(--footer);
       border: 1px solid rgba(0,0,0,.06);
       border-radius: 14px;
@@ -157,6 +215,7 @@
       appearance: none; border: 1px solid rgba(0,0,0,.12); background:#fff;
       padding: 6px 10px; border-radius: 999px; font-size: 12px; cursor:pointer; text-decoration:none; color:inherit;
     }
+    .strip-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
     .strip-track {
       display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
@@ -165,6 +224,7 @@
       -webkit-overflow-scrolling: touch;
     }
     @media (min-width:480px){ .strip-track { grid-auto-columns: 320px; } }
+    @media (min-width:1280px){ .strip-track { grid-auto-columns: 360px; } }
     .strip-track::-webkit-scrollbar { height: 6px; }
     .strip-track::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 10px; }
 
@@ -199,10 +259,11 @@
     .modal-stars { color:#efb80b; font-size:14px; }
     .modal-text { white-space: pre-wrap; margin-top: 8px; font-size: 16px; }
     .modal-close { border:1px solid rgba(0,0,0,.12); background:#fff; border-radius:10px; padding:8px 12px; cursor:pointer; }
+    .modal-close:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
     /* Контент «Все отзывы» со своим скроллом */
     .all-reviews-content {
-      max-height: 72vh;
+      max-height: min(72vh, 760px);
       overflow: auto;
       padding: 0 18px 18px;
     }
@@ -213,100 +274,117 @@
 
     /* ===== Доп. стиль для кнопки Instagram (иконка) ===== */
     .social-btn svg { width: 18px; height: 18px; margin-right: 8px; vertical-align: -3px; }
+
+    /* ===== Улучшения для очень широких экранов ===== */
+    @media (min-width: 1440px){
+      .lead { max-width: 72ch; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Главный экран -->
-  <section class="fade-in">
-    <img src="logo.png" alt="Логотип Половинки" class="logo">
-    <h1>Половинки</h1>
-    <h2>Домашняя кондитерская</h2>
-    <p><em>Орешки — десерт, в котором встречаются вкус и воспоминания</em></p>
-    <p>Нежное тесто, золотистая выпечка и тягучая начинка из вареной сгущёнки, с добавлением грецких орехов.
-    Каждый орешек — это маленькая история радости, которую хочется разделить на двоих.</p>
-    <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
+  <!-- ======= HERO ======= -->
+  <section class="fade-in hero">
+    <div class="container hero-grid">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Логотип Половинки" class="logo" loading="lazy" decoding="async">
+      </div>
+      <div>
+        <h1>Половинки</h1>
+        <h2>Домашняя кондитерская</h2>
+        <p class="lead"><em>Орешки — десерт, в котором встречаются вкус и воспоминания.</em></p>
+        <p class="lead">Нежное тесто, золотистая выпечка и тягучая начинка из варёной сгущёнки с грецким орехом. Каждый орешек — маленькая история радости, которой хочется поделиться.</p>
+        <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
+      </div>
+    </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- Описание десерта -->
+  <!-- ======= ОПИСАНИЕ ======= -->
   <section class="fade-in">
-    <p>Мы готовим только одно лакомство, доведённое до совершенства — орешки.</p>
-    <p>В каждом — баланс хрустящей скорлупки и нежной начинки.</p>
-    <p>Это десерт, который возвращает к детству, но в новом, изысканном звучании.</p>
+    <div class="container">
+      <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
+        Мы готовим только одно лакомство, доведённое до совершенства — орешки.
+      </p>
+      <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
+        В каждом — баланс хрустящей скорлупки и нежной начинки. Десерт возвращает к детству, но в новом, изысканном звучании.
+      </p>
+    </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- Форма заказа -->
+  <!-- ======= ФОРМА ЗАКАЗА ======= -->
   <section id="order" class="fade-in" aria-labelledby="order-title">
-    <h1 id="order-title" style="margin-bottom:.2em;">Оформление заказа</h1>
-    <p class="muted" style="margin-bottom:1.2em;">
-      Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>250₽ за коробку</strong>
-    </p>
+    <div class="container">
+      <h1 id="order-title" style="margin-bottom:.2em; text-align:center;">Оформление заказа</h1>
+      <p class="muted" style="margin-bottom:1.2em; text-align:center;">
+        Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>250 ₽ за коробку</strong>
+      </p>
 
-    <div class="card" role="region" aria-label="Форма заказа">
-      <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
-        <div class="grid">
-          <div class="row">
-            <label for="name">Имя и фамилия*</label>
-            <input id="name" name="name" required>
+      <div class="card" role="region" aria-label="Форма заказа">
+        <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
+          <div class="grid">
+            <div class="row">
+              <label for="name">Имя и фамилия*</label>
+              <input id="name" name="name" required>
+            </div>
+            <div class="row">
+              <label for="phone">Телефон для связи*</label>
+              <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\\d\\+\\-\\s\\(\\)]{7,}$">
+            </div>
+            <div class="row">
+              <label for="social">Соцсети (WhatsApp/Telegram)</label>
+              <input id="social" name="social" placeholder="+7 999 123-45-67 или @username">
+            </div>
+            <div class="row">
+              <label for="qty">Количество коробочек*</label>
+              <select id="qty" name="qty" required>
+                <option value="1" selected>1 коробка — 6 шт</option>
+                <option value="2">2 коробки — 12 шт</option>
+                <option value="3">3 коробки — 18 шт</option>
+                <option value="4">4 коробки — 24 шт</option>
+                <option value="5">5 коробок — 30 шт</option>
+              </select>
+            </div>
+            <div class="row">
+              <label for="date">Желаемая дата получения*</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div class="row">
+              <label for="time">Время (ориентир)</label>
+              <input type="time" id="time" name="time">
+            </div>
+            <div class="row" style="grid-column: 1 / -1;">
+              <label for="method">Способ получения (если заказ &lt; 15 упаковок, доставка платная)</label>
+              <select id="method" name="method">
+                <option value="pickup" selected>Самовывоз</option>
+                <option value="delivery">Доставка</option>
+              </select>
+            </div>
+            <div class="row" id="address-row" style="display:none; grid-column: 1 / -1;">
+              <label for="address">Адрес доставки</label>
+              <input id="address" name="address" placeholder="Город, улица, дом, подъезд">
+            </div>
+            <div class="row" style="grid-column: 1 / -1;">
+              <label for="comment">Комментарий к заказу</label>
+              <textarea id="comment" name="comment" rows="3" placeholder="Пожелания по времени, подписать открытку и т.д."></textarea>
+            </div>
           </div>
-          <div class="row">
-            <label for="phone">Телефон для связи*</label>
-            <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\\d\\+\\-\\s\\(\\)]{7,}$">
-          </div>
-          <div class="row">
-            <label for="social">Соцсети (WhatsApp/Telegram)</label>
-            <input id="social" name="social" placeholder="+7 999 123-45-67 или @username">
-          </div>
-          <div class="row">
-            <label for="qty">Количество коробочек*</label>
-            <select id="qty" name="qty" required>
-              <option value="1" selected>1 коробка — 6 шт</option>
-              <option value="2">2 коробки — 12 шт</option>
-              <option value="3">3 коробки — 18 шт</option>
-              <option value="4">4 коробки — 24 шт</option>
-              <option value="5">5 коробок — 30 шт</option>
-            </select>
-          </div>
-          <div class="row">
-            <label for="date">Желаемая дата получения*</label>
-            <input type="date" id="date" name="date" required>
-          </div>
-          <div class="row">
-            <label for="time">Время (ориентир)</label>
-            <input type="time" id="time" name="time">
-          </div>
-          <div class="row">
-            <label for="method">Способ получения ( Если заказ меньше  15 упаковок орешков, то доставка платная)</label>
-            <select id="method" name="method">
-              <option value="pickup" selected>Самовывоз</option>
-              <option value="delivery">Доставка</option>
-            </select>
-          </div>
-          <div class="row" id="address-row" style="display:none;">
-            <label for="address">Адрес доставки</label>
-            <input id="address" name="address" placeholder="Город, улица, дом, подъезд">
-          </div>
-          <div class="row" style="grid-column: 1 / -1;">
-            <label for="comment">Комментарий к заказу</label>
-            <textarea id="comment" name="comment" rows="3" placeholder="Пожелания по времени, подписать открытку и т.д."></textarea>
-          </div>
-        </div>
 
-        <div class="summary" aria-live="polite">
-          <span>Итого: <strong id="total-text">250 ₽</strong></span>
-          <span class="muted">250 ₽ × <span id="qty-text">1</span> короб.</span>
-        </div>
+          <div class="summary" aria-live="polite">
+            <span>Итого: <strong id="total-text">250 ₽</strong></span>
+            <span class="muted">250 ₽ × <span id="qty-text">1</span> короб.</span>
+          </div>
 
-        <div class="actions">
-          <button id="submit-btn" type="submit" class="btn">Отправить заказ</button>
-        </div>
+          <div class="actions">
+            <button id="submit-btn" type="submit" class="btn">Отправить заказ</button>
+          </div>
 
-        <p id="form-status" class="note" style="display:none;"></p>
-      </form>
+          <p id="form-status" class="note" style="display:none;"></p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -314,60 +392,61 @@
 
   <!-- ======== ОТЗЫВЫ ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
-    <h1 id="reviews-title" style="margin-bottom:.2em;">Отзывы</h1>
-    <p class="muted" style="margin-bottom:1.2em;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
+    <div class="container">
+      <h1 id="reviews-title" style="margin-bottom:.2em; text-align:center;">Отзывы</h1>
+      <p class="muted" style="margin-bottom:1.2em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
 
-    <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
-      <!-- форма -->
-      <form id="reviewForm" class="review-form" novalidate>
-        <input type="text" name="name" placeholder="Ваше имя" maxlength="60" required>
-        <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-          <label for="rating" class="muted" style="margin:0;">Оценка:</label>
-          <select id="rating" name="rating" style="padding:10px;border:1px solid rgba(0,0,0,.06);border-radius:10px">
-            <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5</option>
-            <option value="4">⭐️⭐️⭐️⭐️ — 4</option>
-            <option value="3">⭐️⭐️⭐️ — 3</option>
-            <option value="2">⭐️⭐️ — 2</option>
-            <option value="1">⭐️ — 1</option>
-          </select>
-          <input type="text" name="company" style="display:none">
-          <button type="submit" class="review-btn">Отправить отзыв</button>
-          <small id="reviewStatus" class="muted" aria-live="polite"></small>
-        </div>
-      </form>
-
-      <!-- лента -->
-      <div class="reviews-strip" id="reviewsStrip">
-        <div class="strip-head">
-          <span>Последние отзывы</span>
-          <div class="strip-actions">
-            <button id="openAllBtn" class="strip-btn" type="button">Все отзывы</button>
-            <button id="hideAllBtn" class="strip-btn" type="button" style="display:none">Скрыть</button>
+      <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
+        <!-- форма -->
+        <form id="reviewForm" class="review-form" novalidate>
+          <input type="text" name="name" placeholder="Ваше имя" maxlength="60" required>
+          <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+            <label for="rating" class="muted" style="margin:0;">Оценка:</label>
+            <select id="rating" name="rating" style="padding:10px;border:1px solid rgba(0,0,0,.06);border-radius:10px">
+              <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5</option>
+              <option value="4">⭐️⭐️⭐️⭐️ — 4</option>
+              <option value="3">⭐️⭐️⭐️ — 3</option>
+              <option value="2">⭐️⭐️ — 2</option>
+              <option value="1">⭐️ — 1</option>
+            </select>
+            <input type="text" name="company" style="display:none">
+            <button type="submit" class="review-btn">Отправить отзыв</button>
+            <small id="reviewStatus" class="muted" aria-live="polite"></small>
           </div>
+        </form>
+
+        <!-- лента -->
+        <div class="reviews-strip" id="reviewsStrip">
+          <div class="strip-head">
+            <span>Последние отзывы</span>
+            <div class="strip-actions">
+              <button id="openAllBtn" class="strip-btn" type="button">Все отзывы</button>
+              <button id="hideAllBtn" class="strip-btn" type="button" style="display:none">Скрыть</button>
+            </div>
+          </div>
+          <div id="reviewsTrack" class="strip-track" aria-live="polite"></div>
         </div>
-        <div id="reviewsTrack" class="strip-track" aria-live="polite"></div>
       </div>
-    </div>
 
-    <!-- === КНОПКА INSTAGRAM ПОД ОТЗЫВАМИ === -->
-    <div class="actions" style="justify-content:center">
-      <a
-        class="btn btn-outline social-btn"
-        href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy"
-        target="_blank"
-        rel="noopener nofollow"
-        aria-label="Открыть Instagram Половинки в новом окне"
-      >
-        <!-- Иконка Instagram (SVG) -->
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" />
-        </svg>
-        <span>Мы в Instagram</span>
-      </a>
+      <!-- === КНОПКА INSTAGRAM ПОД ОТЗЫВАМИ === -->
+      <div class="actions" style="justify-content:center">
+        <a
+          class="btn btn-outline social-btn"
+          href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy"
+          target="_blank"
+          rel="noopener nofollow"
+          aria-label="Открыть Instagram Половинки в новом окне"
+        >
+          <!-- Иконка Instagram (SVG) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" />
+          </svg>
+          <span>Мы в Instagram</span>
+        </a>
+      </div>
+      <!-- === /КНОПКА INSTAGRAM === -->
     </div>
-    <!-- === /КНОПКА INSTAGRAM === -->
-
   </section>
   <!-- ======== /ОТЗЫВЫ ======== -->
 
@@ -398,12 +477,14 @@
   </dialog>
 
   <footer class="fade-in">
-    <p><strong>Половинки</strong> — домашняя кондитерская</p>
-    <p>Каждый орешек — это момент, которым хочется поделиться</p>
+    <div class="container">
+      <p><strong>Половинки</strong> — домашняя кондитерская</p>
+      <p>Каждый орешек — это момент, которым хочется поделиться</p>
+    </div>
   </footer>
 
   <script>
-    // Анимации появления
+    // ===== Анимации появления =====
     const faders = document.querySelectorAll('.fade-in');
     const dividers = document.querySelectorAll('.divider');
     const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
@@ -428,14 +509,26 @@
     const statusEl = document.getElementById('form-status');
     const submitBtn = document.getElementById('submit-btn');
 
-    // === ПАРАМЕТРЫ Telegram через Google Apps Script ===
+    // === Параметры Telegram через Google Apps Script ===
     const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
     const TG_SECRET = 'PolovinkiKmV25';
 
-    function formatRUB(v){ try { return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(v);} catch { return v.toFixed(0)+' ₽'; } }
-    function updateSummary(){ const qty = parseInt(qtyEl.value,10)||1; const total = qty*PRICE_PER_BOX; totalTextEl.textContent = formatRUB(total); qtyTextEl.textContent = String(qty); }
-    qtyEl?.addEventListener('change', updateSummary); updateSummary();
-    methodEl?.addEventListener('change', () => { addressRow.style.display = methodEl.value === 'delivery' ? '' : 'none'; });
+    function formatRUB(v){
+      try { return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(v);}
+      catch { return Math.round(v)+' ₽'; }
+    }
+    function updateSummary(){
+      const qty = parseInt(qtyEl.value,10)||1;
+      const total = qty*PRICE_PER_BOX;
+      totalTextEl.textContent = formatRUB(total);
+      qtyTextEl.textContent = String(qty);
+    }
+    qtyEl?.addEventListener('change', updateSummary);
+    updateSummary();
+
+    methodEl?.addEventListener('change', () => {
+      addressRow.style.display = methodEl.value === 'delivery' ? '' : 'none';
+    });
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -453,37 +546,52 @@
       if(method === 'delivery' && !address){ alert('Укажите адрес доставки.'); return; }
 
       const total = qty * PRICE_PER_BOX;
-      const payload = { product:'Коробочка орешков (6 шт)', unit_price: PRICE_PER_BOX+' ₽', quantity: qty, total: total+' ₽', date, time,
-        method: method === 'pickup' ? 'Самовывоз' : 'Доставка', address: method === 'delivery' ? address : '', name, phone, social, comment };
+      const payload = {
+        product:'Коробочка орешков (6 шт)',
+        unit_price: PRICE_PER_BOX+' ₽',
+        quantity: qty,
+        total: total+' ₽',
+        date, time,
+        method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
+        address: method === 'delivery' ? address : '',
+        name, phone, social, comment
+      };
 
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
       statusEl.style.display = 'block'; statusEl.textContent = 'Отправляем заказ...';
       try{
-        // 1) Отправка в Formspree (как было)
+        // 1) Formspree
         const resp = await fetch('https://formspree.io/f/xgvleerr',{
           method:'POST',
           headers:{'Accept':'application/json','Content-Type':'application/json'},
           body: JSON.stringify(payload)
         });
 
-        // 2) Параллельно отправляем в ваш Google Apps Script (для Telegram)
+        // 2) Параллельно — ваш Google Apps Script (для Telegram)
         const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
         fetch(TG_ENDPOINT, {
           method:'POST',
-          // text/plain — CORS-safelisted, не вызывает preflight
-          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          headers:{'Content-Type':'text/plain;charset=utf-8'}, // CORS-safelisted
           body: JSON.stringify(tgPayload)
         }).catch(err => console.error('TG relay failed:', err));
 
-        if (resp.ok){ form.reset(); updateSummary(); addressRow.style.display = 'none'; statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…'; }
-        else { statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.'; }
-      }catch(e){ console.error(e); statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.'; }
-      finally{ submitBtn.disabled = false; submitBtn.textContent = 'Отправить заказ'; }
+        if (resp.ok){
+          form.reset();
+          updateSummary();
+          addressRow.style.display = 'none';
+          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…';
+        } else {
+          statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.';
+        }
+      }catch(e){
+        console.error(e);
+        statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.';
+      } finally {
+        submitBtn.disabled = false; submitBtn.textContent = 'Отправить заказ';
+      }
     });
-  </script>
 
-  <!-- ===== JS отзывов ===== -->
-  <script>
+    // ===== JS отзывов =====
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkOeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec';
 
     const reviewForm = document.getElementById('reviewForm');
@@ -503,7 +611,10 @@
     const allClose = document.getElementById('allClose');
     const allContainer = document.getElementById('allReviewsContainer');
 
-    const STRIP_COUNT = 5;
+    // Кол-во карточек в ленте — адаптивно
+    let STRIP_COUNT = window.matchMedia('(min-width:1024px)').matches ? 6 : 5;
+    const mq = window.matchMedia('(min-width:1024px)');
+    mq.addEventListener?.('change', e => { STRIP_COUNT = e.matches ? 6 : 5; });
 
     function stars(n){ n = Math.max(0, Math.min(5, Number(n||0))); return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
     function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
@@ -521,7 +632,10 @@
     reviewModal.addEventListener('click', (e)=>{ if (e.target === reviewModal) reviewModal.close?.(); });
 
     // Открытие/закрытие «Все отзывы»
-    function openAll(){ hideAllBtn.style.display = 'inline-block'; if (allModal.showModal) allModal.showModal(); else allModal.setAttribute('open','open'); }
+    function openAll(){
+      hideAllBtn.style.display = 'inline-block';
+      if (allModal.showModal) allModal.showModal(); else allModal.setAttribute('open','open');
+    }
     function closeAll(){ hideAllBtn.style.display = 'none'; allModal.close?.(); }
     openAllBtn.addEventListener('click', openAll);
     hideAllBtn.addEventListener('click', closeAll);
@@ -542,7 +656,7 @@
         } else {
           const stripItems = items.slice(0, STRIP_COUNT);
           trackEl.innerHTML = stripItems.map((o,i)=>`
-            <button class="review-mini" type="button" data-idx="${i}">
+            <button class="review-mini" type="button" data-idx="${i}" aria-label="Читать отзыв пользователя ${escapeHtml(o.name||'Гость')}">
               <div class="mini-head">
                 <span class="mini-name">${escapeHtml(o.name||'Гость')}</span>
                 <span class="mini-stars">${stars(Number(o.rating||5))}</span>
@@ -590,11 +704,11 @@
       if (!name) { reviewStatus.textContent = 'Введите ваше имя.'; return; }
       if (!text) { reviewStatus.textContent = 'Введите текст отзыва.'; return; }
 
-      const payload = { 
-        name, 
-        text, 
-        rating: Number(fd.get('rating')||5), 
-        honeypot: fd.get('company')||'' 
+      const payload = {
+        name,
+        text,
+        rating: Number(fd.get('rating')||5),
+        honeypot: fd.get('company')||''
       };
 
       reviewStatus.textContent = 'Отправляем…';
@@ -602,16 +716,15 @@
         const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
         const raw = await res.text(); let data; try { data = JSON.parse(raw);} catch { throw new Error('bad json'); }
         if (data.ok){
-          reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модуляции.';
+          reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
           reviewForm.reset();
           if (data.approved) fetchReviews();
         } else { reviewStatus.textContent = 'Ошибка: не удалось сохранить отзыв.'; }
       }catch(err){ console.error(err); reviewStatus.textContent = 'Сеть недоступна или сервер недоступен.'; }
     });
 
-    // Старт
+    // Старт загрузки отзывов
     fetchReviews();
   </script>
-  <!-- ===== /JS отзывов ===== -->
 </body>
 </html>
