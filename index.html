@@ -362,11 +362,19 @@
   <section class="fade-in hero">
     <div class="container hero-grid">
       <div class="logo-wrap">
-        <img src="logo.gif"
-     alt="Логотип Половинки — анимированная GIF"
-     class="logo"
-     loading="eager"
-     width="560" height="560">
+        <!-- Анимированный логотип (видео вместо GIF) -->
+<video class="logo"
+       autoplay
+       loop
+       muted
+       playsinline
+       width="560" height="560"
+       aria-label="Логотип Половинки — анимация">
+  <source src="logo.webm" type="video/webm">
+  <source src="logo.mp4" type="video/mp4">
+  <!-- Фолбэк для старых браузеров -->
+  Ваш браузер не поддерживает встроенные видео. <img src="logo.png" alt="Логотип Половинки">
+</video>
       </div>
       <div>
         <h1>Половинки</h1>
