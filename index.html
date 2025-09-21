@@ -29,7 +29,7 @@
 
   <!-- Шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="logo.gif"> 
+
   <!-- Schema.org: LocalBusiness/Bakery -->
   <script type="application/ld+json">
   {
@@ -362,19 +362,7 @@
   <section class="fade-in hero">
     <div class="container hero-grid">
       <div class="logo-wrap">
-        <!-- Анимированный логотип (видео вместо GIF) -->
-<video class="logo"
-       autoplay
-       loop
-       muted
-       playsinline
-       width="560" height="560"
-       aria-label="Логотип Половинки — анимация">
-  <source src="logo.webm" type="video/webm">
-  <source src="logo.mp4" type="video/mp4">
-  <!-- Фолбэк для старых браузеров -->
-  Ваш браузер не поддерживает встроенные видео. <img src="logo.png" alt="Логотип Половинки">
-</video>
+        <img src="logo.png" alt="Логотип Половинки" class="logo" loading="lazy" decoding="async" width="560" height="560">
       </div>
       <div>
         <h1>Половинки</h1>
@@ -843,4 +831,4 @@
     fetchReviews();
   </script>
 </body>
-</html>
+</html> 
