@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <head>
@@ -20,7 +19,7 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#f6f1eb">
 
-  <!-- Open Graph (для превью в мессенджерах) -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polovinkikmv.ru/">
   <meta property="og:title" content="Половинки — домашняя кондитерская КМВ">
@@ -28,7 +27,7 @@
   <meta property="og:image" content="https://polovinkikmv.ru/android-chrome-512x512.png">
 
   <!-- Шрифты -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&family=Pacifico&display=swap" rel="stylesheet">
 
   <!-- Schema.org: LocalBusiness/Bakery -->
   <script type="application/ld+json">
@@ -117,14 +116,9 @@
     /* ====== HERO (главный экран) ====== */
     .hero { text-align: left; }
     .hero-grid {
-      display: grid;
-      gap: clamp(16px, 3vw, 40px);
-      align-items: center;
+      display: grid; gap: clamp(16px, 3vw, 40px); align-items: center;
     }
-    /* Мобильный — один столбец; десктоп — 2 */
-    @media (min-width: 1024px){
-      .hero-grid { grid-template-columns: 1fr 1.1fr; }
-    }
+    @media (min-width: 1024px){ .hero-grid { grid-template-columns: 1fr 1.1fr; } }
 
     .logo-wrap { display: grid; place-items: center; }
     .logo {
@@ -133,6 +127,14 @@
       height: auto;
       margin: 0;
       filter: drop-shadow(0 2px 10px rgba(0,0,0,.05));
+      transform-origin: 50% 60%;
+      opacity: 0;
+      transform: translateY(10px) scale(.98) rotate(-1.5deg);
+    }
+    .logo.animate-in {
+      opacity: 1;
+      transform: translateY(0) scale(1) rotate(0deg);
+      transition: transform 900ms cubic-bezier(.2,.6,.2,1), opacity 900ms ease;
     }
 
     .lead { max-width: 68ch; }
@@ -141,12 +143,13 @@
       display: inline-block; padding: 0.9em 2em; margin-top: 1.0em;
       background-color: var(--accent); color: white; font-size: clamp(14px, 1.4vw, 16px);
       border-radius: 30px; text-decoration: none; font-weight: 600; letter-spacing:.2px;
-      transition: background .25s ease, transform .08s ease, box-shadow .25s ease, filter .2s ease;
+      transition: background .25s ease, transform .12s ease, box-shadow .25s ease, filter .2s ease;
       box-shadow: 0 6px 18px rgba(212,175,150,.35);
       backdrop-filter: saturate(110%);
+      will-change: transform;
     }
-    .btn:hover { background-color: var(--accent-2); box-shadow: 0 8px 24px rgba(212,175,150,.45); transform: translateY(-1px); filter: brightness(1.02); }
-    .btn:active { transform: translateY(0); box-shadow: 0 6px 18px rgba(212,175,150,.35); }
+    .btn:hover { background-color: var(--accent-2); box-shadow: 0 8px 24px rgba(212,175,150,.45); transform: translateY(-1px) scale(1.02); filter: brightness(1.02); }
+    .btn:active { transform: translateY(0) scale(0.99); box-shadow: 0 6px 18px rgba(212,175,150,.35); }
     .btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
 
     .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); box-shadow: none; }
@@ -155,15 +158,20 @@
     footer { padding: 28px 0; background-color: var(--footer); font-size: .95rem; color: #5a4a3a; }
     footer p { margin: 0.3em 0; }
 
-    /* ===== Разделители/анимации ===== */
-    .divider { width: 60px; height: 2px; margin: 26px auto 0; background-color: var(--accent); border-radius: 1px;
-      opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
+    /* ===== Разделители: декоративный SVG ===== */
+    .divider {
+      width: 100%; display: grid; place-items: center; margin: 26px 0;
+      opacity: 0; transform: translateY(18px);
+      transition: all .8s ease-out;
+    }
     .divider.visible { opacity: 1; transform: translateY(0); }
+    .divider svg { width: clamp(120px, 20vw, 220px); height: auto; display:block; }
     .fade-in { opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     @media (prefers-reduced-motion: reduce){
       .fade-in, .divider { transition: none; opacity: 1; transform: none; }
+      .logo { opacity: 1; transform: none; }
       html, body { scroll-behavior: auto; }
     }
 
@@ -179,21 +187,21 @@
         0 10px 30px rgba(62,44,35,.06),
         0 2px 0 rgba(212,175,150,.12) inset;
       text-align: left;
+      transition: transform .15s ease, box-shadow .25s ease;
+      will-change: transform;
     }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(62,44,35,.10), 0 2px 0 rgba(212,175,150,.12) inset; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
     @media (min-width:720px){ .grid { grid-template-columns: 1fr 1fr; } }
 
     label { display: block; font-size: .98rem; color: var(--muted); margin-bottom: 6px; }
 
     input, select, textarea {
       width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(0,0,0,.06);
-      background: #fff; font-size: 1rem; font-family: inherit; outline: none; transition: box-shadow .2s, border-color .2s;
+      background: #fff; font-size: 1rem; font-family: inherit; outline: none; transition: box-shadow .2s, border-color .2s, transform .06s;
     }
+    input:hover, select:hover, textarea:hover { transform: translateY(-1px); }
     input:focus-visible, select:focus-visible, textarea:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 4px var(--ring); }
 
     .row { margin-bottom: 10px; }
@@ -202,68 +210,93 @@
     .summary {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
       background: #fff; border: 1px dashed rgba(0,0,0,.12); padding: 14px 16px; border-radius: 12px; margin-top: 8px;
-      font-size: clamp(15px, 1.5vw, 17px);
-      flex-wrap: wrap;
+      font-size: clamp(15px, 1.5vw, 17px); flex-wrap: wrap;
     }
     .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
     .note { font-size: .95rem; color: var(--muted); margin-top: 8px; }
 
-    /* ======= СЕКЦИЯ «ОТЗЫВЫ» ======= */
+    /* ======= СТЕППЕР КОЛИЧЕСТВА ======= */
+    .stepper {
+      display: inline-grid; grid-template-columns: auto 72px auto; gap: 8px; align-items: center;
+      width: max-content;
+    }
+    .stepper button {
+      border: 1px solid rgba(0,0,0,.08); background:#fff; border-radius: 12px; padding: 10px 12px; cursor: pointer;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: 0 1px 0 rgba(212,175,150,.16);
+    }
+    .stepper button:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 6px 16px rgba(62,44,35,.08); }
+    .stepper input[type="number"] {
+      width: 72px; text-align: center; -moz-appearance: textfield;
+    }
+    .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+    /* ======= СЕКЦИЯ ПРЕИМУЩЕСТВ (с иконками) ======= */
+    .features {
+      display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 12px;
+    }
+    @media (min-width:780px){ .features{ grid-template-columns: repeat(3, 1fr); } }
+    .feature {
+      display: grid; gap: 8px; justify-items: center; background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:14px; padding:16px;
+      transition: transform .12s ease, box-shadow .25s ease;
+    }
+    .feature:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 22px rgba(62,44,35,.08); }
+    .feature svg { width: 38px; height: 38px; }
+
+    /* ======= ОТЗЫВЫ ======= */
     #reviews-section .reviews-card{
-      width: min(900px, 100%);
-      margin: 0 auto;
+      width: min(900px, 100%); margin: 0 auto;
       background: linear-gradient(180deg, #fffdf9, #fffaf4);
       border-radius: var(--radius);
       padding: clamp(16px, 2.6vw, 24px);
       border: 1px solid rgba(62,44,35,.08);
-      box-shadow:
-        0 10px 30px rgba(62,44,35,.06),
-        0 2px 0 rgba(212,175,150,.12) inset;
-      text-align: left;
+      box-shadow: 0 10px 30px rgba(62,44,35,.06), 0 2px 0 rgba(212,175,150,.12) inset;
+      text-align: left; transition: transform .15s ease, box-shadow .25s ease;
     }
+    #reviews-section .reviews-card:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(62,44,35,.10), 0 2px 0 rgba(212,175,150,.12) inset; }
+
     #reviews-section .review-form{ display:grid; gap:12px; margin-bottom:16px; }
     #reviews-section .review-btn{ padding:12px 16px; border:0; border-radius:12px; background:#111827; color:#fff; cursor:pointer; }
     #reviews-section .review-btn:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(17,24,39,.2); }
     #reviews-section small.muted { color:var(--muted); }
     #reviews-section .stars{ color:#efb80b; }
 
+    /* — интерактивные звезды рейтинга — */
+    .rating { display:inline-flex; flex-direction: row-reverse; gap:6px; }
+    .rating input { display:none; }
+    .rating label {
+      cursor:pointer; font-size: 22px; transition: transform .12s ease; filter: grayscale(1) opacity(.7);
+    }
+    .rating label:hover { transform: translateY(-2px) scale(1.1); filter: none; }
+    .rating input:checked ~ label, .rating label:hover, .rating label:hover ~ label { filter: none; }
+    .rating .star { color:#efb80b; }
+
     /* ======= ЛЕНТА ОТЗЫВОВ ======= */
     .reviews-strip {
-      position: relative;
-      margin: 14px auto 0;
-      width: min(900px, 100%);
-      background: var(--footer);
-      border: 1px solid rgba(0,0,0,.06);
-      border-radius: 14px;
-      padding: 10px 12px;
-      overflow: hidden;
+      position: relative; margin: 14px auto 0; width: min(900px, 100%);
+      background: var(--footer); border: 1px solid rgba(0,0,0,.06); border-radius: 14px;
+      padding: 10px 12px; overflow: hidden;
     }
     .reviews-strip::before,
     .reviews-strip::after{
-      content:"";
-      position:absolute; top:0; bottom:0; width:38px; z-index:2; pointer-events:none;
+      content:""; position:absolute; top:0; bottom:0; width:38px; z-index:2; pointer-events:none;
       background: linear-gradient(to right, var(--footer), transparent);
     }
-    .reviews-strip::after{
-      right:0; left:auto;
-      transform: scaleX(-1);
-    }
+    .reviews-strip::after{ right:0; left:auto; transform: scaleX(-1); }
 
-    .strip-head {
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
-      margin: 0 2px 8px; font-size: 14px; color: var(--muted);
-    }
+    .strip-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin: 0 2px 8px; font-size: 14px; color: var(--muted); }
     .strip-actions { display:flex; gap:8px; align-items:center; }
     .strip-btn {
       appearance: none; border: 1px solid rgba(0,0,0,.12); background:#fff;
       padding: 6px 10px; border-radius: 999px; font-size: 12px; cursor:pointer; text-decoration:none; color:inherit;
+      transition: transform .12s ease, box-shadow .25s ease, background .2s ease;
     }
+    .strip-btn:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 6px 16px rgba(62,44,35,.08); }
     .strip-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
     .strip-track {
       display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
-      gap: 10px; overflow-x: auto; overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory; padding: 2px 6px 2px 2px;
+      gap: 10px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; padding: 2px 6px 2px 2px;
       -webkit-overflow-scrolling: touch;
     }
     @media (min-width:480px){ .strip-track { grid-auto-columns: 320px; } }
@@ -272,29 +305,25 @@
     .strip-track::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 10px; }
 
     .review-mini {
-      scroll-snap-align: start;
-      background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:14px;
+      scroll-snap-align: start; background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:14px;
       padding: 10px 12px; text-align: left; box-shadow: 0 6px 16px rgba(0,0,0,.06);
       display: flex; flex-direction: column; gap: 4px; min-height: 88px;
+      transition: transform .12s ease, box-shadow .2s ease;
     }
-    .review-mini .mini-head{
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
-      font-size: 13px; color: var(--muted);
-    }
+    .review-mini:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 18px rgba(0,0,0,.08); }
+    .review-mini .mini-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; font-size: 13px; color: var(--muted); }
     .review-mini .mini-name{ font-weight:600; color: var(--fg); }
     .review-mini .mini-stars{ font-size: 13px; color:#efb80b; }
-    .review-mini .mini-text{
-      font-size: 14px; color: var(--fg); line-height: 1.35;
-      display:-webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
-    }
+    .review-mini .mini-text{ font-size: 14px; color: var(--fg); line-height: 1.35; display:-webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
     /* ======= МОДАЛКИ ======= */
-    dialog.review-modal, dialog.all-reviews-modal {
+    dialog.review-modal, dialog.all-reviews-modal, dialog.thanks-modal {
       border: 0; padding: 0; border-radius: 16px; width: min(760px, 94vw);
       box-shadow: 0 20px 60px rgba(0,0,0,.25); background:#fff;
     }
     dialog.review-modal::backdrop,
-    dialog.all-reviews-modal::backdrop { background: rgba(0,0,0,.35); }
+    dialog.all-reviews-modal::backdrop,
+    dialog.thanks-modal::backdrop { background: rgba(0,0,0,.35); }
 
     .modal-body { padding: 18px; text-align: left; }
     .modal-title { display:flex; justify-content:space-between; align-items:center; gap:10px; }
@@ -304,39 +333,11 @@
     .modal-close { border:1px solid rgba(0,0,0,.12); background:#fff; border-radius:10px; padding:8px 12px; cursor:pointer; }
     .modal-close:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
-    /* Контент «Все отзывы» со своим скроллом */
-    .all-reviews-content {
-      max-height: min(72vh, 760px);
-      overflow: auto;
-      padding: 0 18px 18px;
-    }
-    .all-review-item {
-      border:1px solid rgba(0,0,0,.08); border-radius:12px; background:#fff; padding:14px; margin-top:12px;
-    }
+    .all-reviews-content { max-height: min(72vh, 760px); overflow: auto; padding: 0 18px 18px; }
+    .all-review-item { border:1px solid rgba(0,0,0,.08); border-radius:12px; background:#fff; padding:14px; margin-top:12px; }
     .all-review-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 
-    /* ===== Доп. стиль для кнопки Instagram (иконка) ===== */
-    .social-btn svg { width: 18px; height: 18px; margin-right: 8px; vertical-align: -3px; }
-
-    /* ===== Улучшения для очень широких экранов ===== */
-    @media (min-width: 1440px){
-      .lead { max-width: 72ch; }
-    }
-
-    /* — sticky CTA на мобилке — */
-    @media (max-width: 640px){
-      .hero .btn[aria-label]{
-        position: sticky; bottom: 12px; z-index: 10;
-      }
-    }
-    /* — удобочитаемость на узких экранах — */
-    @media (max-width:480px){
-      h1 { letter-spacing: .2px; }
-      .lead { font-size: clamp(16px, 4.2vw, 18px); }
-      .summary { gap: 8px; }
-    }
-
-    /* — тёмная тема по системной настройке — */
+    /* — тёмная тема — */
     @media (prefers-color-scheme: dark){
       :root{
         --bg:#1c1714; --fg:#efe7df; --muted:#cbbeb4; --panel:#221b17; --footer:#2a211c;
@@ -353,6 +354,17 @@
       .reviews-strip { background: #2a211c; border-color: rgba(255,255,255,.06); }
       input, select, textarea { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.08); }
       .strip-btn { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.12); }
+      .feature { background:#2a211c; }
+    }
+
+    /* — sticky CTA на мобилке — */
+    @media (max-width: 640px){
+      .hero .btn[aria-label]{ position: sticky; bottom: 12px; z-index: 10; }
+    }
+    @media (max-width:480px){
+      h1 { letter-spacing: .2px; }
+      .lead { font-size: clamp(16px, 4.2vw, 18px); }
+      .summary { gap: 8px; }
     }
   </style>
 </head>
@@ -367,16 +379,31 @@
       <div>
         <h1>Половинки</h1>
         <h2>Домашняя кондитерская</h2>
-        <p class="lead"><em>Орешки — десерт, в котором встречаются вкус и воспоминания.</em></p>
+
+        <!-- Стилизованный подзаголовок с рукописным акцентом -->
+        <p class="lead" style="text-align:left;max-width:60ch;">
+          <span style="display:inline-block;background:linear-gradient(90deg, rgba(216,184,153,.25), rgba(196,159,122,.18)); padding:.2em .5em; border-radius:10px;">
+            <span style="font-family:'Pacifico',cursive; font-size:1.05em;">Орешки — десерт,</span>
+            в котором встречаются вкус и воспоминания.
+          </span>
+        </p>
+
         <p class="lead">Нежное тесто, золотистая выпечка и тягучая начинка из варёной сгущёнки с грецким орехом. Каждый орешек — маленькая история радости, которой хочется поделиться.</p>
         <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
       </div>
     </div>
   </section>
 
-  <div class="divider"></div>
+  <!-- Декоративный разделитель -->
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12 H160" stroke="currentColor" stroke-opacity=".25" stroke-width="2" />
+      <path d="M240 12 H390" stroke="currentColor" stroke-opacity=".25" stroke-width="2" />
+      <path d="M200 12c12 0 22-10 22-22 0 12 10 22 22 22-12 0-22 10-22 22 0-12-10-22-22-22Z" fill="currentColor" fill-opacity=".18"/>
+    </svg>
+  </div>
 
-  <!-- ======= ОПИСАНИЕ ======= -->
+  <!-- ======= ОПИСАНИЕ + ИКОНКИ ======= -->
   <section class="fade-in">
     <div class="container">
       <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
@@ -385,10 +412,39 @@
       <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
         В каждом — баланс хрустящей скорлупки и нежной начинки. Десерт возвращает к детству, но в новом, изысканном звучании.
       </p>
+
+      <!-- Иконки сильных сторон -->
+      <div class="features" aria-label="Наши преимущества">
+        <div class="feature" role="listitem">
+          <!-- орех -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2c3 0 9 3 9 8s-6 12-9 12-9-7-9-12 6-8 9-8Zm0 2c-2.5 0-7 2.2-7 6s4.5 10 7 10 7-6.2 7-10-4.5-6-7-6Z"/></svg>
+          <strong>Грецкий орех</strong>
+          <span class="muted">Выразительный вкус и текстура</span>
+        </div>
+        <div class="feature" role="listitem">
+          <!-- колос -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2c1 3 3 5 6 6-3 1-5 3-6 6-1-3-3-5-6-6 3-1 5-3 6-6Zm10 2a8 8 0 0 1-5 5 8 8 0 0 1 5 5 8 8 0 0 1 5-5 8 8 0 0 1-5-5Z"/></svg>
+          <strong>Натуральные ингредиенты</strong>
+          <span class="muted">Без компромиссов по качеству</span>
+        </div>
+        <div class="feature" role="listitem">
+          <!-- банка сгущенки -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h14v3H5V3Zm0 5h14v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8Zm2 2v7h10v-7H7Z"/></svg>
+          <strong>Варёная сгущёнка</strong>
+          <span class="muted">Тягучая, ровная карамельность</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <div class="divider"></div>
+  <!-- Декоративный разделитель -->
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12 H160" stroke="currentColor" stroke-opacity=".25" stroke-width="2" />
+      <path d="M240 12 H390" stroke="currentColor" stroke-opacity=".25" stroke-width="2" />
+      <path d="M200 12c12 0 22-10 22-22 0 12 10 22 22 22-12 0-22 10-22 22 0-12-10-22-22-22Z" fill="currentColor" fill-opacity=".18"/>
+    </svg>
+  </div>
 
   <!-- ======= ФОРМА ЗАКАЗА ======= -->
   <section id="order" class="fade-in" aria-labelledby="order-title">
@@ -413,16 +469,18 @@
               <label for="social">Соцсети (WhatsApp/Telegram)</label>
               <input id="social" name="social" placeholder="+7 999 123-45-67 или @username">
             </div>
+
+            <!-- СТЕППЕР КОЛ-ВА -->
             <div class="row">
-              <label for="qty">Количество коробочек*</label>
-              <select id="qty" name="qty" required>
-                <option value="1" selected>1 коробка — 6 шт</option>
-                <option value="2">2 коробки — 12 шт</option>
-                <option value="3">3 коробки — 18 шт</option>
-                <option value="4">4 коробки — 24 шт</option>
-                <option value="5">5 коробок — 30 шт</option>
-              </select>
+              <label for="qtyInput">Количество коробочек*</label>
+              <div class="stepper" role="group" aria-label="Количество">
+                <button type="button" id="qtyMinus" aria-label="Уменьшить количество">−</button>
+                <input id="qtyInput" name="qty" type="number" min="1" max="99" step="1" value="1" inputmode="numeric" aria-live="polite">
+                <button type="button" id="qtyPlus" aria-label="Увеличить количество">+</button>
+              </div>
+              <small class="muted">1 коробка — 6 шт</small>
             </div>
+
             <div class="row">
               <label for="date">Желаемая дата получения*</label>
               <input type="date" id="date" name="date" required>
@@ -437,6 +495,9 @@
                 <option value="pickup" selected>Самовывоз</option>
                 <option value="delivery">Доставка</option>
               </select>
+              <p id="delivery-note" class="note" style="display:none;">
+                Стоимость доставки по КМВ — <strong>300 ₽</strong>. При заказе от <strong>15 коробок</strong> — бесплатно.
+              </p>
             </div>
             <div class="row" id="address-row" style="display:none; grid-column: 1 / -1;">
               <label for="address">Адрес доставки</label>
@@ -463,32 +524,58 @@
     </div>
   </section>
 
-  <div class="divider"></div>
+  <!-- Декоративный разделитель -->
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 400 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12 H160" stroke="currentColor" stroke-opacity=".25" stroke-width="2" />
+      <path d="M240 12 H390" stroke="currentColor" stroke-opacity=".25" stroke-width="2" />
+      <path d="M200 12c12 0 22-10 22-22 0 12 10 22 22 22-12 0-22 10-22 22 0-12-10-22-22-22Z" fill="currentColor" fill-opacity=".18"/>
+    </svg>
+  </div>
 
   <!-- ======== ОТЗЫВЫ ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <div class="container">
-      <h1 id="reviews-title" style="margin-bottom:.2ем; text-align:center;">Отзывы</h1>
-      <p class="muted" style="margin-bottom:1.2em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
+      <h1 id="reviews-title" style="margin-bottom:.2em; text-align:center;">Отзывы</h1>
+      <p class="muted" style="margin-bottom:.6em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
+
+      <!-- Агрегированный рейтинг -->
+      <div id="aggregateRating" class="muted" style="margin-bottom:1.2em; text-align:center;">
+        <!-- Заполняется скриптом: «4.9 ⭐️ (на основе 34 отзывов)» -->
+      </div>
 
       <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
         <!-- форма -->
         <form id="reviewForm" class="review-form" novalidate>
           <input type="text" name="name" placeholder="Ваше имя" maxlength="60" required autocomplete="name" aria-describedby="reviewStatus">
-          <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-            <label for="rating" class="muted" style="margin:0;">Оценка:</label>
-            <select id="rating" name="rating" style="padding:10px;border:1px solid rgba(0,0,0,.06);border-radius:10px">
-              <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5</option>
-              <option value="4">⭐️⭐️⭐️⭐️ — 4</option>
-              <option value="3">⭐️⭐️⭐️ — 3</option>
-              <option value="2">⭐️⭐️ — 2</option>
-              <option value="1">⭐️ — 1</option>
-            </select>
+
+          <!-- Звёздочный рейтинг -->
+          <div class="muted" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span>Оценка:</span>
+            <fieldset class="rating" aria-label="Рейтинг от 1 до 5">
+              <!-- порядок реверс, чтобы hover подсвечивал слева -->
+              <input type="radio" id="star5" name="rating" value="5" checked>
+              <label for="star5" title="5 из 5"><span class="star">★</span></label>
+
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4" title="4 из 5"><span class="star">★</span></label>
+
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3" title="3 из 5"><span class="star">★</span></label>
+
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2" title="2 из 5"><span class="star">★</span></label>
+
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1" title="1 из 5"><span class="star">★</span></label>
+            </fieldset>
+            <!-- honeypot -->
             <input type="text" name="company" style="display:none">
             <button type="submit" class="review-btn">Отправить отзыв</button>
             <small id="reviewStatus" class="muted" aria-live="polite"></small>
           </div>
+
+          <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
         </form>
 
         <!-- лента -->
@@ -514,7 +601,7 @@
           aria-label="Открыть Instagram Половинки в новом окне"
         >
           <!-- Иконка Instagram (SVG) -->
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="width:18px;height:18px;margin-right:8px;vertical-align:-3px;">
             <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" />
           </svg>
           <span>Мы в Instagram</span>
@@ -525,7 +612,7 @@
   </section>
   <!-- ======== /ОТЗЫВЫ ======== -->
 
-  <!-- Модалка «Чтение мини-отзыва» (по клику на карточку ленты) -->
+  <!-- Модалка «Чтение мини-отзыва» -->
   <dialog id="reviewModal" class="review-modal">
     <div class="modal-body">
       <div class="modal-title">
@@ -540,7 +627,7 @@
     </div>
   </dialog>
 
-  <!-- Модалка «Все отзывы» со своим скроллом -->
+  <!-- Модалка «Все отзывы» -->
   <dialog id="allReviewsModal" class="all-reviews-modal">
     <div class="modal-body">
       <div class="modal-title">
@@ -551,284 +638,419 @@
     </div>
   </dialog>
 
+  <!-- Модалка «Спасибо за заказ» -->
+  <dialog id="thanksModal" class="thanks-modal" aria-labelledby="thanksTitle">
+    <div class="modal-body">
+      <div class="modal-title">
+        <h3 id="thanksTitle">Спасибо за заказ!</h3>
+        <button id="thanksClose" class="modal-close" type="button">Закрыть</button>
+      </div>
+      <p class="muted" id="thanksText">Мы свяжемся с вами в WhatsApp/Telegram в ближайшее время для подтверждения деталей.</p>
+      <div id="thanksSummary" style="margin-top:10px; border:1px dashed rgba(0,0,0,.12); border-radius:12px; padding:12px;"></div>
+    </div>
+  </dialog>
+
   <footer class="fade-in">
     <div class="container">
       <p><strong>Половинки</strong> — домашняя кондитерская</p>
       <p>Каждый орешек — это момент, которым хочется поделиться</p>
     </div>
   </footer>
+<script>
+/* ========= МИКРО-АНИМАЦИИ И ВХОД ========= */
+const faders = document.querySelectorAll('.fade-in');
+const dividers = document.querySelectorAll('.divider');
+const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+const appearOnScroll = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add("visible");
+    observer.unobserve(entry.target);
+  });
+}, appearOptions);
+faders.forEach(fader => appearOnScroll.observe(fader));
+dividers.forEach(divider => appearOnScroll.observe(divider));
 
-  <script>
-    // ===== Анимации появления =====
-    const faders = document.querySelectorAll('.fade-in');
-    const dividers = document.querySelectorAll('.divider');
-    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
-    const appearOnScroll = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      });
-    }, appearOptions);
-    faders.forEach(fader => appearOnScroll.observe(fader));
-    dividers.forEach(divider => appearOnScroll.observe(divider));
+// Плавное «появление»/выпрямление логотипа
+window.addEventListener('load', () => {
+  const logo = document.querySelector('.logo');
+  if (logo) requestAnimationFrame(() => logo.classList.add('animate-in'));
+});
 
-    // ===== Логика формы заказа =====
-    const PRICE_PER_BOX = 250;
-    const qtyEl = document.getElementById('qty');
-    const totalTextEl = document.getElementById('total-text');
-    const qtyTextEl = document.getElementById('qty-text');
-    const methodEl = document.getElementById('method');
-    const addressRow = document.getElementById('address-row');
-    const form = document.getElementById('order-form');
-    const statusEl = document.getElementById('form-status');
-    const submitBtn = document.getElementById('submit-btn');
+/* ========= КОНСТАНТЫ / ЭЛЕМЕНТЫ ========= */
+const PRICE_PER_BOX = 250;
+const DELIVERY_FEE = 300;
 
-    // === Параметры Telegram через Google Apps Script ===
-    const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
-    const TG_SECRET = 'PolovinkiKmV25';
+const qtyInput  = document.getElementById('qtyInput');
+const qtyPlus   = document.getElementById('qtyPlus');
+const qtyMinus  = document.getElementById('qtyMinus');
 
-    function formatRUB(v){
-      try { return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(v);}
-      catch { return Math.round(v)+' ₽'; }
-    }
-    function updateSummary(){
-      const qty = parseInt(qtyEl.value,10)||1;
-      const total = qty*PRICE_PER_BOX;
-      totalTextEl.textContent = formatRUB(total);
-      qtyTextEl.textContent = String(qty);
-    }
-    qtyEl?.addEventListener('change', updateSummary);
-    updateSummary();
+const totalTextEl = document.getElementById('total-text');
+const qtyTextEl   = document.getElementById('qty-text');
 
-    methodEl?.addEventListener('change', () => {
-      addressRow.style.display = methodEl.value === 'delivery' ? '' : 'none';
+const methodEl    = document.getElementById('method');
+const addressRow  = document.getElementById('address-row');
+const deliveryNote = document.getElementById('delivery-note');
+
+const form       = document.getElementById('order-form');
+const statusEl   = document.getElementById('form-status');
+const submitBtn  = document.getElementById('submit-btn');
+const dateEl     = document.getElementById('date');
+
+const thanksModal   = document.getElementById('thanksModal');
+const thanksClose   = document.getElementById('thanksClose');
+const thanksSummary = document.getElementById('thanksSummary');
+
+/* ========= ИНИЦИАЛИЗАЦИЯ ДАТЫ: min = сегодня ========= */
+(function setMinDate(){
+  if (!dateEl) return;
+  const tzOffsetMs = (new Date()).getTimezoneOffset() * 60_000;
+  const nowLocal = new Date(Date.now() - tzOffsetMs); // нормализация к местной дате
+  const y = nowLocal.getFullYear();
+  const m = String(nowLocal.getMonth()+1).padStart(2,'0');
+  const d = String(nowLocal.getDate()).padStart(2,'0');
+  const today = `${y}-${m}-${d}`;
+  dateEl.min = today;
+})();
+
+/* ========= СТЕППЕР КОЛИЧЕСТВА И СУММА ========= */
+function clampQty(v){
+  const n = Math.max(1, Math.min(99, parseInt(v,10) || 1));
+  return n;
+}
+
+function formatRUB(v){
+  try {
+    return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(v);
+  } catch {
+    return Math.round(v)+' ₽';
+  }
+}
+
+function calcTotal(){
+  const qty = clampQty(qtyInput?.value);
+  const addDelivery = methodEl?.value === 'delivery' && qty < 15 ? DELIVERY_FEE : 0;
+  return { qty, addDelivery, total: qty*PRICE_PER_BOX + addDelivery };
+}
+
+function updateSummary(){
+  const { qty, addDelivery, total } = calcTotal();
+  if (qtyInput) qtyInput.value = qty;
+  if (qtyTextEl) qtyTextEl.textContent = String(qty);
+  if (totalTextEl){
+    totalTextEl.innerHTML = addDelivery
+      ? `${formatRUB(total)} <span class="muted" style="font-weight:400">(вкл. доставку ${formatRUB(addDelivery)})</span>`
+      : `${formatRUB(total)}`;
+  }
+}
+
+qtyPlus?.addEventListener('click', () => { qtyInput.value = clampQty((qtyInput.value||1)+1); updateSummary(); });
+qtyMinus?.addEventListener('click', () => { qtyInput.value = clampQty((qtyInput.value||1)-1); updateSummary(); });
+qtyInput?.addEventListener('input', updateSummary);
+qtyInput?.addEventListener('blur', updateSummary);
+
+methodEl?.addEventListener('change', () => {
+  const isDelivery = methodEl.value === 'delivery';
+  addressRow.style.display = isDelivery ? '' : 'none';
+  deliveryNote.style.display = isDelivery ? '' : 'none';
+  updateSummary();
+});
+
+// Первичный пересчет
+updateSummary();
+
+/* ========= ЗАКАЗ: ОТПРАВКА И МОДАЛКА СПАСИБО ========= */
+// Телеграм-реле (как в вашем коде)
+const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
+const TG_SECRET   = 'PolovinkiKmV25';
+
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name    = document.getElementById('name').value.trim();
+  const phone   = document.getElementById('phone').value.trim();
+  const social  = document.getElementById('social').value.trim();
+  const qty     = clampQty(qtyInput?.value);
+  const date    = document.getElementById('date').value;
+  const time    = document.getElementById('time').value;
+  const method  = methodEl.value;
+  const address = (document.getElementById('address').value || '').trim();
+  const comment = (document.getElementById('comment').value || '').trim();
+
+  if(!name || !phone || !date){ alert('Пожалуйста, заполните имя, телефон и дату получения.'); return; }
+  if(method === 'delivery' && !address){ alert('Укажите адрес доставки.'); return; }
+
+  const { addDelivery, total } = calcTotal();
+
+  const payload = {
+    product:'Коробочка орешков (6 шт)',
+    unit_price: PRICE_PER_BOX+' ₽',
+    quantity: qty,
+    delivery_fee: addDelivery ? (addDelivery+' ₽') : '',
+    total: total+' ₽',
+    date, time,
+    method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
+    address: method === 'delivery' ? address : '',
+    name, phone, social, comment
+  };
+
+  submitBtn.disabled = true; 
+  submitBtn.textContent = 'Отправляем...';
+  statusEl.style.display = 'block'; 
+  statusEl.textContent = 'Отправляем заказ...';
+
+  try{
+    // 1) Formspree
+    const resp = await fetch('https://formspree.io/f/xgvleerr',{
+      method:'POST',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body: JSON.stringify(payload)
     });
 
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const social = document.getElementById('social').value.trim();
-      const qty = parseInt(qtyEl.value, 10) || 1;
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const method = methodEl.value;
-      const address = (document.getElementById('address').value || '').trim();
-      const comment = (document.getElementById('comment').value || '').trim();
+    // 2) Параллельно — ваш Google Apps Script (для Telegram)
+    const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
+    fetch(TG_ENDPOINT, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, // CORS-safelisted
+      body: JSON.stringify(tgPayload)
+    }).catch(err => console.error('TG relay failed:', err));
 
-      if(!name || !phone || !date){ alert('Пожалуйста, заполните имя, телефон и дату получения.'); return; }
-      if(method === 'delivery' && !address){ alert('Укажите адрес доставки.'); return; }
+    if (resp.ok){
+      // Очистка формы
+      form.reset();
+      addressRow.style.display = 'none';
+      deliveryNote.style.display = 'none';
+      updateSummary();
 
-      const total = qty * PRICE_PER_BOX;
-      const payload = {
-        product:'Коробочка орешков (6 шт)',
-        unit_price: PRICE_PER_BOX+' ₽',
-        quantity: qty,
-        total: total+' ₽',
-        date, time,
-        method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
-        address: method === 'delivery' ? address : '',
-        name, phone, social, comment
-      };
+      // Показ модалки «Спасибо»
+      renderThanksSummary(payload);
+      openDialog(thanksModal);
+      statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…';
+    } else {
+      statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.';
+    }
+  }catch(e){
+    console.error(e);
+    statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.';
+  } finally {
+    submitBtn.disabled = false; 
+    submitBtn.textContent = 'Отправить заказ';
+  }
+});
 
-      submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
-      statusEl.style.display = 'block'; statusEl.textContent = 'Отправляем заказ...';
-      try{
-        // 1) Formspree
-        const resp = await fetch('https://formspree.io/f/xgvleerr',{
-          method:'POST',
-          headers:{'Accept':'application/json','Content-Type':'application/json'},
-          body: JSON.stringify(payload)
+function renderThanksSummary(p){
+  const rows = [
+    ['Товар', p.product],
+    ['Количество', p.quantity],
+    ['Цена за единицу', p.unit_price],
+    ...(p.delivery_fee ? [['Доставка', p.delivery_fee]] : []),
+    ['Итого', p.total],
+    ['Способ получения', p.method],
+    ...(p.address ? [['Адрес', p.address]] : []),
+    ['Дата', p.date + (p.time ? `, ${p.time}` : '')],
+    ['Имя', p.name],
+    ['Телефон', p.phone],
+    ...(p.social ? [['Соцсети', p.social]] : []),
+    ...(p.comment ? [['Комментарий', p.comment]] : []),
+  ];
+  thanksSummary.innerHTML = rows.map(([k,v]) => `
+    <div style="display:flex;justify-content:space-between;gap:12px;padding:4px 0;">
+      <span class="muted" style="white-space:nowrap">${k}</span>
+      <strong style="text-align:right">${String(v).replaceAll('<','&lt;').replaceAll('>','&gt;')}</strong>
+    </div>
+  `).join('');
+}
+
+function openDialog(d){
+  if (!d) return;
+  if (d.showModal) d.showModal(); else d.setAttribute('open','open');
+}
+function closeDialog(d){
+  if (!d) return;
+  if (d.close) d.close(); else d.removeAttribute('open');
+}
+thanksClose?.addEventListener('click', () => closeDialog(thanksModal));
+thanksModal?.addEventListener('click', (e)=>{ if (e.target === thanksModal) closeDialog(thanksModal); });
+
+/* ========= ОТЗЫВЫ ========= */
+const SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkOeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec';
+
+const reviewForm   = document.getElementById('reviewForm');
+const reviewStatus = document.getElementById('reviewStatus');
+const trackEl      = document.getElementById('reviewsTrack');
+const openAllBtn   = document.getElementById('openAllBtn');
+const hideAllBtn   = document.getElementById('hideAllBtn');
+
+const reviewModal  = document.getElementById('reviewModal');
+const modalName    = document.getElementById('modalName');
+const modalStars   = document.getElementById('modalStars');
+const modalDate    = document.getElementById('modalDate');
+const modalText    = document.getElementById('modalText');
+const modalClose   = document.getElementById('modalClose');
+
+const allModal     = document.getElementById('allReviewsModal');
+const allClose     = document.getElementById('allClose');
+const allContainer = document.getElementById('allReviewsContainer');
+
+const aggregateEl  = document.getElementById('aggregateRating');
+
+// Кол-во карточек в ленте — адаптивно
+let STRIP_COUNT = window.matchMedia('(min-width:1024px)').matches ? 6 : 5;
+const mq = window.matchMedia('(min-width:1024px)');
+mq.addEventListener?.('change', e => { STRIP_COUNT = e.matches ? 6 : 5; });
+
+function starsText(n){ n = Math.max(0, Math.min(5, Number(n||0))); return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]); }
+function shortText(s, n=160){ s = String(s||'').trim(); return s.length>n ? s.slice(0,n-1)+'…' : s; }
+
+// Имя не «Гость/Аноним»
+function normalizeName(s = '') {
+  return String(s)
+    .toLowerCase()
+    .replaceAll('ё','е')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .replace(/\s+/g,' ');
+}
+const bannedNames = ['гость','аноним','анонимна','анонимный','анонимная','anonymous','anon'];
+const bannedPatterns = [/^гост[ьй]$/u,/^аноним(на|ный|ная)?$/u,/^anon(ymous)?$/u];
+
+function openMini(item){
+  modalName.textContent = item.name || 'Гость';
+  modalStars.textContent = starsText(item.rating||5);
+  modalDate.textContent  = new Date(item.createdAt).toLocaleDateString();
+  modalText.textContent  = item.text || '';
+  openDialog(reviewModal);
+}
+modalClose?.addEventListener('click', ()=> closeDialog(reviewModal));
+reviewModal?.addEventListener('click', (e)=>{ if (e.target === reviewModal) closeDialog(reviewModal); });
+
+function openAll(){
+  hideAllBtn.style.display = 'inline-block';
+  openDialog(allModal);
+}
+function closeAll(){ hideAllBtn.style.display = 'none'; closeDialog(allModal); }
+openAllBtn?.addEventListener('click', openAll);
+hideAllBtn?.addEventListener('click', closeAll);
+allClose?.addEventListener('click', closeAll);
+allModal?.addEventListener('click', (e)=>{ if (e.target === allModal) closeAll(); });
+
+async function fetchReviews(){
+  trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Загружаю отзывы…</div></div>';
+  try{
+    const res = await fetch(`${SCRIPT_URL}?limit=200`, { method:'GET' });
+    const raw = await res.text();
+    let data; try { data = JSON.parse(raw); } catch { throw new Error('bad json'); }
+    const items = (data.items||[]).sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+
+    // Агрегированный рейтинг
+    if (aggregateEl){
+      if (items.length){
+        const avg = items.reduce((s,o)=> s + (Number(o.rating)||5), 0) / items.length;
+        const avgFixed = (Math.round(avg*10)/10).toFixed(1);
+        aggregateEl.innerHTML = `<strong>${avgFixed}</strong> ⭐️ <span class="muted">(на основе ${items.length} отзыв${declOfNum(items.length,['ов','а','ов'])})</span>`;
+      } else {
+        aggregateEl.textContent = 'Пока нет оценок.';
+      }
+    }
+
+    // Обновить заголовок с количеством
+    const titleSpan = document.getElementById('reviewsTitleText');
+    if (titleSpan) titleSpan.textContent = items.length ? `Последние отзывы — ${items.length}` : 'Последние отзывы';
+
+    // Лента
+    if (!items.length){
+      trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Пока нет отзывов — оставьте первый!</div></div>';
+    } else {
+      const stripItems = items.slice(0, STRIP_COUNT);
+      trackEl.innerHTML = stripItems.map((o,i)=>`
+        <button class="review-mini" type="button" data-idx="${i}" aria-label="Читать отзыв пользователя ${escapeHtml(o.name||'Гость')}">
+          <div class="mini-head">
+            <span class="mini-name">${escapeHtml(o.name||'Гость')}</span>
+            <span class="mini-stars">${starsText(Number(o.rating||5))}</span>
+          </div>
+          <div class="mini-text">${escapeHtml(shortText(o.text,160))}</div>
+        </button>
+      `).join('');
+      trackEl.querySelectorAll('.review-mini').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const idx = Number(btn.getAttribute('data-idx'));
+          openMini(stripItems[idx]);
         });
-
-        // 2) Параллельно — ваш Google Apps Script (для Telegram)
-        const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
-        fetch(TG_ENDPOINT, {
-          method:'POST',
-          headers:{'Content-Type':'text/plain;charset=utf-8'}, // CORS-safelisted
-          body: JSON.stringify(tgPayload)
-        }).catch(err => console.error('TG relay failed:', err));
-
-        if (resp.ok){
-          form.reset();
-          updateSummary();
-          addressRow.style.display = 'none';
-          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…';
-        } else {
-          statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.';
-        }
-      }catch(e){
-        console.error(e);
-        statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.';
-      } finally {
-        submitBtn.disabled = false; submitBtn.textContent = 'Отправить заказ';
-      }
-    });
-
-    // ===== JS отзывов =====
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkOeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec';
-
-    const reviewForm = document.getElementById('reviewForm');
-    const reviewStatus = document.getElementById('reviewStatus');
-    const trackEl = document.getElementById('reviewsTrack');
-    const openAllBtn = document.getElementById('openAllBtn');
-    const hideAllBtn = document.getElementById('hideAllBtn');
-
-    const reviewModal = document.getElementById('reviewModal');
-    const modalName = document.getElementById('modalName');
-    const modalStars = document.getElementById('modalStars');
-    const modalDate = document.getElementById('modalDate');
-    const modalText = document.getElementById('modalText');
-    const modalClose = document.getElementById('modalClose');
-
-    const allModal = document.getElementById('allReviewsModal');
-    const allClose = document.getElementById('allClose');
-    const allContainer = document.getElementById('allReviewsContainer');
-
-    // Кол-во карточек в ленте — адаптивно
-    let STRIP_COUNT = window.matchMedia('(min-width:1024px)').matches ? 6 : 5;
-    const mq = window.matchMedia('(min-width:1024px)');
-    mq.addEventListener?.('change', e => { STRIP_COUNT = e.matches ? 6 : 5; });
-
-    function stars(n){ n = Math.max(0, Math.min(5, Number(n||0))); return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
-    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
-    function shortText(s, n=160){ s = String(s||'').trim(); return s.length>n ? s.slice(0,n-1)+'…' : s; }
-
-    // ===== запрет "Гость/Аноним" и пр. при отправке отзывов =====
-    function normalizeName(s = '') {
-      return String(s)
-        .toLowerCase()
-        .replaceAll('ё','е')
-        .replace(/[^\p{L}\p{N}]+/gu, ' ')
-        .trim()
-        .replace(/\s+/g,' ');
-    }
-    const bannedNames = [
-      'гость','аноним','анонимна','анонимный','анонимная','anonymous','anon'
-    ];
-    const bannedPatterns = [
-      /^гост[ьй]$/u,
-      /^аноним(на|ный|ная)?$/u,
-      /^anon(ymous)?$/u
-    ];
-
-    // Модалка мини-отзыва
-    function openMini(item){
-      modalName.textContent = item.name || 'Гость';
-      modalStars.textContent = stars(item.rating||5);
-      modalDate.textContent = new Date(item.createdAt).toLocaleDateString();
-      modalText.textContent = item.text || '';
-      if (reviewModal.showModal) reviewModal.showModal(); else reviewModal.setAttribute('open','open');
-    }
-    modalClose.addEventListener('click', ()=> reviewModal.close?.() || reviewModal.removeAttribute('open'));
-    reviewModal.addEventListener('click', (e)=>{ if (e.target === reviewModal) reviewModal.close?.(); });
-
-    // Открытие/закрытие «Все отзывы»
-    function openAll(){
-      hideAllBtn.style.display = 'inline-block';
-      if (allModal.showModal) allModal.showModal(); else allModal.setAttribute('open','open');
-    }
-    function closeAll(){ hideAllBtn.style.display = 'none'; allModal.close?.(); }
-    openAllBtn.addEventListener('click', openAll);
-    hideAllBtn.addEventListener('click', closeAll);
-    allClose.addEventListener('click', closeAll);
-    allModal.addEventListener('click', (e)=>{ if (e.target === allModal) closeAll(); });
-
-    async function fetchReviews(){
-      trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Загружаю отзывы…</div></div>';
-      try{
-        const res = await fetch(`${SCRIPT_URL}?limit=200`, { method:'GET' });
-        const raw = await res.text();
-        let data; try { data = JSON.parse(raw); } catch { throw new Error('bad json'); }
-        const items = (data.items||[]).sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
-
-        // Обновить заголовок с количеством
-        const titleSpan = document.getElementById('reviewsTitleText');
-        if (titleSpan) titleSpan.textContent = items.length ? `Последние отзывы — ${items.length}` : 'Последние отзывы';
-
-        // Заполняем ленту (последние STRIP_COUNT)
-        if (!items.length){
-          trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Пока нет отзывов — оставьте первый!</div></div>';
-        } else {
-          const stripItems = items.slice(0, STRIP_COUNT);
-          trackEl.innerHTML = stripItems.map((o,i)=>`
-            <button class="review-mini" type="button" data-idx="${i}" aria-label="Читать отзыв пользователя ${escapeHtml(o.name||'Гость')}">
-              <div class="mini-head">
-                <span class="mini-name">${escapeHtml(o.name||'Гость')}</span>
-                <span class="mini-stars">${stars(Number(o.rating||5))}</span>
-              </div>
-              <div class="mini-text">${escapeHtml(shortText(o.text,160))}</div>
-            </button>
-          `).join('');
-          trackEl.querySelectorAll('.review-mini').forEach(btn=>{
-            btn.addEventListener('click', ()=>{
-              const idx = Number(btn.getAttribute('data-idx'));
-              openMini(stripItems[idx]);
-            });
-          });
-        }
-
-        // Заполняем модалку «Все отзывы»
-        if (!items.length){
-          allContainer.innerHTML = '<p class="muted">Пока нет отзывов — будьте первым!</p>';
-        } else {
-          allContainer.innerHTML = items.map(o=>`
-            <article class="all-review-item">
-              <div class="all-review-head">
-                <strong>${escapeHtml(o.name||'Гость')}</strong>
-                <small class="muted">${new Date(o.createdAt).toLocaleDateString()}</small>
-              </div>
-              <div class="stars">${stars(Number(o.rating||5))}</div>
-              <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
-            </article>
-          `).join('');
-        }
-      }catch(e){
-        console.error(e);
-        trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Не удалось загрузить отзывы.</div></div>';
-        allContainer.innerHTML = '<p style="color:#ef4444">Не удалось загрузить отзывы.</p>';
-      }
+      });
     }
 
-    // Отправка нового отзыва (с запретом на «гость/аноним»)
-    reviewForm?.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(reviewForm);
-      const nameRaw = (fd.get('name') || '');
-      const text = (fd.get('text') || '').trim();
-      const norm = normalizeName(nameRaw);
+    // Модалка «Все отзывы»
+    if (!items.length){
+      allContainer.innerHTML = '<p class="muted">Пока нет отзывов — будьте первым!</p>';
+    } else {
+      allContainer.innerHTML = items.map(o=>`
+        <article class="all-review-item">
+          <div class="all-review-head">
+            <strong>${escapeHtml(o.name||'Гость')}</strong>
+            <small class="muted">${new Date(o.createdAt).toLocaleDateString()}</small>
+          </div>
+          <div class="stars">${starsText(Number(o.rating||5))}</div>
+          <p style="margin:6px 0 0;white-space:pre-wrap">${escapeHtml(o.text)}</p>
+        </article>
+      `).join('');
+    }
+  }catch(e){
+    console.error(e);
+    trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Не удалось загрузить отзывы.</div></div>';
+    allContainer.innerHTML = '<p style="color:#ef4444">Не удалось загрузить отзывы.</p>';
+    if (aggregateEl) aggregateEl.textContent = 'Не удалось загрузить рейтинг.';
+  }
+}
+function declOfNum(n, forms){ // ['ов','а','ов'] для 0,2-4,5+
+  const n10 = n % 10, n100 = n % 100;
+  if (n10 === 1 && n100 !== 11) return forms[1];       // 1 отзыв
+  if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return forms[2]; // 2-4 отзыва
+  return forms[0]; // 0/5+
+}
 
-      if (!norm) { reviewStatus.textContent = 'Введите ваше имя.'; return; }
-      const isExactBanned = bannedNames.includes(norm);
-      const isPatternBanned = bannedPatterns.some(rx => rx.test(norm));
-      if (isExactBanned || isPatternBanned) {
-        reviewStatus.textContent = 'Пожалуйста, представьтесь по-настоящему (не «Гость» и не «Аноним»).';
-        return;
-      }
-      if (!text) { reviewStatus.textContent = 'Введите текст отзыва.'; return; }
+// Отправка нового отзыва
+reviewForm?.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(reviewForm);
+  const nameRaw = (fd.get('name') || '');
+  const text = (fd.get('text') || '').trim();
+  // звёздочки: radio[name=rating]
+  const rating = Number(fd.get('rating') || 5);
 
-      const payload = {
-        name: String(nameRaw).trim(),
-        text,
-        rating: Number(fd.get('rating')||5),
-        honeypot: fd.get('company')||''
-      };
+  const norm = normalizeName(nameRaw);
+  if (!norm) { reviewStatus.textContent = 'Введите ваше имя.'; return; }
+  const isExactBanned = bannedNames.includes(norm);
+  const isPatternBanned = bannedPatterns.some(rx => rx.test(norm));
+  if (isExactBanned || isPatternBanned) {
+    reviewStatus.textContent = 'Пожалуйста, представьтесь по-настоящему (не «Гость» и не «Аноним»).';
+    return;
+  }
+  if (!text) { reviewStatus.textContent = 'Введите текст отзыва.'; return; }
 
-      reviewStatus.textContent = 'Отправляем…';
-      try{
-        const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
-        const raw = await res.text(); let data; try { data = JSON.parse(raw);} catch { throw new Error('bad json'); }
-        if (data.ok){
-          reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
-          reviewForm.reset();
-          if (data.approved) fetchReviews();
-        } else { reviewStatus.textContent = 'Ошибка: не удалось сохранить отзыв.'; }
-      }catch(err){ console.error(err); reviewStatus.textContent = 'Сеть недоступна или сервер недоступен.'; }
-    });
+  const payload = {
+    name: String(nameRaw).trim(),
+    text,
+    rating,
+    honeypot: fd.get('company')||''
+  };
 
-    // Старт загрузки отзывов
-    fetchReviews();
-  </script>
-</body>
-</html> 
+  reviewStatus.textContent = 'Отправляем…';
+  try{
+    const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
+    const raw = await res.text(); let data; try { data = JSON.parse(raw);} catch { throw new Error('bad json'); }
+    if (data.ok){
+      reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
+      reviewForm.reset();
+      // по умолчанию считаем 5
+      document.getElementById('star5')?.click();
+      if (data.approved) fetchReviews();
+    } else { reviewStatus.textContent = 'Ошибка: не удалось сохранить отзыв.'; }
+  }catch(err){ console.error(err); reviewStatus.textContent = 'Сеть недоступна или сервер недоступен.'; }
+});
+
+// Старт загрузки отзывов
+fetchReviews();
+</script>
+  
+  
