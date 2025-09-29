@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <head>
@@ -10,7 +10,7 @@
 
   <!-- Индексация -->
   <meta name="robots" content="index,follow">
-  <link rel="canonical" href="https://polovinkikmv.ru/ ">
+  <link rel="canonical" href="https://polovinkikmv.ru/">
 
   <!-- Favicon & PWA -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -22,10 +22,10 @@
 
   <!-- Open Graph (для превью в мессенджерах) -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://polovinkikmv.ru/ ">
+  <meta property="og:url" content="https://polovinkikmv.ru/">
   <meta property="og:title" content="Половинки — домашняя кондитерская КМВ">
   <meta property="og:description" content="Орешки с варёной сгущёнкой. Закажите онлайн: самовывоз и доставка по КМВ.">
-  <meta property="og:image" content="https://polovinkikmv.ru/android-chrome-512x512.png ">
+  <meta property="og:image" content="https://polovinkikmv.ru/android-chrome-512x512.png">
 
   <!-- Шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
@@ -33,13 +33,13 @@
   <!-- Schema.org: LocalBusiness/Bakery -->
   <script type="application/ld+json">
   {
-    "@context": " https://schema.org ",
+    "@context": "https://schema.org",
     "@type": "Bakery",
     "name": "Половинки — домашняя кондитерская КМВ",
     "alternateName": "Половинки",
-    "url": "https://polovinkikmv.ru/ ",
-    "logo": "https://polovinkikmv.ru/android-chrome-512x512.png ",
-    "image": "https://polovinkikmv.ru/android-chrome-512x512.png ",
+    "url": "https://polovinkikmv.ru/",
+    "logo": "https://polovinkikmv.ru/android-chrome-512x512.png",
+    "image": "https://polovinkikmv.ru/android-chrome-512x512.png",
     "areaServed": "Кавказские Минеральные Воды",
     "address": {
       "@type": "PostalAddress",
@@ -133,11 +133,6 @@
       height: auto;
       margin: 0;
       filter: drop-shadow(0 2px 10px rgba(0,0,0,.05));
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    
-    .logo.animate {
-      transform: scale(1.02) rotate(1deg);
     }
 
     .lead { max-width: 68ch; }
@@ -150,12 +145,12 @@
       box-shadow: 0 6px 18px rgba(212,175,150,.35);
       backdrop-filter: saturate(110%);
     }
-    .btn:hover { background-color: var(--accent-2); box-shadow: 0 8px 24px rgba(212,175,150,.45); transform: translateY(-1px) scale(1.02); filter: brightness(1.02); }
+    .btn:hover { background-color: var(--accent-2); box-shadow: 0 8px 24px rgba(212,175,150,.45); transform: translateY(-1px); filter: brightness(1.02); }
     .btn:active { transform: translateY(0); box-shadow: 0 6px 18px rgba(212,175,150,.35); }
     .btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
 
     .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); box-shadow: none; }
-    .btn-outline:hover { background: var(--panel); transform: scale(1.02); }
+    .btn-outline:hover { background: var(--panel); }
 
     footer { padding: 28px 0; background-color: var(--footer); font-size: .95rem; color: #5a4a3a; }
     footer p { margin: 0.3em 0; }
@@ -164,31 +159,11 @@
     .divider { width: 60px; height: 2px; margin: 26px auto 0; background-color: var(--accent); border-radius: 1px;
       opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
     .divider.visible { opacity: 1; transform: translateY(0); }
-    
-    /* SVG разделитель */
-    .divider-svg {
-      display: flex;
-      justify-content: center;
-      margin: 26px auto 0;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all .8s ease-out;
-    }
-    .divider-svg.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .divider-svg svg {
-      width: 80px;
-      height: auto;
-      fill: var(--accent);
-    }
-
     .fade-in { opacity: 0; transform: translateY(20px); transition: all .8s ease-out; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     @media (prefers-reduced-motion: reduce){
-      .fade-in, .divider, .divider-svg { transition: none; opacity: 1; transform: none; }
+      .fade-in, .divider { transition: none; opacity: 1; transform: none; }
       html, body { scroll-behavior: auto; }
     }
 
@@ -204,11 +179,6 @@
         0 10px 30px rgba(62,44,35,.06),
         0 2px 0 rgba(212,175,150,.12) inset;
       text-align: left;
-      transition: transform 0.3s ease;
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
     }
 
     .grid {
@@ -306,10 +276,6 @@
       background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:14px;
       padding: 10px 12px; text-align: left; box-shadow: 0 6px 16px rgba(0,0,0,.06);
       display: flex; flex-direction: column; gap: 4px; min-height: 88px;
-      transition: transform 0.2s ease;
-    }
-    .review-mini:hover {
-      transform: translateY(-3px);
     }
     .review-mini .mini-head{
       display:flex; align-items:center; justify-content:space-between; gap:8px;
@@ -348,182 +314,6 @@
       border:1px solid rgba(0,0,0,.08); border-radius:12px; background:#fff; padding:14px; margin-top:12px;
     }
     .all-review-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-
-    /* Кнопки счётчика */
-    .stepper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .stepper-btn {
-      width: 36px;
-      height: 36px;
-      border: 1px solid var(--accent);
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 18px;
-      transition: all 0.2s ease;
-    }
-    .stepper-btn:hover {
-      background: var(--accent);
-      color: white;
-    }
-    .stepper-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .stepper-input {
-      width: 50px;
-      text-align: center;
-      font-size: 18px;
-      border: none;
-      background: transparent;
-    }
-
-    /* Звёзды рейтинга */
-    .star-rating {
-      display: flex;
-      gap: 4px;
-    }
-    .star {
-      font-size: 24px;
-      color: #ddd;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .star:hover,
-    .star.active {
-      color: #efb80b;
-    }
-
-    /* Сообщение о доставке */
-    .delivery-info {
-      margin-top: 8px;
-      padding: 10px;
-      background: #fff9f3;
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      font-size: 14px;
-      display: none;
-    }
-
-    /* Стилизованный подзаголовок */
-    .quote-box {
-      background: rgba(216, 184, 153, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      margin: 20px auto;
-      max-width: 68ch;
-      font-style: italic;
-      position: relative;
-      border-left: 4px solid var(--accent);
-    }
-    
-    .quote-box::before {
-      content: """;
-      position: absolute;
-      top: -10px;
-      left: 10px;
-      font-size: 60px;
-      color: rgba(216, 184, 153, 0.3);
-      font-family: 'Playfair Display', serif;
-      line-height: 1;
-    }
-
-    /* Иконки в описании */
-    .icon-row {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 30px 0;
-      flex-wrap: wrap;
-    }
-    .icon-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    .icon-item svg {
-      width: 40px;
-      height: 40px;
-      fill: var(--accent);
-    }
-    .icon-item p {
-      margin: 0;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    /* Модальное окно благодарности */
-    .thank-you-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .thank-you-modal.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .thank-you-content {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      transform: scale(0.9);
-      transition: transform 0.3s ease;
-    }
-    .thank-you-modal.active .thank-you-content {
-      transform: scale(1);
-    }
-    .thank-you-content h2 {
-      color: var(--accent-2);
-      margin-top: 0;
-    }
-    .thank-you-content p {
-      margin: 10px 0;
-    }
-    .close-thank-you {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-    }
-
-    /* Агрегированный рейтинг */
-    .aggregate-rating {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .aggregate-rating .stars {
-      font-size: 24px;
-      color: #efb80b;
-      margin: 5px 0;
-    }
-    .aggregate-rating .count {
-      color: var(--muted);
-      font-size: 14px;
-    }
 
     /* ===== Доп. стиль для кнопки Instagram (иконка) ===== */
     .social-btn svg { width: 18px; height: 18px; margin-right: 8px; vertical-align: -3px; }
@@ -577,20 +367,14 @@
       <div>
         <h1>Половинки</h1>
         <h2>Домашняя кондитерская</h2>
-        <div class="quote-box">
-          <p>Орешки — десерт, в котором встречаются вкус и воспоминания.</p>
-        </div>
+        <p class="lead"><em>Орешки — десерт, в котором встречаются вкус и воспоминания.</em></p>
         <p class="lead">Нежное тесто, золотистая выпечка и тягучая начинка из варёной сгущёнки с грецким орехом. Каждый орешек — маленькая история радости, которой хочется поделиться.</p>
         <a href="#order" class="btn" aria-label="Перейти к оформлению заказа">Сделать заказ</a>
       </div>
     </div>
   </section>
 
-  <div class="divider-svg">
-    <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,5 Q25,0 50,5 T100,5" stroke="currentColor" fill="none" stroke-width="1"/>
-    </svg>
-  </div>
+  <div class="divider"></div>
 
   <!-- ======= ОПИСАНИЕ ======= -->
   <section class="fade-in">
@@ -601,35 +385,10 @@
       <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
         В каждом — баланс хрустящей скорлупки и нежной начинки. Десерт возвращает к детству, но в новом, изысканном звучании.
       </p>
-      
-      <div class="icon-row">
-        <div class="icon-item">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-          <p>Натуральные ингредиенты</p>
-        </div>
-        <div class="icon-item">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-          <p>Ручная работа</p>
-        </div>
-        <div class="icon-item">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
-          <p>С любовью</p>
-        </div>
-      </div>
     </div>
   </section>
 
-  <div class="divider-svg">
-    <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,5 Q25,0 50,5 T100,5" stroke="currentColor" fill="none" stroke-width="1"/>
-    </svg>
-  </div>
+  <div class="divider"></div>
 
   <!-- ======= ФОРМА ЗАКАЗА ======= -->
   <section id="order" class="fade-in" aria-labelledby="order-title">
@@ -640,7 +399,7 @@
       </p>
 
       <div class="card" role="region" aria-label="Форма заказа">
-        <form id="order-form" action="https://formspree.io/f/xgvleerr " method="POST" autocomplete="on" novalidate>
+        <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
           <div class="grid">
             <div class="row">
               <label for="name">Имя и фамилия*</label>
@@ -656,29 +415,28 @@
             </div>
             <div class="row">
               <label for="qty">Количество коробочек*</label>
-              <div class="stepper">
-                <button type="button" class="stepper-btn" id="decrease-qty" aria-label="Уменьшить количество">−</button>
-                <input type="number" id="qty" name="qty" class="stepper-input" value="1" min="1" max="5" readonly>
-                <button type="button" class="stepper-btn" id="increase-qty" aria-label="Увеличить количество">+</button>
-              </div>
+              <select id="qty" name="qty" required>
+                <option value="1" selected>1 коробка — 6 шт</option>
+                <option value="2">2 коробки — 12 шт</option>
+                <option value="3">3 коробки — 18 шт</option>
+                <option value="4">4 коробки — 24 шт</option>
+                <option value="5">5 коробок — 30 шт</option>
+              </select>
             </div>
             <div class="row">
               <label for="date">Желаемая дата получения*</label>
-              <input type="date" id="date" name="date" required min="">
+              <input type="date" id="date" name="date" required>
             </div>
             <div class="row">
               <label for="time">Время (ориентир)</label>
               <input type="time" id="time" name="time">
             </div>
             <div class="row" style="grid-column: 1 / -1;">
-              <label for="method">Способ получения</label>
+              <label for="method">Способ получения (если заказ &lt; 15 упаковок, доставка платная)</label>
               <select id="method" name="method">
                 <option value="pickup" selected>Самовывоз</option>
                 <option value="delivery">Доставка</option>
               </select>
-              <div id="delivery-info" class="delivery-info">
-                Стоимость доставки по КМВ — 300 ₽. При заказе от 15 коробок — бесплатно.
-              </div>
             </div>
             <div class="row" id="address-row" style="display:none; grid-column: 1 / -1;">
               <label for="address">Адрес доставки</label>
@@ -705,20 +463,12 @@
     </div>
   </section>
 
-  <div class="divider-svg">
-    <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,5 Q25,0 50,5 T100,5" stroke="currentColor" fill="none" stroke-width="1"/>
-    </svg>
-  </div>
+  <div class="divider"></div>
 
   <!-- ======== ОТЗЫВЫ ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <div class="container">
       <h1 id="reviews-title" style="margin-bottom:.2ем; text-align:center;">Отзывы</h1>
-      <div class="aggregate-rating">
-        <div class="stars" id="avg-rating">⭐⭐⭐⭐⭐</div>
-        <div class="count" id="reviews-count">На основе 0 отзывов</div>
-      </div>
       <p class="muted" style="margin-bottom:1.2em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
 
       <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
@@ -728,14 +478,13 @@
           <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
           <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
             <label for="rating" class="muted" style="margin:0;">Оценка:</label>
-            <div class="star-rating" id="star-rating">
-              <span class="star" data-value="1">☆</span>
-              <span class="star" data-value="2">☆</span>
-              <span class="star" data-value="3">☆</span>
-              <span class="star" data-value="4">☆</span>
-              <span class="star" data-value="5">☆</span>
-            </div>
-            <input type="hidden" name="rating" id="rating-value" value="5">
+            <select id="rating" name="rating" style="padding:10px;border:1px solid rgba(0,0,0,.06);border-radius:10px">
+              <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5</option>
+              <option value="4">⭐️⭐️⭐️⭐️ — 4</option>
+              <option value="3">⭐️⭐️⭐️ — 3</option>
+              <option value="2">⭐️⭐️ — 2</option>
+              <option value="1">⭐️ — 1</option>
+            </select>
             <input type="text" name="company" style="display:none">
             <button type="submit" class="review-btn">Отправить отзыв</button>
             <small id="reviewStatus" class="muted" aria-live="polite"></small>
@@ -802,16 +551,6 @@
     </div>
   </dialog>
 
-  <!-- Модальное окно благодарности -->
-  <div class="thank-you-modal" id="thankYouModal">
-    <div class="thank-you-content">
-      <h2>Спасибо за заказ!</h2>
-      <p>Ваш заказ принят и будет обработан в ближайшее время.</p>
-      <p>Мы свяжемся с вами в WhatsApp/Telegram для подтверждения деталей.</p>
-      <button class="close-thank-you" id="closeThankYou">Закрыть</button>
-    </div>
-  </div>
-
   <footer class="fade-in">
     <div class="container">
       <p><strong>Половинки</strong> — домашняя кондитерская</p>
@@ -822,7 +561,7 @@
   <script>
     // ===== Анимации появления =====
     const faders = document.querySelectorAll('.fade-in');
-    const dividers = document.querySelectorAll('.divider-svg');
+    const dividers = document.querySelectorAll('.divider');
     const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
     const appearOnScroll = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
@@ -833,14 +572,6 @@
     }, appearOptions);
     faders.forEach(fader => appearOnScroll.observe(fader));
     dividers.forEach(divider => appearOnScroll.observe(divider));
-    
-    // Анимация логотипа
-    const logo = document.querySelector('.logo');
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        logo.classList.add('animate');
-      }, 300);
-    });
 
     // ===== Логика формы заказа =====
     const PRICE_PER_BOX = 250;
@@ -852,15 +583,9 @@
     const form = document.getElementById('order-form');
     const statusEl = document.getElementById('form-status');
     const submitBtn = document.getElementById('submit-btn');
-    const deliveryInfo = document.getElementById('delivery-info');
-    const dateInput = document.getElementById('date');
-
-    // Установка минимальной даты (сегодня)
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.setAttribute('min', today);
 
     // === Параметры Telegram через Google Apps Script ===
-    const TG_ENDPOINT = ' https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec ';
+    const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
     const TG_SECRET = 'PolovinkiKmV25';
 
     function formatRUB(v){
@@ -873,32 +598,11 @@
       totalTextEl.textContent = formatRUB(total);
       qtyTextEl.textContent = String(qty);
     }
-    
-    // Счётчик количества
-    const decreaseBtn = document.getElementById('decrease-qty');
-    const increaseBtn = document.getElementById('increase-qty');
-    
-    decreaseBtn.addEventListener('click', () => {
-      let value = parseInt(qtyEl.value);
-      if (value > 1) {
-        qtyEl.value = value - 1;
-        updateSummary();
-      }
-    });
-    
-    increaseBtn.addEventListener('click', () => {
-      let value = parseInt(qtyEl.value);
-      if (value < 5) {
-        qtyEl.value = value + 1;
-        updateSummary();
-      }
-    });
-    
+    qtyEl?.addEventListener('change', updateSummary);
     updateSummary();
 
     methodEl?.addEventListener('change', () => {
       addressRow.style.display = methodEl.value === 'delivery' ? '' : 'none';
-      deliveryInfo.style.display = methodEl.value === 'delivery' ? 'block' : 'none';
     });
 
     form?.addEventListener('submit', async (e) => {
@@ -932,7 +636,7 @@
       statusEl.style.display = 'block'; statusEl.textContent = 'Отправляем заказ...';
       try{
         // 1) Formspree
-        const resp = await fetch('https://formspree.io/f/xgvleerr ',{
+        const resp = await fetch('https://formspree.io/f/xgvleerr',{
           method:'POST',
           headers:{'Accept':'application/json','Content-Type':'application/json'},
           body: JSON.stringify(payload)
@@ -948,13 +652,9 @@
 
         if (resp.ok){
           form.reset();
-          qtyEl.value = 1;
           updateSummary();
           addressRow.style.display = 'none';
-          deliveryInfo.style.display = 'none';
-          
-          // Показать модальное окно благодарности
-          document.getElementById('thankYouModal').classList.add('active');
+          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…';
         } else {
           statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.';
         }
@@ -967,15 +667,13 @@
     });
 
     // ===== JS отзывов =====
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkOeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec ';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUFmiLYe-UMExLECBUlWakkOeZ6wwWnxoQe-nx9jT_QLrqb1406DjAIWCjbhqTU04a/exec';
 
     const reviewForm = document.getElementById('reviewForm');
     const reviewStatus = document.getElementById('reviewStatus');
     const trackEl = document.getElementById('reviewsTrack');
     const openAllBtn = document.getElementById('openAllBtn');
     const hideAllBtn = document.getElementById('hideAllBtn');
-    const avgRatingEl = document.getElementById('avg-rating');
-    const reviewsCountEl = document.getElementById('reviews-count');
 
     const reviewModal = document.getElementById('reviewModal');
     const modalName = document.getElementById('modalName');
@@ -987,27 +685,6 @@
     const allModal = document.getElementById('allReviewsModal');
     const allClose = document.getElementById('allClose');
     const allContainer = document.getElementById('allReviewsContainer');
-
-    // Звёзды рейтинга
-    const starElements = document.querySelectorAll('.star');
-    const ratingValue = document.getElementById('rating-value');
-    
-    starElements.forEach(star => {
-      star.addEventListener('click', () => {
-        const value = parseInt(star.getAttribute('data-value'));
-        ratingValue.value = value;
-        
-        starElements.forEach((s, index) => {
-          if (index < value) {
-            s.classList.add('active');
-            s.textContent = '★';
-          } else {
-            s.classList.remove('active');
-            s.textContent = '☆';
-          }
-        });
-      });
-    });
 
     // Кол-во карточек в ленте — адаптивно
     let STRIP_COUNT = window.matchMedia('(min-width:1024px)').matches ? 6 : 5;
@@ -1069,17 +746,6 @@
         // Обновить заголовок с количеством
         const titleSpan = document.getElementById('reviewsTitleText');
         if (titleSpan) titleSpan.textContent = items.length ? `Последние отзывы — ${items.length}` : 'Последние отзывы';
-        
-        // Рассчитать средний рейтинг
-        if (items.length > 0) {
-          const totalRating = items.reduce((sum, item) => sum + (Number(item.rating) || 0), 0);
-          const avgRating = (totalRating / items.length).toFixed(1);
-          avgRatingEl.textContent = stars(Math.round(avgRating));
-          reviewsCountEl.textContent = `На основе ${items.length} отзывов`;
-        } else {
-          avgRatingEl.textContent = stars(0);
-          reviewsCountEl.textContent = 'На основе 0 отзывов';
-        }
 
         // Заполняем ленту (последние STRIP_COUNT)
         if (!items.length){
@@ -1131,7 +797,6 @@
       const fd = new FormData(reviewForm);
       const nameRaw = (fd.get('name') || '');
       const text = (fd.get('text') || '').trim();
-      const rating = fd.get('rating') || '5';
       const norm = normalizeName(nameRaw);
 
       if (!norm) { reviewStatus.textContent = 'Введите ваше имя.'; return; }
@@ -1146,7 +811,7 @@
       const payload = {
         name: String(nameRaw).trim(),
         text,
-        rating: Number(rating),
+        rating: Number(fd.get('rating')||5),
         honeypot: fd.get('company')||''
       };
 
@@ -1157,12 +822,6 @@
         if (data.ok){
           reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
           reviewForm.reset();
-          // Сбросить звёзды
-          starElements.forEach((s, index) => {
-            s.classList.remove('active');
-            s.textContent = '☆';
-          });
-          ratingValue.value = '5';
           if (data.approved) fetchReviews();
         } else { reviewStatus.textContent = 'Ошибка: не удалось сохранить отзыв.'; }
       }catch(err){ console.error(err); reviewStatus.textContent = 'Сеть недоступна или сервер недоступен.'; }
@@ -1170,12 +829,6 @@
 
     // Старт загрузки отзывов
     fetchReviews();
-    
-    // Закрытие модального окна благодарности
-    document.getElementById('closeThankYou').addEventListener('click', () => {
-      document.getElementById('thankYouModal').classList.remove('active');
-    });
   </script>
 </body>
-</html>
-```
+</html> 
