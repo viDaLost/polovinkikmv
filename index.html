@@ -261,7 +261,7 @@
 
     .strip-track {
       display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
-      gap: 10px; overflow-x: auto; overscroll-behavior-x: contain;
+      gap: 10px; overflow-x: auto; overscroll-beavior-x: contain;
       scroll-snap-type: x mandatory; padding: 2px 6px 2px 2px;
       -webkit-overflow-scrolling: touch;
     }
@@ -343,7 +343,6 @@
       }
       body::before{ opacity:.55; }
       body::after{ opacity:.18; }
-      .btn { box-shadow: 0 6px 18px rgba(212,175,150,.22); }
       .card, #reviews-section .reviews-card{
         background: linear-gradient(180deg, #241d19, #221b17);
         border-color: rgba(255,255,255,.06);
@@ -467,7 +466,7 @@
   <!-- ======== ОТЗЫВЫ ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <div class="container">
-      <h1 id="reviews-title" style="margin-bottom:.2ем; text-align:center;">Отзывы</h1>
+      <h1 id="reviews-title" style="margin-bottom:.2em; text-align:center;">Отзывы</h1>
       <p class="muted" style="margin-bottom:1.2em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
 
       <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
@@ -666,7 +665,9 @@
     });
 
     // ===== JS отзывов =====
-    const SCRIPT_URL = ';
+    // Google Apps Script Web App (должен оканчиваться на /exec)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAaB9udbz_EHUWPqvSca8Ve3p_D_8thmGDv1MZOLQzJ09vStTb6A89Gizp9zEePdMj/exec';
+
     const reviewForm = document.getElementById('reviewForm');
     const reviewStatus = document.getElementById('reviewStatus');
     const trackEl = document.getElementById('reviewsTrack');
@@ -736,7 +737,7 @@
     async function fetchReviews(){
       trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Загружаю отзывы…</div></div>';
       try{
-        const res = await fetch(`${SCRIPT_URL}?limit=200`, { method:'GET' });
+        const res = await fetch(`${SCRIPT_URL}?limit=200&t=${Date.now()}`, { method:'GET' });
         const raw = await res.text();
         let data; try { data = JSON.parse(raw); } catch { throw new Error('bad json'); }
         const items = (data.items||[]).sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
@@ -815,7 +816,11 @@
 
       reviewStatus.textContent = 'Отправляем…';
       try{
-        const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
+        const res = await fetch(`${SCRIPT_URL}?t=${Date.now()}`, {
+          method:'POST',
+          headers:{'Content-Type':'text/plain;charset=utf-8'}, // simple request → без preflight
+          body: JSON.stringify(payload)
+        });
         const raw = await res.text(); let data; try { data = JSON.parse(raw);} catch { throw new Error('bad json'); }
         if (data.ok){
           reviewStatus.textContent = data.approved ? 'Спасибо! Отзыв опубликован.' : 'Спасибо! Отзыв появится после модерации.';
@@ -829,4 +834,4 @@
     fetchReviews();
   </script>
 </body>
-</html> 
+</html>
