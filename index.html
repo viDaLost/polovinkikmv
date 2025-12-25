@@ -19,262 +19,237 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ====== БАЗОВЫЕ ТОКЕНЫ ====== */
     :root {
-      --bg: #f6f1eb; 
-      --fg: #3e2c23; 
-      --muted: #8a6a58;
-
-      /* НОВОГОДНЯЯ ПАЛИТРА */
-      --xmas-red: #c92a2a; 
-      --xmas-red-dark: #a61e1e;
-      --xmas-green: #2f5d43; 
-      --gold: #e6b800;
-      --gold-light: #fbe688;
-
-      --panel: #fffbf6;
-      --shadow: 0 12px 40px rgba(62,44,35,0.12);
-      --radius: 20px;
-
-      --h1: clamp(32px, 5vw, 56px);
-      --h2: clamp(20px, 2.5vw, 26px);
-      --p: clamp(17px, 1.8vw, 19px);
-      --container: min(1120px, 92vw);
+      --bg:#f6f1eb; --fg:#3e2c23; --muted:#8a6a58;
+      --xmas-red:#c92a2a; --xmas-red-dark:#a61e1e; --xmas-green:#2f5d43;
+      --gold:#e6b800;
+      --shadow:0 12px 40px rgba(62,44,35,0.12);
+      --radius:20px;
+      --h1:clamp(32px,5vw,56px);
+      --h2:clamp(20px,2.5vw,26px);
+      --p:clamp(17px,1.8vw,19px);
+      --container:min(1120px,92vw);
     }
 
-    * { box-sizing: border-box; }
-    html, body { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: 'Cormorant Garamond', serif;
-      background-color: var(--bg);
-      color: var(--fg);
-      line-height: 1.6;
-      text-align: center;
-      overflow-x: hidden;
-      position: relative;
+    *{box-sizing:border-box}
+    html,body{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'Cormorant Garamond',serif;
+      background:var(--bg);
+      color:var(--fg);
+      line-height:1.6;
+      text-align:center;
+      overflow-x:hidden;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:-1;
+      opacity:.15;
+      background-image:url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
     }
 
-    /* ФОН: Эффект бумаги */
-    body::before {
-      content: "";
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.15;
-      background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    }
-
-    /* ====== ГИРЛЯНДА (СКРОЛЛИТСЯ СО СТРАНИЦЕЙ) ======
-       Важно: теперь НЕ fixed, а absolute внутри body (или relative контейнера),
-       чтобы "уезжала вверх" при прокрутке. */
+    /* ====== ГИРЛЯНДА (СКРОЛЛИТСЯ) ======
+       Главное исправление “две лампы не видно”:
+       - расширили viewBox (есть запас слева/справа)
+       - убрали клиппинг (overflow: visible)
+    */
     .garland-wrap{
-      position: absolute;
-      top: -4px; left: 0; width: 100%;
-      z-index: 20;
-      pointer-events: none;
-      overflow: hidden;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.12));
+      position:absolute;
+      top:-10px; left:0; width:100%;
+      z-index:20;
+      pointer-events:none;
+      overflow:visible;              /* ВАЖНО */
+      filter:drop-shadow(0 8px 16px rgba(0,0,0,0.12));
+      transform-origin:top center;
+      animation:garlandSway 6.8s ease-in-out infinite;
     }
-    .garland {
-      width: 100%;
-      height: 130px; /* чуть выше, чтобы лампы не резались */
-      display: block;
-    }
-
-    /* Легкое покачивание самой гирлянды (визуально) */
-    .garland-wrap{
-      transform-origin: top center;
-      animation: garlandSway 6.8s ease-in-out infinite;
+    .garland{
+      width:100%;
+      height:180px;
+      display:block;
+      overflow:visible;              /* ВАЖНО */
     }
     @keyframes garlandSway{
-      0%,100%{ transform: translateY(0) rotate(0deg); }
-      50%{ transform: translateY(1px) rotate(0.12deg); }
+      0%,100%{transform:translateY(0) rotate(0deg)}
+      50%{transform:translateY(1px) rotate(0.12deg)}
     }
 
-    /* мигание по группам */
-    .bulb { transform-origin: center; }
-    .blink-a { animation: blink 2.2s infinite; }
-    .blink-b { animation: blink 2.7s infinite 0.35s; }
-    .blink-c { animation: blink 3.1s infinite 0.8s; }
-
+    .bulb{transform-origin:center}
+    .blink-a{animation:blink 2.2s infinite}
+    .blink-b{animation:blink 2.7s infinite .35s}
+    .blink-c{animation:blink 3.1s infinite .8s}
     @keyframes blink{
-      0%, 100% { opacity: 1; }
-      45% { opacity: 0.55; }
-      70% { opacity: 0.92; }
+      0%,100%{opacity:1}
+      45%{opacity:.55}
+      70%{opacity:.92}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .garland-wrap,.blink-a,.blink-b,.blink-c{animation:none!important}
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .garland-wrap, .blink-a, .blink-b, .blink-c { animation: none !important; }
+    .snow-cap{position:relative;display:inline-block;z-index:2}
+    .snow-cap::before{
+      content:"";
+      position:absolute;
+      top:-14px; left:-4%; width:108%; height:26px;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 25 Q 10 25 20 35 Q 30 45 40 30 Q 50 15 60 25 Q 70 35 80 20 Q 90 5 100 20 Q 110 35 120 25 Q 130 15 140 30 Q 150 45 160 30 Q 170 15 180 25 Q 190 35 200 20 L 200 0 L 0 0 Z' fill='white'/%3E");
+      background-size:100% 100%;
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+      pointer-events:none;
     }
 
-    /* ====== СНЕЖНАЯ ШАПКА ====== */
-    .snow-cap {
-      position: relative;
-      display: inline-block;
-      z-index: 2;
+    h1{font-size:var(--h1);margin:0 0 .3em;font-weight:700;font-family:'Playfair Display',serif;color:var(--fg);text-shadow:0 2px 0 rgba(255,255,255,.5)}
+    h2{font-size:var(--h2);font-weight:500;margin:0 0 1.2em;color:var(--xmas-green);letter-spacing:.5px}
+    p{font-size:var(--p);margin:0 auto 1em;max-width:68ch}
+
+    .container{width:var(--container);margin-inline:auto;position:relative;z-index:2}
+    section{padding:clamp(40px,6vw,80px) 0}
+
+    .btn{
+      display:inline-block;
+      padding:1em 2.4em;
+      margin-top:1.2em;
+      background:linear-gradient(135deg,var(--xmas-red),var(--xmas-red-dark));
+      color:#fff;
+      font-size:clamp(15px,1.5vw,18px);
+      border-radius:50px;
+      text-decoration:none;
+      font-weight:600;
+      letter-spacing:.5px;
+      border:2px solid #fff;
+      box-shadow:0 4px 15px rgba(201,42,42,.4);
+      transition:all .3s cubic-bezier(.25,.8,.25,1);
+      position:relative;
+      overflow:hidden;
     }
-    .snow-cap::before {
-      content: "";
-      position: absolute;
-      top: -14px; left: -4%; width: 108%; height: 26px;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 25 Q 10 25 20 35 Q 30 45 40 30 Q 50 15 60 25 Q 70 35 80 20 Q 90 5 100 20 Q 110 35 120 25 Q 130 15 140 30 Q 150 45 160 30 Q 170 15 180 25 Q 190 35 200 20 L 200 0 L 0 0 Z' fill='white'/%3E");
-      background-size: 100% 100%;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
-      pointer-events: none;
+    .btn::after{
+      content:"";
+      position:absolute;top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
+      transition:.5s;
     }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,42,42,.6)}
+    .btn:hover::after{left:100%}
 
-    h1 { font-size: var(--h1); margin: 0 0 .3em; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--fg); text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
-    h2 { font-size: var(--h2); font-weight: 500; margin: 0 0 1.2em; color: var(--xmas-green); letter-spacing: 0.5px; }
-    p  { font-size: var(--p); margin: 0 auto 1em; max-width: 68ch; }
-
-    .container { width: var(--container); margin-inline: auto; position: relative; z-index: 2; }
-    section { padding: clamp(40px, 6vw, 80px) 0; }
-
-    /* ====== КНОПКИ ====== */
-    .btn {
-      display: inline-block; padding: 1em 2.4em; margin-top: 1.2em;
-      background: linear-gradient(135deg, var(--xmas-red), var(--xmas-red-dark));
-      color: white; font-size: clamp(15px, 1.5vw, 18px);
-      border-radius: 50px; text-decoration: none; font-weight: 600;
-      letter-spacing: .5px;
-      border: 2px solid #fff;
-      box-shadow: 0 4px 15px rgba(201, 42, 42, 0.4);
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      position: relative; overflow: hidden;
+    .btn-outline{
+      background:transparent;
+      color:var(--xmas-green);
+      border:2px solid var(--xmas-green);
+      box-shadow:none;
+      padding:.85em 1.8em;
+      border-radius:50px;
+      text-decoration:none;
+      font-weight:600;
     }
-    .btn::after {
-      content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: 0.5s;
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201, 42, 42, 0.6); }
-    .btn:hover::after { left: 100%; }
+    .btn-outline:hover{background:var(--xmas-green);color:#fff}
 
-    .btn-outline { background: transparent; color: var(--xmas-green); border: 2px solid var(--xmas-green); box-shadow: none; }
-    .btn-outline:hover { background: var(--xmas-green); color: #fff; }
+    .hero{margin-top:50px}
+    .hero-grid{display:grid;gap:40px;align-items:center}
+    @media (min-width:900px){.hero-grid{grid-template-columns:1fr 1fr;text-align:left}}
 
-    /* ====== HERO SECTION ====== */
-    .hero { margin-top: 40px; } /* гирлянда теперь скроллится, можно меньше отступ */
-    .hero-grid { display: grid; gap: 40px; align-items: center; }
-    @media (min-width: 900px){ .hero-grid { grid-template-columns: 1fr 1fr; text-align: left; } }
-
-    .logo {
-      width: clamp(200px, 35vw, 320px); height: auto;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
-      border-radius: 50%;
-      border: 4px solid #fff;
-    }
-
-    /* ====== КАРТОЧКИ ====== */
-    .card, .reviews-card {
-      background: #fff;
-      border-radius: var(--radius);
-      padding: clamp(24px, 4vw, 40px);
-      border: 1px solid rgba(0,0,0,0.05);
-      box-shadow: var(--shadow);
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before, .reviews-card::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px;
-      background: repeating-linear-gradient(45deg, var(--xmas-red), var(--xmas-red) 10px, #fff 10px, #fff 20px);
+    .logo{
+      width:clamp(200px,35vw,320px);
+      height:auto;
+      filter:drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+      border-radius:50%;
+      border:4px solid #fff;
     }
 
-    .grid { display: grid; gap: 20px; }
-    @media (min-width:700px){ .grid { grid-template-columns: 1fr 1fr; } }
-
-    label { display: block; font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
-    input, select, textarea {
-      width: 100%; padding: 14px 16px; border-radius: 12px;
-      border: 1px solid rgba(0,0,0,0.1); background: #fdfdfd;
-      font-family: inherit; font-size: 1rem; color: var(--fg);
-      transition: all 0.2s;
+    .card,.reviews-card{
+      background:#fff;
+      border-radius:var(--radius);
+      padding:clamp(24px,4vw,40px);
+      border:1px solid rgba(0,0,0,0.05);
+      box-shadow:var(--shadow);
+      text-align:left;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before,.reviews-card::before{
+      content:"";
+      position:absolute;top:0;left:0;right:0;height:6px;
+      background:repeating-linear-gradient(45deg,var(--xmas-red),var(--xmas-red) 10px,#fff 10px,#fff 20px);
     }
 
-    .summary {
-      background: #fdfae7;
-      border: 2px dashed #e6cfaa;
-      padding: 16px; border-radius: 12px; margin-top: 10px;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-    }
-    .summary strong { color: var(--xmas-red); font-size: 1.2em; }
+    .grid{display:grid;gap:20px}
+    @media (min-width:700px){.grid{grid-template-columns:1fr 1fr}}
 
-    /* ====== ОТЗЫВЫ ====== */
-    .reviews-strip {
-      background: #fffbf6; border: 1px solid #efe3d0; border-radius: 16px;
-      padding: 16px; margin-top: 20px; position: relative;
+    label{display:block;font-size:.95rem;color:var(--muted);margin-bottom:8px;font-weight:600}
+    input,select,textarea{
+      width:100%;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.1);
+      background:#fdfdfd;
+      font-family:inherit;
+      font-size:1rem;
+      color:var(--fg);
+      transition:all .2s;
     }
-    .strip-track {
-      display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 80%); gap: 16px;
-      overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory;
-    }
-    .review-mini {
-      background: #fff; padding: 16px; border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      border: 1px solid rgba(0,0,0,0.03); scroll-snap-align: start;
-      cursor: pointer; transition: transform 0.2s;
-      display: flex; flex-direction: column; gap: 6px; text-align: left;
-    }
-    .stars { color: var(--gold); }
 
-    /* ====== МОДАЛКИ ====== */
-    dialog {
-      border: none; border-radius: 20px; padding: 0;
-      width: min(600px, 94vw); box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    .summary{
+      background:#fdfae7;
+      border:2px dashed #e6cfaa;
+      padding:16px;
+      border-radius:12px;
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
     }
-    dialog::backdrop { background: rgba(62,44,35,0.4); backdrop-filter: blur(2px); }
-    .modal-body { padding: 30px; }
-    .modal-close{
-      border: 0;
-      background: rgba(0,0,0,0.06);
-      color: var(--fg);
-      border-radius: 12px;
-      padding: 8px 12px;
-      cursor: pointer;
-      font: inherit;
-    }
-    .modal-close:hover{ background: rgba(0,0,0,0.10); }
+    .summary strong{color:var(--xmas-red);font-size:1.2em}
 
-    /* ====== РАЗДЕЛИТЕЛИ ====== */
-    .divider {
-      display: flex; align-items: center; justify-content: center; margin: 40px auto; gap: 10px; opacity: 0.6;
-    }
-    .divider::before, .divider::after { content: ""; height: 1px; width: 60px; background: var(--gold); }
-    .divider span { font-size: 20px; color: var(--gold); }
+    .divider{display:flex;align-items:center;justify-content:center;margin:40px auto;gap:10px;opacity:.6}
+    .divider::before,.divider::after{content:"";height:1px;width:60px;background:var(--gold)}
+    .divider span{font-size:20px;color:var(--gold)}
 
-    .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in{opacity:0;transform:translateY(30px);transition:all .8s ease-out}
+    .fade-in.visible{opacity:1;transform:translateY(0)}
 
-    footer { background: var(--fg); color: #efe3d0; padding: 40px 0; margin-top: 60px; }
+    footer{background:var(--fg);color:#efe3d0;padding:40px 0;margin-top:60px}
+    .footer-actions{margin-top:14px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
-    #snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+    dialog{border:none;border-radius:20px;padding:0;width:min(600px,94vw);box-shadow:0 25px 50px rgba(0,0,0,0.25)}
+    dialog::backdrop{background:rgba(62,44,35,0.4);backdrop-filter:blur(2px)}
+    .modal-body{padding:30px}
+    .modal-close{border:0;background:rgba(0,0,0,0.06);color:var(--fg);border-radius:12px;padding:8px 12px;cursor:pointer;font:inherit}
+    .modal-close:hover{background:rgba(0,0,0,0.10)}
+
+    .stars{color:var(--gold)}
+    .reviews-strip{background:#fffbf6;border:1px solid #efe3d0;border-radius:16px;padding:16px;margin-top:20px}
+    .strip-track{display:grid;grid-auto-flow:column;grid-auto-columns:min(300px,80%);gap:16px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}
+    .review-mini{background:#fff;padding:16px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.03);scroll-snap-align:start;cursor:pointer;display:flex;flex-direction:column;gap:6px;text-align:left}
+
+    #snow-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
   </style>
 </head>
 <body>
 
   <canvas id="snow-canvas"></canvas>
 
-  <!-- Гирлянда (скроллится вместе со страницей) -->
+  <!-- ГИРЛЯНДА -->
   <div class="garland-wrap" aria-hidden="true">
-    <svg class="garland" viewBox="0 0 1200 140" preserveAspectRatio="none">
+    <!-- расширили viewBox: есть запас слева/справа -> крайние лампы НЕ исчезают -->
+    <svg class="garland" viewBox="-80 0 1360 190" preserveAspectRatio="none" style="overflow:visible">
       <defs>
-        <!-- Провод -->
         <linearGradient id="wireGrad" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" stop-color="#2a2a2a"/>
           <stop offset="1" stop-color="#0f0f0f"/>
         </linearGradient>
 
-        <!-- Стекло лампы -->
         <radialGradient id="glass" cx="35%" cy="30%" r="70%">
           <stop offset="0" stop-color="rgba(255,255,255,0.85)"/>
           <stop offset="0.35" stop-color="rgba(255,255,255,0.35)"/>
           <stop offset="1" stop-color="rgba(255,255,255,0.10)"/>
         </radialGradient>
 
-        <!-- Свечение -->
         <filter id="glow" x="-120%" y="-120%" width="340%" height="340%">
           <feGaussianBlur stdDeviation="7" result="b"/>
           <feMerge>
@@ -283,24 +258,19 @@
           </feMerge>
         </filter>
 
-        <!-- Тень -->
         <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
           <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.28)"/>
         </filter>
 
-        <!-- Путь провода (ОДИН источник правды: по нему рассчитываем точки ламп) -->
-        <path id="wirePath" d="M-30,28 C 270,120 475,6 705,92 C 920,170 1045,48 1230,98" />
+        <!-- путь провода (координаты теперь внутри расширенного viewBox) -->
+        <path id="wirePath" d="M-60,28 C 260,132 480,6 720,98 C 940,182 1080,50 1280,110" />
       </defs>
 
-      <!-- Рисуем провод (двойной штрих) -->
+      <!-- провод -->
       <use href="#wirePath" fill="none" stroke="url(#wireGrad)" stroke-width="4.6" stroke-linecap="round" opacity="0.95"/>
       <use href="#wirePath" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.4" stroke-linecap="round" opacity="0.65" transform="translate(0,-2)"/>
 
-      <!--
-        ВАЖНО: Лампочки теперь "физически" привязаны к проводу через <textPath>.
-        Мы берём точку на пути (startOffset), и в JS ставим туда группу-лампу.
-        Так НИ ОДНА лампа не оторвётся: позиция всегда на проводе.
-      -->
+      <!-- лампы строим JS-ом и "приклеиваем" к проводу -->
       <g id="bulbs"></g>
     </svg>
   </div>
@@ -315,6 +285,9 @@
         <h2>Новогодняя домашняя кондитерская</h2>
         <p><em>Орешки — вкус, который возвращает в детство.</em></p>
         <p>Хрустящая скорлупка, нежное тесто и много варёной сгущёнки с грецким орехом. Идеальное угощение к праздничному чаепитию или в подарок близким под ёлочку.</p>
+
+        <!-- КНОПКА “СДЕЛАТЬ ЗАКАЗ” (вернул) -->
+        <a href="#order" class="btn">Сделать заказ</a>
       </div>
     </div>
   </section>
@@ -324,7 +297,7 @@
   <section class="fade-in">
     <div class="container">
       <p style="font-size: 1.2rem; max-width: 700px; margin: auto;">
-        Мы готовим только одно лакомство, доведённое до совершенства. 
+        Мы готовим только одно лакомство, доведённое до совершенства.
         В каждом орешке — тепло наших рук и частичка новогоднего чуда.
       </p>
     </div>
@@ -408,7 +381,7 @@
   <section id="reviews-section" class="fade-in">
     <div class="container">
       <h1 class="snow-cap" style="text-align:center;">Отзывы гостей</h1>
-      
+
       <div class="reviews-card">
         <form id="reviewForm" style="display:grid; gap:10px;">
           <input type="text" name="name" placeholder="Ваше имя" required>
@@ -440,7 +413,13 @@
     <div class="container">
       <p style="font-size:1.4rem; font-family:'Playfair Display', serif;">Половинки</p>
       <p>Пусть ваш Новый год будет сладким и уютным!</p>
-      <p style="font-size:0.8rem; opacity:0.6;">&copy; 2025 Домашняя кондитерская КМВ</p>
+
+      <!-- КНОПКА “МЫ В ИНСТАГРАМ” (вернул внизу) -->
+      <div class="footer-actions">
+        <a class="btn-outline" href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy" target="_blank" rel="noopener">Мы в Instagram</a>
+      </div>
+
+      <p style="font-size:0.8rem; opacity:0.6; margin-top:14px;">&copy; 2025 Домашняя кондитерская КМВ</p>
     </div>
   </footer>
 
@@ -500,7 +479,7 @@
       try {
         await fetch('https://formspree.io/f/xgvleerr', {
           method: 'POST',
-          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+          headers: {'Accept':'application/json','Content-Type':'application/json'},
           body: JSON.stringify(data)
         });
         orderForm.reset(); addrRow.style.display = 'none'; totalEl.textContent = '250 ₽';
@@ -514,40 +493,41 @@
 
     // ОТЗЫВЫ
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAaB9udbz_EHUWPqvSca8Ve3p_D_8thmGDv1MZOLQzJ09vStTb6A89Gizp9zEePdMj/exec';
-    function stars(n) { return '★'.repeat(n) + '☆'.repeat(5-n); }
-    async function loadReviews() {
+    function stars(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
+    async function loadReviews(){
       const track = document.getElementById('reviewsTrack');
-      try {
+      try{
         const res = await fetch(SCRIPT_URL + '?limit=10');
         const json = await res.json();
         const items = (json.items || []).reverse();
-        track.innerHTML = items.map((r, i) => `
+        track.innerHTML = items.map((r,i)=>`
           <div class="review-mini" onclick="showReview(${i})">
-            <div class="mini-head" style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
               <strong>${r.name}</strong>
               <span class="stars">${stars(r.rating)}</span>
             </div>
-            <div class="mini-text" style="font-size:0.9rem; overflow:hidden;">${r.text}</div>
+            <div style="font-size:0.9rem;overflow:hidden;">${r.text}</div>
           </div>`).join('');
         window.revs = items;
-      } catch (e) { track.innerHTML = 'Отзывы временно недоступны.'; }
+      }catch(e){
+        track.innerHTML = 'Отзывы временно недоступны.';
+      }
     }
-    window.showReview = (i) => {
+    window.showReview = (i)=>{
       const r = window.revs[i];
       document.getElementById('modalName').textContent = r.name;
       document.getElementById('modalStars').textContent = stars(r.rating);
       document.getElementById('modalText').textContent = r.text;
       document.getElementById('reviewModal').showModal();
     };
-    document.getElementById('modalClose').onclick = () => document.getElementById('reviewModal').close();
+    document.getElementById('modalClose').onclick = ()=>document.getElementById('reviewModal').close();
     loadReviews();
 
-    // ====== ГИРЛЯНДА: лампы "приклеены" к проводу физически ======
-    // Мы берём точку и угол касательной на path, ставим туда лампу и ориентируем её.
+    // ====== ГИРЛЯНДА: лампы “приклеены” к проводу ======
     (function buildGarland(){
       const svg = document.querySelector('.garland');
-      const wire = svg.querySelector('#wirePath');
-      const mount = svg.querySelector('#bulbs');
+      const wire = svg?.querySelector('#wirePath');
+      const mount = svg?.querySelector('#bulbs');
       if(!svg || !wire || !mount) return;
 
       const colors = [
@@ -557,14 +537,12 @@
         { c:'#2196f3', cls:'blink-a' },
       ];
 
-      // сколько ламп и где они сидят по длине провода (0..1)
-      const offsets = [0.06,0.13,0.21,0.29,0.38,0.47,0.56,0.66,0.76,0.86,0.93];
+      // сделали крайние ещё “безопаснее”, чтобы точно не попадали в край
+      const offsets = [0.08,0.15,0.23,0.31,0.40,0.49,0.58,0.68,0.78,0.88,0.94];
 
       const L = wire.getTotalLength();
 
       function bulbSVG(color, cls){
-        // лампа рисуется так: (0,0) — точка крепления к проводу.
-        // ниже идёт короткий проводок, патрон и колба.
         return `
           <g class="bulb ${cls}" filter="url(#softShadow)">
             <path d="M0 0 L0 12" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
@@ -578,31 +556,21 @@
 
       function angleAt(t){
         const p = wire.getPointAtLength(t);
-        const p2 = wire.getPointAtLength(Math.min(L, t + 1)); // небольшой шаг
-        const dx = p2.x - p.x;
-        const dy = p2.y - p.y;
-        const a = Math.atan2(dy, dx) * 180 / Math.PI;
+        const p2 = wire.getPointAtLength(Math.min(L, t + 1));
+        const a = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
         return { x:p.x, y:p.y, a };
       }
 
-      // чистим и строим заново (на случай перерендера)
       mount.innerHTML = '';
-
-      offsets.forEach((o, i) => {
+      offsets.forEach((o,i)=>{
         const t = o * L;
-        const {x, y, a} = angleAt(t);
-
+        const {x,y,a} = angleAt(t);
         const pick = colors[i % colors.length];
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-        // Поворачиваем лампу так, чтобы её "подвес" был вертикальным вниз,
-        // но чуть учитываем наклон провода: крепление остаётся на проводе.
-        // (Визуально: патрон висит вниз, не "торчит" в сторону)
-        const tilt = a * 0.35; // лёгкая коррекция под наклон провода
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        const tilt = a * 0.35; // лёгкая физичность: подвес чуть повторяет наклон провода
         g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt})`);
-
         g.innerHTML = bulbSVG(pick.c, pick.cls);
-
         mount.appendChild(g);
       });
     })();
@@ -611,19 +579,19 @@
     (function(){
       const cvs = document.getElementById('snow-canvas');
       const ctx = cvs.getContext('2d');
-      let w, h, flakes = [];
-      function resize() { w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight; }
+      let w,h,flakes=[];
+      function resize(){ w=cvs.width=window.innerWidth; h=cvs.height=window.innerHeight; }
       window.addEventListener('resize', resize); resize();
-      for(let i=0; i<80; i++) flakes.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*3+1, s:Math.random()*1+0.5});
-      function draw() {
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = "#fff";
+      for(let i=0;i<80;i++) flakes.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*3+1,s:Math.random()*1+0.5});
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        ctx.fillStyle="#fff";
         ctx.beginPath();
-        for(let f of flakes) {
-          ctx.moveTo(f.x, f.y);
-          ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
+        for(const f of flakes){
+          ctx.moveTo(f.x,f.y);
+          ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
           f.y += f.s;
-          if(f.y > h) f.y = -10;
+          if(f.y>h) f.y=-10;
         }
         ctx.fill();
         requestAnimationFrame(draw);
