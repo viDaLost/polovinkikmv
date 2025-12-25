@@ -77,9 +77,8 @@
       line-height: 1.6;
       text-align: center;
       overflow-x: hidden;
-      position: relative;
+      position: relative; 
     }
-
     /* — бумажная фактура и мягкие подсветки — */
     body::before {
       content: "";
@@ -105,130 +104,52 @@
 
     .container { width: var(--container); margin-inline: auto; position: relative; z-index: 2; }
 
-    /* ====== НОВОГОДНИЕ СТИЛИ ====== */
-
+    /* ====== НОВОГОДНИЕ СТИЛИ (Снежные шапки) ====== */
+    
     /* 1. Канвас для падающего снега */
     #snow-canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      pointer-events: none;
+      pointer-events: none; /* Пропускает клики сквозь себя */
       z-index: 9999;
     }
 
-    /* 2) “Сугроб” по верхней кромке секций (добавим реализма) */
-    section { position: relative; }
-    section.snow-top::before{
-      content:"";
-      position:absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 0;
-      width: min(980px, 92vw);
-      height: 26px;
-      pointer-events:none;
-      z-index: 4;
-
-      background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 30' preserveAspectRatio='none'%3E%3Cpath d='M0 30 C 10 20 18 6 32 14 C 44 20 54 6 70 13 C 86 20 92 5 108 12 C 124 19 136 8 150 14 C 156 17 159 22 160 30 Z' fill='white'/%3E%3C/svg%3E") repeat-x,
-        linear-gradient(to bottom, rgba(255,255,255,0.92), rgba(255,255,255,0.60));
-      background-size: 140px 100%, 100% 100%;
-      border-radius: 999px;
-
-      box-shadow:
-        0 14px 26px rgba(0,0,0,0.07),
-        0 2px 0 rgba(255,255,255,0.65) inset;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));
-      opacity: .95;
+    /* 2. Реалистичная снежная шапка для заголовков */
+    .snow-cap {
+      position: relative;
+      display: inline-block; /* Чтобы сугроб был по ширине текста */
+    }
+    .snow-cap::before {
+      content: "";
+      position: absolute;
+      /* Позиционирование сугроба сверху */
+      top: -18px; 
+      left: -5%;
+      width: 110%; /* Чуть шире текста */
+      height: 28px;
+      /* Рисуем сугроб через SVG */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 25 C 20 25, 30 40, 50 25 C 70 10, 90 35, 110 20 C 130 5, 150 30, 170 15 C 185 5, 195 20, 200 15 L 200 0 L 0 0 Z' fill='white'/%3E");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0 3px 2px rgba(0,0,0,0.08)); /* Мягкая тень для объема */
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.98;
     }
 
-    /* Лёгкое “дыхание” сугроба при скролле (без фанатизма) */
-    section.snow-top::before{
-      animation: snowDrift 6.5s ease-in-out infinite;
-      transform-origin: 50% 0%;
-    }
-    @keyframes snowDrift{
-      0%,100% { transform: translateX(-50%) translateY(0) scaleX(1); }
-      50%     { transform: translateX(-50%) translateY(1px) scaleX(1.01); }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      section.snow-top::before{ animation:none; }
-    }
-
-    /* Снег на кнопках (оставляем — выглядит круто) */
-    .btn { position: relative; }
+    /* Снег на кнопках (оставляем как аккуратный акцент) */
+    .btn { position: relative; } 
     .btn::before {
       content: "";
       position: absolute;
-      top: -8px; left: 10px; right: 10px;
-      height: 12px;
-      background: radial-gradient(ellipse at center, #fff 40%, rgba(255,255,255,0.8) 100%);
-      border-radius: 50% 50% 20% 20%;
-      box-shadow: 0 -2px 5px rgba(255,255,255,0.8);
-      pointer-events: none;
-      opacity: 0.95;
-    }
-    .btn::after {
-      content: "";
-      position: absolute;
-      top: -10px; right: 15px;
-      width: 14px; height: 10px;
+      top: -6px; left: 12px; right: 12px;
+      height: 10px;
       background: #fff;
-      border-radius: 50%;
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 1px 3px rgba(255,255,255,0.8);
       pointer-events: none;
-    }
-
-    /* У прозрачных кнопок снег убираем */
-    .btn-outline::before, .btn-outline::after { display:none; }
-
-    /* ====== СНЕЖНАЯ ШАПКА (только .snowcap) ====== */
-    .snowcap{
-      position: relative;
-      display: inline-block;
-      width: max-content;
-      max-width: 100%;
-      padding-top: 10px;
-      z-index: 3;
-    }
-    .snowcap::before{
-      content:"";
-      position:absolute;
-      left:-6px; right:-6px;
-      top:-16px;
-      height: 26px;
-
-      background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 34' preserveAspectRatio='none'%3E%3Cpath d='M0 34 C 10 26 16 10 28 18 C 40 26 48 8 62 16 C 78 24 84 6 98 14 C 112 22 120 10 132 18 C 136 21 139 28 140 34 Z' fill='white'/%3E%3C/svg%3E") repeat-x,
-        linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(255,255,255,0.86));
-
-      background-size: 120px 100%, 100% 100%;
-      background-position: center bottom, center center;
-      border-radius: 18px 18px 14px 14px;
-
-      box-shadow:
-        0 10px 22px rgba(0,0,0,0.08),
-        0 2px 0 rgba(255,255,255,0.75) inset;
-
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.06));
-      pointer-events:none;
-      z-index: 1;
-      opacity: 0.92;
-    }
-    .snowcap::after{
-      content:"";
-      position:absolute;
-      top:-10px;
-      left: 8%;
-      width: 14px; height: 10px;
-      background: rgba(255,255,255,0.98);
-      border-radius: 50%;
-      box-shadow:
-        26px 6px 0 -2px rgba(255,255,255,0.98),
-        54px 2px 0 -3px rgba(255,255,255,0.95),
-        82px 7px 0 -2px rgba(255,255,255,0.98);
-      pointer-events:none;
-      z-index: 2;
+      opacity: 0.9;
     }
 
     /* ====== /НОВОГОДНИЕ СТИЛИ ====== */
@@ -238,8 +159,8 @@
     p  { font-size: var(--p); margin: 0 auto 1em; }
     section { padding: clamp(24px, 5vw, 56px) 0; }
 
-    /* ====== HERO ====== */
-    .hero { text-align: left; position: relative; z-index: 5; }
+    /* ====== HERO (главный экран) ====== */
+    .hero { text-align: left; position: relative; z-index: 5; margin-top: 40px; }
     .hero-grid {
       display: grid;
       gap: clamp(16px, 3vw, 40px);
@@ -267,14 +188,13 @@
       transition: background .25s ease, transform .08s ease, box-shadow .25s ease, filter .2s ease;
       box-shadow: 0 6px 18px rgba(212,175,150,.35);
       backdrop-filter: saturate(110%);
-      border: none;
-      cursor: pointer;
     }
     .btn:hover { background-color: var(--accent-2); box-shadow: 0 8px 24px rgba(212,175,150,.45); transform: translateY(-1px); filter: brightness(1.02); }
     .btn:active { transform: translateY(0); box-shadow: 0 6px 18px rgba(212,175,150,.35); }
     .btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
 
     .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); box-shadow: none; }
+    .btn-outline::before, .btn-outline::after { display: none; }
     .btn-outline:hover { background: var(--panel); }
 
     footer { padding: 28px 0; background-color: var(--footer); font-size: .95rem; color: #5a4a3a; position: relative; z-index: 5; }
@@ -418,7 +338,7 @@
       input, select, textarea { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.08); }
       .strip-btn { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.12); }
     }
-
+    
     /* Доп. стили для моб. версии */
     @media (max-width: 640px){
       .hero .btn[aria-label]{ position: sticky; bottom: 12px; z-index: 9000; }
@@ -434,13 +354,13 @@
 
   <canvas id="snow-canvas"></canvas>
 
-  <section class="fade-in hero snow-top">
+  <section class="fade-in hero">
     <div class="container hero-grid">
       <div class="logo-wrap">
         <img src="logo.png" alt="Логотип Половинки" class="logo" loading="lazy" decoding="async" width="560" height="560">
       </div>
       <div>
-        <h1 class="snowcap">Половинки</h1>
+        <h1 class="snow-cap">Половинки</h1>
         <h2>Домашняя кондитерская</h2>
         <p class="lead"><em>Орешки — десерт, в котором встречаются вкус и воспоминания.</em></p>
         <p class="lead">Нежное тесто, золотистая выпечка и тягучая начинка из варёной сгущёнки с грецким орехом. Каждый орешек — маленькая история радости, которой хочется поделиться.</p>
@@ -451,7 +371,7 @@
 
   <div class="divider"></div>
 
-  <section class="fade-in snow-top">
+  <section class="fade-in">
     <div class="container">
       <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
         Мы готовим только одно лакомство, доведённое до совершенства — орешки.
@@ -464,9 +384,9 @@
 
   <div class="divider"></div>
 
-  <section id="order" class="fade-in snow-top" aria-labelledby="order-title">
+  <section id="order" class="fade-in" aria-labelledby="order-title">
     <div class="container">
-      <h1 id="order-title" class="snowcap" style="margin-bottom:.2em; text-align:center;">Оформление заказа</h1>
+      <h1 id="order-title" class="snow-cap" style="margin-bottom:.2em; text-align:center;">Оформление заказа</h1>
       <p class="muted" style="margin-bottom:1.2em; text-align:center;">
         Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>250 ₽ за коробку</strong>
       </p>
@@ -538,9 +458,9 @@
 
   <div class="divider"></div>
 
-  <section id="reviews-section" class="fade-in snow-top" aria-labelledby="reviews-title">
+  <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <div class="container">
-      <h1 id="reviews-title" class="snowcap" style="margin-bottom:.2em; text-align:center;">Отзывы</h1>
+      <h1 id="reviews-title" class="snow-cap" style="margin-bottom:.2em; text-align:center;">Отзывы</h1>
       <p class="muted" style="margin-bottom:1.2em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
 
       <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
@@ -609,7 +529,7 @@
     </div>
   </dialog>
 
-  <footer class="fade-in snow-top">
+  <footer class="fade-in">
     <div class="container">
       <p><strong>Половинки</strong> — домашняя кондитерская</p>
       <p>Пусть этот Новый год будет сладким!</p>
@@ -860,154 +780,99 @@
     fetchReviews();
 
     // ============================================
-    // === СНЕГОПАД (CANVAS) — улучшенная версия ===
+    // === ОБНОВЛЕННЫЙ СКРИПТ ПАДАЮЩЕГО СНЕГА ===
     // ============================================
     (function(){
       const canvas = document.getElementById('snow-canvas');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d', { alpha: true });
+      const ctx = canvas.getContext('2d');
+      
+      let width, height;
+      let snowflakes = [];
+      const mouse = { x: -100, y: -100 };
 
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      let w = 0, h = 0, dpr = 1;
-      const flakes = [];
-      const mouse = { x: -9999, y: -9999 };
-      const isMobile = window.matchMedia('(max-width:600px)').matches;
-
-      const LAYERS = [
-        { count: isMobile ? 40 : 70,  size:[0.7, 1.6], speed:[0.35, 0.85], sway:[0.3, 0.9],  alpha:[0.25,0.45] },
-        { count: isMobile ? 35 : 60,  size:[1.0, 2.2], speed:[0.70, 1.35], sway:[0.6, 1.6],  alpha:[0.35,0.65] },
-        { count: isMobile ? 20 : 35,  size:[1.6, 3.2], speed:[1.10, 2.10], sway:[1.1, 2.6],  alpha:[0.45,0.85] },
-      ];
-
-      let wind = 0.0;
-      let windTarget = 0.0;
-      let windTimer = 0;
-
-      function rand(a,b){ return a + Math.random()*(b-a); }
-      function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-
-      function resize(){
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        w = Math.floor(window.innerWidth);
-        h = Math.floor(window.innerHeight);
-        canvas.width  = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = w + 'px';
-        canvas.style.height = h + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Настройки снега
+      const SNOW_COUNT = window.matchMedia('(max-width:600px)').matches ? 60 : 120;
+      const MAX_RADIUS = 3.5;
+      const MIN_RADIUS = 0.8;
+      
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
       }
-      window.addEventListener('resize', resize, { passive:true });
+      window.addEventListener('resize', resize);
       resize();
 
-      window.addEventListener('mousemove', (e)=>{
-        mouse.x = e.clientX; mouse.y = e.clientY;
-      }, { passive:true });
+      window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0]; mouse.x = touch.clientX; mouse.y = touch.clientY;
+      }, {passive: true});
 
-      window.addEventListener('touchmove', (e)=>{
-        const t = e.touches && e.touches[0];
-        if(!t) return;
-        mouse.x = t.clientX; mouse.y = t.clientY;
-      }, { passive:true });
+      class Snowflake {
+        constructor() { this.init(true); }
 
-      class Flake {
-        constructor(layer){
-          this.layer = layer;
-          this.reset(true);
-        }
-        reset(initial=false){
-          this.r = rand(this.layer.size[0], this.layer.size[1]);
-          this.x = rand(0, w);
-          this.y = initial ? rand(0, h) : rand(-40, -10);
-
-          this.speed = rand(this.layer.speed[0], this.layer.speed[1]);
-          this.alpha = rand(this.layer.alpha[0], this.layer.alpha[1]);
-
-          this.sway = rand(this.layer.sway[0], this.layer.sway[1]);
-          this.phase = rand(0, Math.PI*2);
-
-          this.vx = 0;
-          this.vy = 0;
-
-          this.glow = Math.random() < 0.08;
+        init(startRandom = false) {
+          this.x = Math.random() * width;
+          this.y = startRandom ? Math.random() * height : -10;
+          this.radius = Math.random() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS;
+          this.speed = Math.random() * 1.5 + 0.5; // Скорость падения
+          this.swaySpeed = Math.random() * 0.05 + 0.01; // Скорость покачивания
+          this.swayAmplitude = Math.random() * 20 + 10; // Амплитуда покачивания
+          this.angle = Math.random() * Math.PI * 2; // Текущий угол для синусоиды
+          this.opacity = Math.random() * 0.6 + 0.3;
+          this.vx = 0; this.vy = 0; // Инерция от мыши
         }
 
-        step(dt){
-          this.x += (wind * 18) * dt;
+        update() {
+          // Синусоидальное движение (покачивание) + падение вниз
+          this.angle += this.swaySpeed;
+          const swayOffset = Math.sin(this.angle) * 0.5;
 
-          this.phase += dt * rand(0.6, 1.1);
-          this.x += Math.sin(this.phase) * this.sway * dt * 24;
+          this.y += this.speed + this.vy;
+          this.x += swayOffset + this.vx;
 
-          this.y += (this.speed + this.vy) * dt * 60;
-          this.x += this.vx * dt * 60;
+          // Инерция от мыши затухает
+          this.vx *= 0.95;
+          this.vy *= 0.95;
 
-          this.vx *= 0.94;
-          this.vy *= 0.94;
-
+          // Взаимодействие с мышью
           const dx = this.x - mouse.x;
           const dy = this.y - mouse.y;
-          const dist2 = dx*dx + dy*dy;
-          const R = 110;
-          if(dist2 < R*R){
-            const dist = Math.sqrt(dist2) || 1;
-            const force = (R - dist) / R;
-            const nx = dx / dist;
-            const ny = dy / dist;
-            const push = (force * 3.8) * (1.2 - (this.r/3.2)*0.4);
-            this.vx += nx * push;
-            this.vy += ny * push;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            const force = (100 - dist) / 100;
+            const angle = Math.atan2(dy, dx);
+            const push = force * 3;
+            this.vx += Math.cos(angle) * push;
+            this.vy += Math.sin(angle) * push;
           }
 
-          if(this.y > h + 20) this.reset(false);
-          if(this.x < -30) this.x = w + 20;
-          if(this.x > w + 30) this.x = -20;
+          // Если снежинка улетела вниз или далеко вбок
+          if (this.y > height + 10 || this.x > width + 20 || this.x < -20) {
+            this.init(false);
+          }
         }
 
-        draw(){
+        draw() {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
-          const a = this.alpha * (this.glow ? 1.15 : 1.0);
-          ctx.fillStyle = `rgba(255,255,255,${clamp(a,0,1)})`;
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
           ctx.fill();
         }
       }
 
-      // создаём снежинки
-      LAYERS.forEach(layer=>{
-        for(let i=0;i<layer.count;i++) flakes.push(new Flake(layer));
-      });
-
-      function updateWind(){
-        if(prefersReduced) { wind = 0; return; }
-        windTimer -= 1;
-        if(windTimer <= 0){
-          windTimer = Math.floor(rand(60, 160));
-          windTarget = rand(-0.22, 0.22);
-        }
-        wind += (windTarget - wind) * 0.02;
+      for (let i = 0; i < SNOW_COUNT; i++) {
+        snowflakes.push(new Snowflake());
       }
 
-      let last = performance.now();
-      function frame(now){
-        const dt = clamp((now - last) / 1000, 0.0, 0.033);
-        last = now;
-
-        ctx.clearRect(0,0,w,h);
-        updateWind();
-
-        for(const f of flakes){
-          f.step(dt);
-          f.draw();
-        }
-
-        if(!prefersReduced) requestAnimationFrame(frame);
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        snowflakes.forEach(flake => {
+          flake.update();
+          flake.draw();
+        });
+        requestAnimationFrame(animate);
       }
-
-      if(!prefersReduced) requestAnimationFrame(frame);
-      else {
-        ctx.clearRect(0,0,w,h);
-        flakes.forEach(f=>{ f.draw(); });
-      }
+      animate();
     })();
   </script>
 </body>
