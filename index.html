@@ -52,17 +52,13 @@
       background-image:url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
     }
 
-    /* ====== ГИРЛЯНДА (СКРОЛЛИТСЯ) ======
-       Главное исправление “две лампы не видно”:
-       - расширили viewBox (есть запас слева/справа)
-       - убрали клиппинг (overflow: visible)
-    */
+    /* ====== ГИРЛЯНДА (СКРОЛЛИТСЯ) ====== */
     .garland-wrap{
       position:absolute;
       top:-10px; left:0; width:100%;
       z-index:20;
       pointer-events:none;
-      overflow:visible;              /* ВАЖНО */
+      overflow:visible;
       filter:drop-shadow(0 8px 16px rgba(0,0,0,0.12));
       transform-origin:top center;
       animation:garlandSway 6.8s ease-in-out infinite;
@@ -71,7 +67,7 @@
       width:100%;
       height:180px;
       display:block;
-      overflow:visible;              /* ВАЖНО */
+      overflow:visible;
     }
     @keyframes garlandSway{
       0%,100%{transform:translateY(0) rotate(0deg)}
@@ -109,6 +105,7 @@
     .container{width:var(--container);margin-inline:auto;position:relative;z-index:2}
     section{padding:clamp(40px,6vw,80px) 0}
 
+    /* ====== КНОПКИ ====== */
     .btn{
       display:inline-block;
       padding:1em 2.4em;
@@ -125,6 +122,7 @@
       transition:all .3s cubic-bezier(.25,.8,.25,1);
       position:relative;
       overflow:hidden;
+      cursor:pointer;
     }
     .btn::after{
       content:"";
@@ -135,6 +133,7 @@
     }
     .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,42,42,.6)}
     .btn:hover::after{left:100%}
+    .btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
 
     .btn-outline{
       background:transparent;
@@ -145,9 +144,12 @@
       border-radius:50px;
       text-decoration:none;
       font-weight:600;
+      cursor:pointer;
+      display:inline-block;
     }
     .btn-outline:hover{background:var(--xmas-green);color:#fff}
 
+    /* ====== HERO ====== */
     .hero{margin-top:50px}
     .hero-grid{display:grid;gap:40px;align-items:center}
     @media (min-width:900px){.hero-grid{grid-template-columns:1fr 1fr;text-align:left}}
@@ -160,6 +162,7 @@
       border:4px solid #fff;
     }
 
+    /* ====== КАРТОЧКИ / ФОРМА ====== */
     .card,.reviews-card{
       background:#fff;
       border-radius:var(--radius);
@@ -179,6 +182,8 @@
     .grid{display:grid;gap:20px}
     @media (min-width:700px){.grid{grid-template-columns:1fr 1fr}}
 
+    .row{display:flex;flex-direction:column}
+
     label{display:block;font-size:.95rem;color:var(--muted);margin-bottom:8px;font-weight:600}
     input,select,textarea{
       width:100%;
@@ -190,6 +195,11 @@
       font-size:1rem;
       color:var(--fg);
       transition:all .2s;
+      outline:none;
+    }
+    input:focus,select:focus,textarea:focus{
+      border-color: rgba(47,93,67,0.45);
+      box-shadow: 0 0 0 4px rgba(47,93,67,0.10);
     }
 
     .summary{
@@ -197,7 +207,7 @@
       border:2px dashed #e6cfaa;
       padding:16px;
       border-radius:12px;
-      margin-top:10px;
+      margin-top:12px;
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -205,7 +215,11 @@
       gap:10px;
     }
     .summary strong{color:var(--xmas-red);font-size:1.2em}
+    .muted{color:var(--muted)}
+    .actions{display:flex;justify-content:center;margin-top:18px}
+    .note{margin-top:12px;color:var(--xmas-green);text-align:center}
 
+    /* ====== ПРОЧЕЕ ====== */
     .divider{display:flex;align-items:center;justify-content:center;margin:40px auto;gap:10px;opacity:.6}
     .divider::before,.divider::after{content:"";height:1px;width:60px;background:var(--gold)}
     .divider span{font-size:20px;color:var(--gold)}
@@ -236,7 +250,6 @@
 
   <!-- ГИРЛЯНДА -->
   <div class="garland-wrap" aria-hidden="true">
-    <!-- расширили viewBox: есть запас слева/справа -> крайние лампы НЕ исчезают -->
     <svg class="garland" viewBox="-80 0 1360 190" preserveAspectRatio="none" style="overflow:visible">
       <defs>
         <linearGradient id="wireGrad" x1="0" x2="0" y1="0" y2="1">
@@ -262,15 +275,12 @@
           <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.28)"/>
         </filter>
 
-        <!-- путь провода (координаты теперь внутри расширенного viewBox) -->
         <path id="wirePath" d="M-60,28 C 260,132 480,6 720,98 C 940,182 1080,50 1280,110" />
       </defs>
 
-      <!-- провод -->
       <use href="#wirePath" fill="none" stroke="url(#wireGrad)" stroke-width="4.6" stroke-linecap="round" opacity="0.95"/>
       <use href="#wirePath" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.4" stroke-linecap="round" opacity="0.65" transform="translate(0,-2)"/>
 
-      <!-- лампы строим JS-ом и "приклеиваем" к проводу -->
       <g id="bulbs"></g>
     </svg>
   </div>
@@ -286,7 +296,7 @@
         <p><em>Орешки — вкус, который возвращает в детство.</em></p>
         <p>Хрустящая скорлупка, нежное тесто и много варёной сгущёнки с грецким орехом. Идеальное угощение к праздничному чаепитию или в подарок близким под ёлочку.</p>
 
-        <!-- КНОПКА “СДЕЛАТЬ ЗАКАЗ” (вернул) -->
+        <!-- КНОПКА “СДЕЛАТЬ ЗАКАЗ” -->
         <a href="#order" class="btn">Сделать заказ</a>
       </div>
     </div>
@@ -305,72 +315,85 @@
 
   <div class="divider"><span>🎄</span></div>
 
-  <section id="order" class="fade-in">
+  <!-- ======= ФОРМА ЗАКАЗА (АДАПТИРОВАНА И ВСТАВЛЕНА) ======= -->
+  <section id="order" class="fade-in" aria-labelledby="order-title">
     <div class="container">
-      <h1 class="snow-cap" style="text-align:center;">Оформление заказа</h1>
-      <p style="text-align:center; color:var(--muted); margin-bottom: 2em;">
-        Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong style="color:var(--xmas-red);">250 ₽</strong>
+      <h1 id="order-title" class="snow-cap" style="margin-bottom:.2em; text-align:center;">Оформление заказа</h1>
+      <p class="muted" style="margin-bottom:1.2em; text-align:center;">
+        Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>250 ₽ за коробку</strong>
       </p>
 
-      <div class="card">
-        <form id="order-form" novalidate>
+      <div class="card" role="region" aria-label="Форма заказа">
+        <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
           <div class="grid">
-            <div>
-              <label for="name">Ваше имя*</label>
-              <input id="name" name="name" required placeholder="Как к вам обращаться?">
+            <div class="row">
+              <label for="name">Имя и фамилия*</label>
+              <input id="name" name="name" required autocomplete="name">
             </div>
-            <div>
-              <label for="phone">Телефон*</label>
-              <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 000-00-00">
+
+            <div class="row">
+              <label for="phone">Телефон для связи*</label>
+              <input id="phone" name="phone" inputmode="tel" required
+                     placeholder="+7 999 123-45-67"
+                     pattern="^[\\d\\+\\-\\s\\(\\)]{7,}$"
+                     autocomplete="tel">
             </div>
-            <div>
-              <label for="social">WhatsApp / Telegram</label>
-              <input id="social" name="social" placeholder="Для подтверждения">
+
+            <div class="row">
+              <label for="social">Соцсети (WhatsApp/Telegram)</label>
+              <input id="social" name="social" placeholder="+7 999 123-45-67 или @username">
             </div>
-            <div>
-              <label for="qty">Сколько коробочек?*</label>
-              <select id="qty" name="qty">
-                <option value="1">1 коробка (6 шт)</option>
-                <option value="2">2 коробки (12 шт)</option>
-                <option value="3">3 коробки (18 шт)</option>
-                <option value="4">4 коробки (24 шт)</option>
-                <option value="5">5 коробок (30 шт)</option>
+
+            <div class="row">
+              <label for="qty">Количество коробочек*</label>
+              <select id="qty" name="qty" required>
+                <option value="1" selected>1 коробка — 6 шт</option>
+                <option value="2">2 коробки — 12 шт</option>
+                <option value="3">3 коробки — 18 шт</option>
+                <option value="4">4 коробки — 24 шт</option>
+                <option value="5">5 коробок — 30 шт</option>
               </select>
             </div>
-            <div>
-              <label for="date">Дата получения*</label>
+
+            <div class="row">
+              <label for="date">Желаемая дата получения*</label>
               <input type="date" id="date" name="date" required>
             </div>
-            <div>
+
+            <div class="row">
               <label for="time">Время (ориентир)</label>
               <input type="time" id="time" name="time">
             </div>
-            <div style="grid-column: 1/-1;">
-              <label for="method">Способ получения</label>
+
+            <div class="row" style="grid-column: 1 / -1;">
+              <label for="method">Способ получения (если заказ &lt; 15 упаковок, доставка платная)</label>
               <select id="method" name="method">
-                <option value="pickup">Самовывоз (бесплатно)</option>
-                <option value="delivery">Доставка (по тарифу такси)</option>
+                <option value="pickup" selected>Самовывоз</option>
+                <option value="delivery">Доставка</option>
               </select>
             </div>
-            <div id="address-row" style="grid-column: 1/-1; display:none;">
+
+            <div class="row" id="address-row" style="display:none; grid-column: 1 / -1;">
               <label for="address">Адрес доставки</label>
-              <input id="address" name="address" placeholder="Улица, дом, подъезд">
+              <input id="address" name="address" placeholder="Город, улица, дом, подъезд" autocomplete="street-address">
             </div>
-            <div style="grid-column: 1/-1;">
-              <label for="comment">Комментарий / Пожелание</label>
-              <textarea id="comment" name="comment" rows="2" placeholder="Нужна ли открытка?"></textarea>
+
+            <div class="row" style="grid-column: 1 / -1;">
+              <label for="comment">Комментарий к заказу</label>
+              <textarea id="comment" name="comment" rows="3" placeholder="Пожелания по времени, подписать открытку и т.д."></textarea>
             </div>
           </div>
 
-          <div class="summary">
+          <div class="summary" aria-live="polite">
             <span>Итого: <strong id="total-text">250 ₽</strong></span>
-            <small style="color:var(--muted)">Оплата при получении</small>
+            <span class="muted">250 ₽ × <span id="qty-text">1</span> короб.</span>
           </div>
 
-          <div style="margin-top:20px; text-align:center;">
-            <button id="submit-btn" type="submit" class="btn" style="width:100%; max-width:300px;">Отправить заказ</button>
+          <div class="actions">
+            <button id="submit-btn" type="submit" class="btn">Отправить заказ</button>
           </div>
-          <p id="form-status" style="margin-top:10px; color:var(--xmas-green); display:none;"></p>
+
+          <p id="form-status" class="note" style="display:none;"></p>
         </form>
       </div>
     </div>
@@ -414,7 +437,6 @@
       <p style="font-size:1.4rem; font-family:'Playfair Display', serif;">Половинки</p>
       <p>Пусть ваш Новый год будет сладким и уютным!</p>
 
-      <!-- КНОПКА “МЫ В ИНСТАГРАМ” (вернул внизу) -->
       <div class="footer-actions">
         <a class="btn-outline" href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy" target="_blank" rel="noopener">Мы в Instagram</a>
       </div>
@@ -457,37 +479,157 @@
     }, { threshold: 0.1 });
     faders.forEach(f => observer.observe(f));
 
-    // ЛОГИКА ЗАКАЗА
-    const PRICE = 250;
+    // ====== ГИРЛЯНДА: лампы “приклеены” к проводу ======
+    (function buildGarland(){
+      const svg = document.querySelector('.garland');
+      const wire = svg?.querySelector('#wirePath');
+      const mount = svg?.querySelector('#bulbs');
+      if(!svg || !wire || !mount) return;
+
+      const colors = [
+        { c:'#ff4d4d', cls:'blink-a' },
+        { c:'#ffd700', cls:'blink-b' },
+        { c:'#4caf50', cls:'blink-c' },
+        { c:'#2196f3', cls:'blink-a' },
+      ];
+
+      const offsets = [0.08,0.15,0.23,0.31,0.40,0.49,0.58,0.68,0.78,0.88,0.94];
+      const L = wire.getTotalLength();
+
+      function bulbSVG(color, cls){
+        return `
+          <g class="bulb ${cls}" filter="url(#softShadow)">
+            <path d="M0 0 L0 12" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+            <rect x="-7" y="12" width="14" height="10" rx="3" fill="#2b2b2b"/>
+            <rect x="-7" y="12" width="14" height="3" rx="2" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="0" cy="32" r="10.5" fill="${color}" filter="url(#glow)" opacity="0.92"/>
+            <circle cx="0" cy="32" r="9.5" fill="url(#glass)"/>
+          </g>
+        `;
+      }
+
+      function angleAt(t){
+        const p = wire.getPointAtLength(t);
+        const p2 = wire.getPointAtLength(Math.min(L, t + 1));
+        const a = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
+        return { x:p.x, y:p.y, a };
+      }
+
+      mount.innerHTML = '';
+      offsets.forEach((o,i)=>{
+        const t = o * L;
+        const {x,y,a} = angleAt(t);
+        const pick = colors[i % colors.length];
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        const tilt = a * 0.35;
+        g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt})`);
+        g.innerHTML = bulbSVG(pick.c, pick.cls);
+        mount.appendChild(g);
+      });
+    })();
+
+    // ===== Логика формы заказа (ваша, адаптирована без конфликтов) =====
+    const PRICE_PER_BOX = 250;
     const qtyEl = document.getElementById('qty');
-    const totalEl = document.getElementById('total-text');
+    const totalTextEl = document.getElementById('total-text');
+    const qtyTextEl = document.getElementById('qty-text');
     const methodEl = document.getElementById('method');
-    const addrRow = document.getElementById('address-row');
-    const orderForm = document.getElementById('order-form');
+    const addressRow = document.getElementById('address-row');
+    const form = document.getElementById('order-form');
     const statusEl = document.getElementById('form-status');
-    const subBtn = document.getElementById('submit-btn');
+    const submitBtn = document.getElementById('submit-btn');
 
-    qtyEl.addEventListener('change', () => totalEl.textContent = (qtyEl.value * PRICE) + ' ₽');
-    methodEl.addEventListener('change', () => addrRow.style.display = (methodEl.value === 'delivery') ? 'grid' : 'none');
+    // === Параметры Telegram через Google Apps Script ===
+    const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
+    const TG_SECRET = 'PolovinkiKmV25';
 
-    orderForm.addEventListener('submit', async (e) => {
+    function formatRUB(v){
+      try { return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(v); }
+      catch { return Math.round(v)+' ₽'; }
+    }
+    function updateSummary(){
+      const qty = parseInt(qtyEl.value,10) || 1;
+      const total = qty * PRICE_PER_BOX;
+      totalTextEl.textContent = formatRUB(total);
+      qtyTextEl.textContent = String(qty);
+    }
+    qtyEl?.addEventListener('change', updateSummary);
+    updateSummary();
+
+    methodEl?.addEventListener('change', () => {
+      addressRow.style.display = (methodEl.value === 'delivery') ? '' : 'none';
+    });
+
+    form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      subBtn.disabled = true; subBtn.textContent = 'Отправка...';
-      const fd = new FormData(orderForm);
-      const data = Object.fromEntries(fd.entries());
-      data.total = (data.qty * PRICE) + ' ₽';
-      try {
-        await fetch('https://formspree.io/f/xgvleerr', {
-          method: 'POST',
-          headers: {'Accept':'application/json','Content-Type':'application/json'},
-          body: JSON.stringify(data)
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const social = document.getElementById('social').value.trim();
+      const qty = parseInt(qtyEl.value, 10) || 1;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const method = methodEl.value;
+      const address = (document.getElementById('address').value || '').trim();
+      const comment = (document.getElementById('comment').value || '').trim();
+
+      if(!name || !phone || !date){
+        alert('Пожалуйста, заполните имя, телефон и дату получения.');
+        return;
+      }
+      if(method === 'delivery' && !address){
+        alert('Укажите адрес доставки.');
+        return;
+      }
+
+      const total = qty * PRICE_PER_BOX;
+      const payload = {
+        product:'Коробочка орешков (6 шт)',
+        unit_price: PRICE_PER_BOX + ' ₽',
+        quantity: qty,
+        total: total + ' ₽',
+        date, time,
+        method: method === 'pickup' ? 'Самовывоз' : 'Доставка',
+        address: method === 'delivery' ? address : '',
+        name, phone, social, comment
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем...';
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'Отправляем заказ...';
+
+      try{
+        // 1) Formspree
+        const resp = await fetch('https://formspree.io/f/xgvleerr',{
+          method:'POST',
+          headers:{'Accept':'application/json','Content-Type':'application/json'},
+          body: JSON.stringify(payload)
         });
-        orderForm.reset(); addrRow.style.display = 'none'; totalEl.textContent = '250 ₽';
-        statusEl.style.display = 'block'; statusEl.textContent = 'Заказ принят! Спасибо.';
-      } catch (err) {
-        alert('Ошибка сети.');
-        subBtn.disabled = false;
-        subBtn.textContent = 'Отправить заказ';
+
+        // 2) Параллельно — Google Apps Script (Telegram)
+        const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
+        fetch(TG_ENDPOINT, {
+          method:'POST',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body: JSON.stringify(tgPayload)
+        }).catch(err => console.error('TG relay failed:', err));
+
+        if(resp.ok){
+          form.reset();
+          updateSummary();
+          addressRow.style.display = 'none';
+          statusEl.innerHTML = 'Спасибо за заказ! Мы с вами свяжемся…';
+        } else {
+          statusEl.textContent = 'Не удалось отправить заказ. Попробуйте ещё раз или свяжитесь с нами.';
+        }
+      }catch(e){
+        console.error(e);
+        statusEl.textContent = 'Сеть недоступна. Проверьте соединение и попробуйте снова.';
+      }finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить заказ';
       }
     });
 
@@ -522,58 +664,6 @@
     };
     document.getElementById('modalClose').onclick = ()=>document.getElementById('reviewModal').close();
     loadReviews();
-
-    // ====== ГИРЛЯНДА: лампы “приклеены” к проводу ======
-    (function buildGarland(){
-      const svg = document.querySelector('.garland');
-      const wire = svg?.querySelector('#wirePath');
-      const mount = svg?.querySelector('#bulbs');
-      if(!svg || !wire || !mount) return;
-
-      const colors = [
-        { c:'#ff4d4d', cls:'blink-a' },
-        { c:'#ffd700', cls:'blink-b' },
-        { c:'#4caf50', cls:'blink-c' },
-        { c:'#2196f3', cls:'blink-a' },
-      ];
-
-      // сделали крайние ещё “безопаснее”, чтобы точно не попадали в край
-      const offsets = [0.08,0.15,0.23,0.31,0.40,0.49,0.58,0.68,0.78,0.88,0.94];
-
-      const L = wire.getTotalLength();
-
-      function bulbSVG(color, cls){
-        return `
-          <g class="bulb ${cls}" filter="url(#softShadow)">
-            <path d="M0 0 L0 12" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
-            <rect x="-7" y="12" width="14" height="10" rx="3" fill="#2b2b2b"/>
-            <rect x="-7" y="12" width="14" height="3" rx="2" fill="rgba(255,255,255,0.18)"/>
-            <circle cx="0" cy="32" r="10.5" fill="${color}" filter="url(#glow)" opacity="0.92"/>
-            <circle cx="0" cy="32" r="9.5" fill="url(#glass)"/>
-          </g>
-        `;
-      }
-
-      function angleAt(t){
-        const p = wire.getPointAtLength(t);
-        const p2 = wire.getPointAtLength(Math.min(L, t + 1));
-        const a = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI;
-        return { x:p.x, y:p.y, a };
-      }
-
-      mount.innerHTML = '';
-      offsets.forEach((o,i)=>{
-        const t = o * L;
-        const {x,y,a} = angleAt(t);
-        const pick = colors[i % colors.length];
-
-        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-        const tilt = a * 0.35; // лёгкая физичность: подвес чуть повторяет наклон провода
-        g.setAttribute('transform', `translate(${x} ${y}) rotate(${tilt})`);
-        g.innerHTML = bulbSVG(pick.c, pick.cls);
-        mount.appendChild(g);
-      });
-    })();
 
     // СНЕГ
     (function(){
