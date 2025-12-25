@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Половинки — домашняя кондитерская.</title>
+  <title>Половинки — домашняя кондитерская (Новогодняя версия)</title>
   <meta name="description" content="Половинки КМВ — домашняя кондитерская. Орешки с варёной сгущёнкой и грецким орехом. Закажите онлайн: самовывоз и доставка по КМВ.">
 
-  <!-- Индексация -->
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://polovinkikmv.ru/">
 
-  <!-- Favicon & PWA -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -19,17 +17,14 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#f6f1eb">
 
-  <!-- Open Graph (для превью в мессенджерах) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://polovinkikmv.ru/">
   <meta property="og:title" content="Половинки — домашняя кондитерская КМВ">
   <meta property="og:description" content="Орешки с варёной сгущёнкой. Закажите онлайн: самовывоз и доставка по КМВ.">
   <meta property="og:image" content="https://polovinkikmv.ru/android-chrome-512x512.png">
 
-  <!-- Шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Schema.org: LocalBusiness/Bakery -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -82,6 +77,7 @@
       line-height: 1.6;
       text-align: center;
       overflow-x: hidden;
+      position: relative; /* Для позиционирования снега */
     }
     /* — бумажная фактура и мягкие подсветки — */
     body::before {
@@ -106,7 +102,122 @@
       background-size: 280px 280px;
     }
 
-    .container { width: var(--container); margin-inline: auto; }
+    .container { width: var(--container); margin-inline: auto; position: relative; z-index: 2; }
+
+    /* ====== НОВОГОДНИЕ СТИЛИ (Снежные шапки) ====== */
+    
+    /* 1. Канвас для падающего снега */
+    #snow-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; /* Пропускает клики сквозь себя */
+      z-index: 9999;
+    }
+
+    /* 2. Общий стиль сугроба */
+    .snow-pile {
+      position: relative;
+    }
+    .snow-pile::before {
+      content: "";
+      position: absolute;
+      background: #ffffff;
+      border-radius: 50%;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Снег на кнопках */
+    .btn { position: relative; } /* Чтобы сугроб позиционировался относительно кнопки */
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: -8px; left: 10px; right: 10px;
+      height: 12px;
+      background: radial-gradient(ellipse at center, #fff 40%, rgba(255,255,255,0.8) 100%);
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 -2px 5px rgba(255,255,255,0.8);
+      pointer-events: none;
+      opacity: 0.95;
+    }
+    /* Доп. маленькие комочки на кнопке для реализма */
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: -10px; right: 15px;
+      width: 14px; height: 10px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Снег на заголовках (H1, H2) */
+    /* Делаем заголовки inline-block или max-content, чтобы снег лежал на тексте, а не на всей ширине */
+    h1, h2 {
+      position: relative;
+      display: inline-block; /* Важно: сугроб по ширине текста */
+      width: max-content;
+      max-width: 100%;
+    }
+    /* Шапка снега на заголовке */
+    h1::before, h2::before {
+      content: "";
+      position: absolute;
+      top: -10px; left: 0;
+      width: 100%;
+      height: 14px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 20 C 10 5, 20 20, 30 10 C 40 0, 50 15, 60 5 C 70 15, 80 0, 90 10 C 95 15, 100 20, 100 20 Z' fill='white'/%3E") repeat-x;
+      background-size: 50px 100%;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.05));
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+    }
+    /* На H1 снег побольше */
+    h1::before { top: -14px; height: 20px; background-size: 70px 100%; }
+
+    /* Снег на Логотипе */
+    .logo-wrap { position: relative; display: inline-block; }
+    .logo-wrap::after {
+      content: "";
+      position: absolute;
+      top: -4%; 
+      left: 15%;
+      width: 70%;
+      height: 15%;
+      background: radial-gradient(farthest-side at 50% 100%, white, transparent);
+      background-color: #fff;
+      border-radius: 50% 50% 40% 40% / 80% 80% 30% 30%;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+      pointer-events: none;
+    }
+    /* Добавляем "шапочку" Деда Мороза или просто снежный ком сбоку на лого */
+    .logo-wrap::before {
+      content: "";
+      position: absolute;
+      top: 0%; right: 20%;
+      width: 25px; height: 25px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: -30px 5px 0 -5px #fff;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Гирлянда сверху */
+    .garland {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 36px;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='30' viewBox='0 0 60 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 Q 30 25 60 0' stroke='%233e2c23' stroke-width='1' fill='none' opacity='0.3'/%3E%3Ccircle cx='30' cy='13' r='4' fill='%23d8b899'/%3E%3C/svg%3E") repeat-x;
+      background-size: 60px 30px;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* ====== /НОВОГОДНИЕ СТИЛИ ====== */
 
     h1 { font-size: var(--h1); margin: 0 0 .3em; font-weight: 600; font-family: 'Playfair Display', serif; }
     h2 { font-size: var(--h2); font-weight: 400; margin: 0 0 1.2em; color: var(--muted); }
@@ -114,13 +225,12 @@
     section { padding: clamp(24px, 5vw, 56px) 0; }
 
     /* ====== HERO (главный экран) ====== */
-    .hero { text-align: left; }
+    .hero { text-align: left; position: relative; z-index: 5; }
     .hero-grid {
       display: grid;
       gap: clamp(16px, 3vw, 40px);
       align-items: center;
     }
-    /* Мобильный — один столбец; десктоп — 2 */
     @media (min-width: 1024px){
       .hero-grid { grid-template-columns: 1fr 1.1fr; }
     }
@@ -149,9 +259,10 @@
     .btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
 
     .btn-outline { background: transparent; color: var(--fg); border: 1px solid var(--accent); box-shadow: none; }
+    .btn-outline::before, .btn-outline::after { display: none; /* Убираем снег с прозрачных кнопок, чтобы не сливался */ }
     .btn-outline:hover { background: var(--panel); }
 
-    footer { padding: 28px 0; background-color: var(--footer); font-size: .95rem; color: #5a4a3a; }
+    footer { padding: 28px 0; background-color: var(--footer); font-size: .95rem; color: #5a4a3a; position: relative; z-index: 5; }
     footer p { margin: 0.3em 0; }
 
     /* ===== Разделители/анимации ===== */
@@ -178,13 +289,10 @@
         0 10px 30px rgba(62,44,35,.06),
         0 2px 0 rgba(212,175,150,.12) inset;
       text-align: left;
+      position: relative; z-index: 5;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
     @media (min-width:720px){ .grid { grid-template-columns: 1fr 1fr; } }
 
     label { display: block; font-size: .98rem; color: var(--muted); margin-bottom: 6px; }
@@ -219,6 +327,7 @@
         0 10px 30px rgba(62,44,35,.06),
         0 2px 0 rgba(212,175,150,.12) inset;
       text-align: left;
+      position: relative; z-index: 5;
     }
     #reviews-section .review-form{ display:grid; gap:12px; margin-bottom:16px; }
     #reviews-section .review-btn{ padding:12px 16px; border:0; border-radius:12px; background:#111827; color:#fff; cursor:pointer; }
@@ -237,33 +346,19 @@
       padding: 10px 12px;
       overflow: hidden;
     }
-    .reviews-strip::before,
-    .reviews-strip::after{
-      content:"";
-      position:absolute; top:0; bottom:0; width:38px; z-index:2; pointer-events:none;
+    .reviews-strip::before, .reviews-strip::after{
+      content:""; position:absolute; top:0; bottom:0; width:38px; z-index:2; pointer-events:none;
       background: linear-gradient(to right, var(--footer), transparent);
     }
-    .reviews-strip::after{
-      right:0; left:auto;
-      transform: scaleX(-1);
-    }
+    .reviews-strip::after{ right:0; left:auto; transform: scaleX(-1); }
 
-    .strip-head {
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
-      margin: 0 2px 8px; font-size: 14px; color: var(--muted);
-    }
+    .strip-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin: 0 2px 8px; font-size: 14px; color: var(--muted); }
     .strip-actions { display:flex; gap:8px; align-items:center; }
-    .strip-btn {
-      appearance: none; border: 1px solid rgba(0,0,0,.12); background:#fff;
-      padding: 6px 10px; border-radius: 999px; font-size: 12px; cursor:pointer; text-decoration:none; color:inherit;
-    }
-    .strip-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+    .strip-btn { appearance: none; border: 1px solid rgba(0,0,0,.12); background:#fff; padding: 6px 10px; border-radius: 999px; font-size: 12px; cursor:pointer; text-decoration:none; color:inherit; }
 
     .strip-track {
-      display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
-      gap: 10px; overflow-x: auto; overscroll-beavior-x: contain;
-      scroll-snap-type: x mandatory; padding: 2px 6px 2px 2px;
-      -webkit-overflow-scrolling: touch;
+      display: grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 10px; overflow-x: auto;
+      scroll-snap-type: x mandatory; padding: 2px 6px 2px 2px; -webkit-overflow-scrolling: touch;
     }
     @media (min-width:480px){ .strip-track { grid-auto-columns: 320px; } }
     @media (min-width:1280px){ .strip-track { grid-auto-columns: 360px; } }
@@ -271,99 +366,69 @@
     .strip-track::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 10px; }
 
     .review-mini {
-      scroll-snap-align: start;
-      background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:14px;
+      scroll-snap-align: start; background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:14px;
       padding: 10px 12px; text-align: left; box-shadow: 0 6px 16px rgba(0,0,0,.06);
       display: flex; flex-direction: column; gap: 4px; min-height: 88px;
     }
-    .review-mini .mini-head{
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
-      font-size: 13px; color: var(--muted);
-    }
+    .review-mini .mini-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; font-size: 13px; color: var(--muted); }
     .review-mini .mini-name{ font-weight:600; color: var(--fg); }
     .review-mini .mini-stars{ font-size: 13px; color:#efb80b; }
-    .review-mini .mini-text{
-      font-size: 14px; color: var(--fg); line-height: 1.35;
-      display:-webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
-    }
+    .review-mini .mini-text{ font-size: 14px; color: var(--fg); line-height: 1.35; display:-webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
     /* ======= МОДАЛКИ ======= */
     dialog.review-modal, dialog.all-reviews-modal {
       border: 0; padding: 0; border-radius: 16px; width: min(760px, 94vw);
       box-shadow: 0 20px 60px rgba(0,0,0,.25); background:#fff;
     }
-    dialog.review-modal::backdrop,
-    dialog.all-reviews-modal::backdrop { background: rgba(0,0,0,.35); }
-
+    dialog.review-modal::backdrop, dialog.all-reviews-modal::backdrop { background: rgba(0,0,0,.35); }
     .modal-body { padding: 18px; text-align: left; }
     .modal-title { display:flex; justify-content:space-between; align-items:center; gap:10px; }
     .modal-title h3 { margin: 0; font-family: 'Playfair Display', serif; }
     .modal-stars { color:#efb80b; font-size:14px; }
     .modal-text { white-space: pre-wrap; margin-top: 8px; font-size: 16px; }
     .modal-close { border:1px solid rgba(0,0,0,.12); background:#fff; border-radius:10px; padding:8px 12px; cursor:pointer; }
-    .modal-close:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
 
-    /* Контент «Все отзывы» со своим скроллом */
-    .all-reviews-content {
-      max-height: min(72vh, 760px);
-      overflow: auto;
-      padding: 0 18px 18px;
-    }
-    .all-review-item {
-      border:1px solid rgba(0,0,0,.08); border-radius:12px; background:#fff; padding:14px; margin-top:12px;
-    }
+    .all-reviews-content { max-height: min(72vh, 760px); overflow: auto; padding: 0 18px 18px; }
+    .all-review-item { border:1px solid rgba(0,0,0,.08); border-radius:12px; background:#fff; padding:14px; margin-top:12px; }
     .all-review-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 
-    /* ===== Доп. стиль для кнопки Instagram (иконка) ===== */
     .social-btn svg { width: 18px; height: 18px; margin-right: 8px; vertical-align: -3px; }
 
-    /* ===== Улучшения для очень широких экранов ===== */
-    @media (min-width: 1440px){
-      .lead { max-width: 72ch; }
+    /* ТЕМНАЯ ТЕМА */
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#1c1714; --fg:#efe7df; --muted:#cbbeb4; --panel:#221b17; --footer:#2a211c; --ring:rgba(216,184,153,.35); }
+      body::before{ opacity:.55; } body::after{ opacity:.18; }
+      .card, #reviews-section .reviews-card{ background: linear-gradient(180deg, #241d19, #221b17); border-color: rgba(255,255,255,.06); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+      .reviews-strip { background: #2a211c; border-color: rgba(255,255,255,.06); }
+      input, select, textarea { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.08); }
+      .strip-btn { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.12); }
+      /* Инверсия снега для темной темы не нужна, белый снег на темном фоне выглядит еще лучше */
     }
-
-    /* — sticky CTA на мобилке — */
+    
+    /* Доп. стили для моб. версии */
     @media (max-width: 640px){
-      .hero .btn[aria-label]{
-        position: sticky; bottom: 12px; z-index: 10;
-      }
+      .hero .btn[aria-label]{ position: sticky; bottom: 12px; z-index: 9000; }
     }
-    /* — удобочитаемость на узких экранах — */
     @media (max-width:480px){
       h1 { letter-spacing: .2px; }
       .lead { font-size: clamp(16px, 4.2vw, 18px); }
       .summary { gap: 8px; }
     }
-
-    /* — тёмная тема по системной настройке — */
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#1c1714; --fg:#efe7df; --muted:#cbbeb4; --panel:#221b17; --footer:#2a211c;
-        --ring:rgba(216,184,153,.35);
-      }
-      body::before{ opacity:.55; }
-      body::after{ opacity:.18; }
-      .card, #reviews-section .reviews-card{
-        background: linear-gradient(180deg, #241d19, #221b17);
-        border-color: rgba(255,255,255,.06);
-        box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      }
-      .reviews-strip { background: #2a211c; border-color: rgba(255,255,255,.06); }
-      input, select, textarea { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.08); }
-      .strip-btn { background:#2a211c; color: var(--fg); border-color: rgba(255,255,255,.12); }
-    }
   </style>
 </head>
 <body>
 
-  <!-- ======= HERO ======= -->
+  <canvas id="snow-canvas"></canvas>
+
+  <div class="garland"></div>
+
   <section class="fade-in hero">
     <div class="container hero-grid">
       <div class="logo-wrap">
         <img src="logo.png" alt="Логотип Половинки" class="logo" loading="lazy" decoding="async" width="560" height="560">
       </div>
       <div>
-        <h1>Половинки</h1>
+        <h1>Половинки ❄️</h1>
         <h2>Домашняя кондитерская</h2>
         <p class="lead"><em>Орешки — десерт, в котором встречаются вкус и воспоминания.</em></p>
         <p class="lead">Нежное тесто, золотистая выпечка и тягучая начинка из варёной сгущёнки с грецким орехом. Каждый орешек — маленькая история радости, которой хочется поделиться.</p>
@@ -374,7 +439,6 @@
 
   <div class="divider"></div>
 
-  <!-- ======= ОПИСАНИЕ ======= -->
   <section class="fade-in">
     <div class="container">
       <p class="lead" style="text-align:center; max-width: 68ch; margin-inline:auto;">
@@ -388,7 +452,6 @@
 
   <div class="divider"></div>
 
-  <!-- ======= ФОРМА ЗАКАЗА ======= -->
   <section id="order" class="fade-in" aria-labelledby="order-title">
     <div class="container">
       <h1 id="order-title" style="margin-bottom:.2em; text-align:center;">Оформление заказа</h1>
@@ -463,14 +526,12 @@
 
   <div class="divider"></div>
 
-  <!-- ======== ОТЗЫВЫ ======== -->
   <section id="reviews-section" class="fade-in" aria-labelledby="reviews-title">
     <div class="container">
       <h1 id="reviews-title" style="margin-bottom:.2em; text-align:center;">Отзывы</h1>
       <p class="muted" style="margin-bottom:1.2em; text-align:center;">Поделитесь впечатлениями — это помогает нам становиться лучше.</p>
 
       <div class="reviews-card" role="region" aria-label="Форма и лента отзывов">
-        <!-- форма -->
         <form id="reviewForm" class="review-form" novalidate>
           <input type="text" name="name" placeholder="Ваше имя" maxlength="60" required autocomplete="name" aria-describedby="reviewStatus">
           <textarea name="text" placeholder="Ваш отзыв" required maxlength="2000" rows="4"></textarea>
@@ -489,7 +550,6 @@
           </div>
         </form>
 
-        <!-- лента -->
         <div class="reviews-strip" id="reviewsStrip">
           <div class="strip-head">
             <span id="reviewsTitleText">Последние отзывы</span>
@@ -502,28 +562,17 @@
         </div>
       </div>
 
-      <!-- === КНОПКА INSTAGRAM ПОД ОТЗЫВАМИ === -->
       <div class="actions" style="justify-content:center">
-        <a
-          class="btn btn-outline social-btn"
-          href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy"
-          target="_blank"
-          rel="noopener nofollow"
-          aria-label="Открыть Instagram Половинки в новом окне"
-        >
-          <!-- Иконка Instagram (SVG) -->
+        <a class="btn btn-outline social-btn" href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy" target="_blank" rel="noopener nofollow" aria-label="Открыть Instagram Половинки в новом окне">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" />
           </svg>
           <span>Мы в Instagram</span>
         </a>
       </div>
-      <!-- === /КНОПКА INSTAGRAM === -->
     </div>
   </section>
-  <!-- ======== /ОТЗЫВЫ ======== -->
 
-  <!-- Модалка «Чтение мини-отзыва» (по клику на карточку ленты) -->
   <dialog id="reviewModal" class="review-modal">
     <div class="modal-body">
       <div class="modal-title">
@@ -538,7 +587,6 @@
     </div>
   </dialog>
 
-  <!-- Модалка «Все отзывы» со своим скроллом -->
   <dialog id="allReviewsModal" class="all-reviews-modal">
     <div class="modal-body">
       <div class="modal-title">
@@ -552,7 +600,7 @@
   <footer class="fade-in">
     <div class="container">
       <p><strong>Половинки</strong> — домашняя кондитерская</p>
-      <p>Каждый орешек — это момент, которым хочется поделиться</p>
+      <p>Пусть этот Новый год будет сладким!</p>
     </div>
   </footer>
 
@@ -582,7 +630,6 @@
     const statusEl = document.getElementById('form-status');
     const submitBtn = document.getElementById('submit-btn');
 
-    // === Параметры Telegram через Google Apps Script ===
     const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
     const TG_SECRET = 'PolovinkiKmV25';
 
@@ -633,18 +680,15 @@
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
       statusEl.style.display = 'block'; statusEl.textContent = 'Отправляем заказ...';
       try{
-        // 1) Formspree
         const resp = await fetch('https://formspree.io/f/xgvleerr',{
           method:'POST',
           headers:{'Accept':'application/json','Content-Type':'application/json'},
           body: JSON.stringify(payload)
         });
-
-        // 2) Параллельно — ваш Google Apps Script (для Telegram)
         const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
         fetch(TG_ENDPOINT, {
           method:'POST',
-          headers:{'Content-Type':'text/plain;charset=utf-8'}, // CORS-safelisted
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
           body: JSON.stringify(tgPayload)
         }).catch(err => console.error('TG relay failed:', err));
 
@@ -665,27 +709,22 @@
     });
 
     // ===== JS отзывов =====
-    // Google Apps Script Web App (должен оканчиваться на /exec)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAaB9udbz_EHUWPqvSca8Ve3p_D_8thmGDv1MZOLQzJ09vStTb6A89Gizp9zEePdMj/exec';
-
     const reviewForm = document.getElementById('reviewForm');
     const reviewStatus = document.getElementById('reviewStatus');
     const trackEl = document.getElementById('reviewsTrack');
     const openAllBtn = document.getElementById('openAllBtn');
     const hideAllBtn = document.getElementById('hideAllBtn');
-
     const reviewModal = document.getElementById('reviewModal');
     const modalName = document.getElementById('modalName');
     const modalStars = document.getElementById('modalStars');
     const modalDate = document.getElementById('modalDate');
     const modalText = document.getElementById('modalText');
     const modalClose = document.getElementById('modalClose');
-
     const allModal = document.getElementById('allReviewsModal');
     const allClose = document.getElementById('allClose');
     const allContainer = document.getElementById('allReviewsContainer');
 
-    // Кол-во карточек в ленте — адаптивно
     let STRIP_COUNT = window.matchMedia('(min-width:1024px)').matches ? 6 : 5;
     const mq = window.matchMedia('(min-width:1024px)');
     mq.addEventListener?.('change', e => { STRIP_COUNT = e.matches ? 6 : 5; });
@@ -694,25 +733,12 @@
     function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
     function shortText(s, n=160){ s = String(s||'').trim(); return s.length>n ? s.slice(0,n-1)+'…' : s; }
 
-    // ===== запрет "Гость/Аноним" и пр. при отправке отзывов =====
     function normalizeName(s = '') {
-      return String(s)
-        .toLowerCase()
-        .replaceAll('ё','е')
-        .replace(/[^\p{L}\p{N}]+/gu, ' ')
-        .trim()
-        .replace(/\s+/g,' ');
+      return String(s).toLowerCase().replaceAll('ё','е').replace(/[^\p{L}\p{N}]+/gu, ' ').trim().replace(/\s+/g,' ');
     }
-    const bannedNames = [
-      'гость','аноним','анонимна','анонимный','анонимная','anonymous','anon'
-    ];
-    const bannedPatterns = [
-      /^гост[ьй]$/u,
-      /^аноним(на|ный|ная)?$/u,
-      /^anon(ymous)?$/u
-    ];
+    const bannedNames = ['гость','аноним','анонимна','анонимный','анонимная','anonymous','anon'];
+    const bannedPatterns = [/^гост[ьй]$/u, /^аноним(на|ный|ная)?$/u, /^anon(ymous)?$/u];
 
-    // Модалка мини-отзыва
     function openMini(item){
       modalName.textContent = item.name || 'Гость';
       modalStars.textContent = stars(item.rating||5);
@@ -723,7 +749,6 @@
     modalClose.addEventListener('click', ()=> reviewModal.close?.() || reviewModal.removeAttribute('open'));
     reviewModal.addEventListener('click', (e)=>{ if (e.target === reviewModal) reviewModal.close?.(); });
 
-    // Открытие/закрытие «Все отзывы»
     function openAll(){
       hideAllBtn.style.display = 'inline-block';
       if (allModal.showModal) allModal.showModal(); else allModal.setAttribute('open','open');
@@ -742,11 +767,9 @@
         let data; try { data = JSON.parse(raw); } catch { throw new Error('bad json'); }
         const items = (data.items||[]).sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
 
-        // Обновить заголовок с количеством
         const titleSpan = document.getElementById('reviewsTitleText');
         if (titleSpan) titleSpan.textContent = items.length ? `Последние отзывы — ${items.length}` : 'Последние отзывы';
 
-        // Заполняем ленту (последние STRIP_COUNT)
         if (!items.length){
           trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Пока нет отзывов — оставьте первый!</div></div>';
         } else {
@@ -767,8 +790,6 @@
             });
           });
         }
-
-        // Заполняем модалку «Все отзывы»
         if (!items.length){
           allContainer.innerHTML = '<p class="muted">Пока нет отзывов — будьте первым!</p>';
         } else {
@@ -786,24 +807,18 @@
       }catch(e){
         console.error(e);
         trackEl.innerHTML = '<div class="review-mini"><div class="mini-text">Не удалось загрузить отзывы.</div></div>';
-        allContainer.innerHTML = '<p style="color:#ef4444">Не удалось загрузить отзывы.</p>';
       }
     }
 
-    // Отправка нового отзыва (с запретом на «гость/аноним»)
     reviewForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const fd = new FormData(reviewForm);
       const nameRaw = (fd.get('name') || '');
       const text = (fd.get('text') || '').trim();
       const norm = normalizeName(nameRaw);
-
       if (!norm) { reviewStatus.textContent = 'Введите ваше имя.'; return; }
-      const isExactBanned = bannedNames.includes(norm);
-      const isPatternBanned = bannedPatterns.some(rx => rx.test(norm));
-      if (isExactBanned || isPatternBanned) {
-        reviewStatus.textContent = 'Пожалуйста, представьтесь по-настоящему (не «Гость» и не «Аноним»).';
-        return;
+      if (bannedNames.includes(norm) || bannedPatterns.some(rx => rx.test(norm))) {
+        reviewStatus.textContent = 'Пожалуйста, представьтесь по-настоящему.'; return;
       }
       if (!text) { reviewStatus.textContent = 'Введите текст отзыва.'; return; }
 
@@ -818,7 +833,7 @@
       try{
         const res = await fetch(`${SCRIPT_URL}?t=${Date.now()}`, {
           method:'POST',
-          headers:{'Content-Type':'text/plain;charset=utf-8'}, // simple request → без preflight
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
           body: JSON.stringify(payload)
         });
         const raw = await res.text(); let data; try { data = JSON.parse(raw);} catch { throw new Error('bad json'); }
@@ -827,11 +842,124 @@
           reviewForm.reset();
           if (data.approved) fetchReviews();
         } else { reviewStatus.textContent = 'Ошибка: не удалось сохранить отзыв.'; }
-      }catch(err){ console.error(err); reviewStatus.textContent = 'Сеть недоступна или сервер недоступен.'; }
+      }catch(err){ console.error(err); reviewStatus.textContent = 'Сеть недоступна.'; }
     });
 
-    // Старт загрузки отзывов
     fetchReviews();
+
+    // ============================================
+    // === СКРИПТ ПАДАЮЩЕГО СНЕГА (CANVAS) ===
+    // ============================================
+    (function(){
+      const canvas = document.getElementById('snow-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      let width, height;
+      let snowflakes = [];
+      const mouse = { x: -100, y: -100 }; // Координаты мыши/пальца
+
+      // Настройки снега
+      const SNOW_COUNT = window.matchMedia('(max-width:600px)').matches ? 80 : 150; // Меньше на телефоне
+      const MAX_RADIUS = 3;
+      const MIN_RADIUS = 1;
+      const MAX_SPEED = 1.5;
+      const INTERACTION_RADIUS = 100; // Радиус реакции на палец
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      // Отслеживание мыши
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      // Отслеживание пальца (touch)
+      window.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+      }, {passive: true});
+
+      // Класс снежинки
+      class Snowflake {
+        constructor() {
+          this.init();
+        }
+
+        init() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height - height; // Старт выше экрана при загрузке
+          this.radius = Math.random() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS;
+          this.speed = Math.random() * MAX_SPEED + 0.5;
+          this.wind = Math.random() * 0.5 - 0.25;
+          this.opacity = Math.random() * 0.5 + 0.4;
+          // Физика отталкивания
+          this.vx = 0; 
+          this.vy = 0;
+        }
+
+        update() {
+          // Стандартное падение
+          this.y += this.speed + this.vy;
+          this.x += this.wind + this.vx;
+
+          // Затухание инерции отталкивания
+          this.vx *= 0.95;
+          this.vy *= 0.95;
+
+          // Взаимодействие с мышью
+          const dx = this.x - mouse.x;
+          const dy = this.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < INTERACTION_RADIUS) {
+            const force = (INTERACTION_RADIUS - dist) / INTERACTION_RADIUS;
+            const angle = Math.atan2(dy, dx);
+            const push = force * 4; // Сила отталкивания
+
+            this.vx += Math.cos(angle) * push;
+            this.vy += Math.sin(angle) * push;
+          }
+
+          // Если улетела за экран, возвращаем наверх
+          if (this.y > height) {
+            this.y = -10;
+            this.x = Math.random() * width;
+          }
+          if (this.x > width) this.x = 0;
+          if (this.x < 0) this.x = width;
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+          ctx.fill();
+        }
+      }
+
+      // Создаем снежинки
+      for (let i = 0; i < SNOW_COUNT; i++) {
+        snowflakes.push(new Snowflake());
+        // Разбросаем их сразу по экрану, чтобы не ждать падения
+        snowflakes[i].y = Math.random() * height; 
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        snowflakes.forEach(flake => {
+          flake.update();
+          flake.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
   </script>
 </body>
 </html>
