@@ -8,25 +8,27 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://polovinkikmv.ru/">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <meta name="theme-color" content="#fff0f5">
+  <!-- Изменен цвет темы на молочный -->
+  <meta name="theme-color" content="#fffdf5"> 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Половинки — День Святого Валентина">
   <meta property="og:description" content="Орешки с варёной сгущёнкой. Сладкое признание в любви.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      /* Романтическая палитра */
-      --bg: #fff0f5; /* Лавандовый румянец */
-      --fg: #4a2c2a; /* Темный шоколад */
+      /* Благородная палитра (Бордо и Беж) */
+      --bg: #fffdf5; /* Молочный фон */
+      --fg: #4a2c2a; /* Темный шоколад (текст) */
       --muted: #8e5e5e;
       
-      --val-red: #d32f2f; /* Страстный красный */
-      --val-pink: #e91e63; /* Яркий розовый */
-      --val-light: #ffc1e3;
+      /* Новые акцентные цвета */
+      --val-red: #800020; /* Благородный бордовый */
+      --val-pink: #5e081e; /* Глубокий винный (вместо ярко-розового) */
+      --val-light: #ebd0d6; /* Светлый оттенок для фонов */
       
       --gold: #d4af37;
-      
+      --beige-text: #c5a065; /* Бежевый/Золотистый для заголовков */
+
       --shadow: 0 12px 40px rgba(74, 44, 42, 0.12);
       --radius: 20px;
       
@@ -67,7 +69,7 @@
       margin: 0 0 .3em;
       font-weight: 700;
       font-family: 'Playfair Display', serif;
-      color: var(--val-red);
+      color: var(--val-red); /* Бордовый */
       text-shadow: 0 2px 0 rgba(255,255,255,.5);
     }
 
@@ -75,7 +77,7 @@
       font-size: var(--h2);
       font-weight: 500;
       margin: 0 0 1.2em;
-      color: var(--val-pink);
+      color: var(--beige-text); /* БЕЖЕВЫЙ ЦВЕТ */
       letter-spacing: .5px;
     }
 
@@ -89,6 +91,7 @@
       display: inline-block;
       padding: 1em 2.4em;
       margin-top: 1.2em;
+      /* Градиент в бордовых тонах */
       background: linear-gradient(135deg, var(--val-pink), var(--val-red));
       color: #fff;
       font-size: clamp(15px, 1.5vw, 18px);
@@ -97,7 +100,7 @@
       font-weight: 600;
       letter-spacing: .5px;
       border: 2px solid #fff;
-      box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+      box-shadow: 0 4px 15px rgba(128, 0, 32, 0.3); /* Тень бордовая */
       transition: all .3s cubic-bezier(.25,.8,.25,1);
       position: relative;
       overflow: hidden;
@@ -112,14 +115,15 @@
       transition: .5s;
     }
     
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(233, 30, 99, 0.6); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(128, 0, 32, 0.5); }
     .btn:hover::after { left: 100%; }
+    
     .btn:disabled { opacity: .7; cursor: not-allowed; transform: none; }
 
     .btn-outline {
       background: transparent;
-      color: var(--val-pink);
-      border: 2px solid var(--val-pink);
+      color: var(--val-red); /* Бордовый контур */
+      border: 2px solid var(--val-red);
       box-shadow: none;
       padding: .85em 1.8em;
       border-radius: 50px;
@@ -128,13 +132,13 @@
       cursor: pointer;
       display: inline-block;
     }
-    .btn-outline:hover { background: var(--val-pink); color: #fff; }
+    .btn-outline:hover { background: var(--val-red); color: #fff; }
 
     /* ====== HERO ====== */
     .hero { margin-top: 50px; }
     .hero-grid { display: grid; gap: 40px; align-items: center; }
     @media (min-width: 900px) { .hero-grid { grid-template-columns: 1fr 1fr; text-align: left; } }
-
+    
     .logo {
       width: clamp(200px, 35vw, 320px);
       height: auto;
@@ -155,7 +159,7 @@
       overflow: hidden;
     }
 
-    /* Декоративная полоска сверху (розовая/красная) */
+    /* Декоративная полоска (Бордовая) */
     .card::before, .reviews-card::before {
       content: "";
       position: absolute; top: 0; left: 0; right: 0; height: 6px;
@@ -165,8 +169,9 @@
     .grid { display: grid; gap: 20px; }
     @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
     .row { display: flex; flex-direction: column; }
-
+    
     label { display: block; font-size: .95rem; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+    
     input, select, textarea {
       width: 100%;
       padding: 14px 16px;
@@ -179,14 +184,15 @@
       transition: all .2s;
       outline: none;
     }
+    
     input:focus, select:focus, textarea:focus {
-      border-color: rgba(233, 30, 99, 0.45);
-      box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.10);
+      border-color: rgba(128, 0, 32, 0.45);
+      box-shadow: 0 0 0 4px rgba(128, 0, 32, 0.10);
     }
 
     .summary {
-      background: #fff5f8;
-      border: 2px dashed #f8bbd0;
+      background: #fffbf6; /* Чуть теплее */
+      border: 2px dashed var(--val-light);
       padding: 16px;
       border-radius: 12px;
       margin-top: 12px;
@@ -200,7 +206,7 @@
     
     .muted { color: var(--muted); }
     .actions { display: flex; justify-content: center; margin-top: 18px; }
-    .note { margin-top: 12px; color: var(--val-pink); text-align: center; }
+    .note { margin-top: 12px; color: var(--val-red); text-align: center; }
 
     /* ====== ПРОЧЕЕ ====== */
     .divider { display: flex; align-items: center; justify-content: center; margin: 40px auto; gap: 10px; opacity: .8; }
@@ -212,7 +218,7 @@
 
     footer { background: var(--fg); color: #efe3d0; padding: 40px 0; margin-top: 60px; }
     .footer-actions { margin-top: 14px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-
+    
     dialog { border: none; border-radius: 20px; padding: 0; width: min(600px, 94vw); box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
     dialog::backdrop { background: rgba(74, 44, 42, 0.4); backdrop-filter: blur(2px); }
     .modal-body { padding: 30px; }
@@ -307,7 +313,7 @@
               <input type="time" id="time" name="time">
             </div>
             <div class="row" style="grid-column: 1 / -1;">
-              <label for="method">Способ получения (заказ < 15 упаковок - доставка платная)</label>
+              <label for="method">Способ получения (заказ &lt; 15 упаковок - доставка платная)</label>
               <select id="method" name="method">
                 <option value="pickup" selected>Самовывоз</option>
                 <option value="delivery">Доставка</option>
@@ -322,12 +328,10 @@
               <textarea id="comment" name="comment" rows="3" placeholder="Нужна ли открытка-валентинка? Что написать?"></textarea>
             </div>
           </div>
-
           <div class="summary" aria-live="polite">
             <span>Итого: <strong id="total-text">250 ₽</strong></span>
             <span class="muted">250 ₽ × <span id="qty-text">1</span> короб.</span>
           </div>
-
           <div class="actions">
             <button id="submit-btn" type="submit" class="btn">Подарить любовь</button>
           </div>
@@ -341,7 +345,7 @@
 
   <section id="reviews-section" class="fade-in">
     <div class="container">
-      <h1 style="text-align:center;">Отзывы влюблённых</h1>
+      <h1 style="text-align:center;">Отзывы</h1>
       <div class="reviews-card">
         <form id="reviewForm" style="display:grid; gap:10px;">
           <input type="text" name="name" placeholder="Ваше имя" required>
@@ -425,7 +429,7 @@
     const statusEl = document.getElementById('form-status');
     const submitBtn = document.getElementById('submit-btn');
 
-    // === Параметры Telegram через Google Apps Script (Тот же endpoint, что и раньше) ===
+    // === Параметры Telegram через Google Apps Script ===
     const TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyHLwMieXZw_2eAf-A7w_75gO4nTuzbAOGIuZgJdDHdUsIdUlhLtSc9tCZ2zUI15ppZpw/exec';
     const TG_SECRET = 'PolovinkiKmV25';
 
@@ -493,7 +497,7 @@
           headers:{'Accept':'application/json','Content-Type':'application/json'},
           body: JSON.stringify(payload)
         });
-
+        
         // 2) Relay Telegram
         const tgPayload = { ...payload, secret: TG_SECRET, origin: location.origin };
         fetch(TG_ENDPOINT, {
@@ -519,7 +523,7 @@
       }
     });
 
-    // ОТЗЫВЫ (Логика сохранена)
+    // ОТЗЫВЫ
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAaB9udbz_EHUWPqvSca8Ve3p_D_8thmGDv1MZOLQzJ09vStTb6A89Gizp9zEePdMj/exec';
     function stars(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
 
@@ -529,6 +533,7 @@
         const res = await fetch(SCRIPT_URL + '?limit=10');
         const json = await res.json();
         const items = (json.items || []).reverse();
+        
         track.innerHTML = items.map((r,i)=>`
           <div class="review-mini" onclick="showReview(${i})">
             <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
@@ -537,6 +542,7 @@
             </div>
             <div style="font-size:0.9rem;overflow:hidden;">${r.text}</div>
           </div>`).join('');
+          
         window.revs = items;
       }catch(e){
         track.innerHTML = 'Отзывы загружаются...';
@@ -550,10 +556,11 @@
       document.getElementById('modalText').textContent = r.text;
       document.getElementById('reviewModal').showModal();
     };
+    
     document.getElementById('modalClose').onclick = ()=>document.getElementById('reviewModal').close();
     loadReviews();
 
-    // ====== АНИМАЦИЯ СЕРДЕЧЕК (вместо снега) ======
+    // ====== АНИМАЦИЯ СЕРДЕЧЕК (ТОЛЬКО ♥) ======
     (function(){
       const cvs = document.getElementById('hearts-canvas');
       const ctx = cvs.getContext('2d');
@@ -566,21 +573,22 @@
       window.addEventListener('resize', resize);
       resize();
 
-      // Создаем массив сердечек
-      const symbols = ['❤', '♥', '♡'];
-      // Цвета: от нежно-розового до ярко-красного
-      const colors = ['#e91e63', '#ffc1e3', '#d32f2f', '#ff80ab', '#fce4ec'];
+      // ✅ ТОЛЬКО ОДИН СИМВОЛ: ♥
+      const symbols = ['♥'];
+
+      // Цвета: БОРДОВЫЕ, ТЕМНО-КРАСНЫЕ
+      const colors = ['#800020', '#5D0016', '#722F37', '#900020', '#4A0404'];
 
       for(let i=0; i<60; i++){
         hearts.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          s: Math.random() * 10 + 10, // Размер шрифта (10-20px)
-          d: Math.random() * 2 + 1,   // Скорость падения
-          char: symbols[Math.floor(Math.random() * symbols.length)],
+          s: Math.random() * 10 + 10,
+          d: Math.random() * 2 + 1,
+          char: symbols[0],
           color: colors[Math.floor(Math.random() * colors.length)],
-          swing: Math.random() * 0.1, // Амплитуда покачивания
-          offset: Math.random() * Math.PI * 2 // Фаза покачивания
+          swing: Math.random() * 0.1,
+          offset: Math.random() * Math.PI * 2
         });
       }
 
@@ -592,12 +600,9 @@
           ctx.fillStyle = hrt.color;
           ctx.fillText(hrt.char, hrt.x, hrt.y);
           
-          // Движение вниз
           hrt.y += hrt.d;
-          // Легкое покачивание
           hrt.x += Math.sin(hrt.y * 0.01 + hrt.offset) * 0.5;
-
-          // Если улетело вниз - перезапуск сверху
+          
           if(hrt.y > h){
             hrt.y = -20;
             hrt.x = Math.random() * w;
