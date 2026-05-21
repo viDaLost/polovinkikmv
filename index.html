@@ -229,7 +229,7 @@
   <nav class="fixed top-0 inset-x-0 z-50 glass-nav border-b border-outline-variant/20">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
       <a href="#top" class="flex items-center gap-3 min-w-0">
-        <img src="logo.png" alt="Логотип Половинки" class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl object-cover shadow-soft bg-white/80" onerror="this.onerror=null;this.src='logo-placeholder.svg';" />
+        <img src="logo.png" alt="Логотип Половинки" class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl object-contain p-1.5 shadow-soft bg-white/90" onerror="this.onerror=null;this.src='logo-placeholder.svg';" />
         <div class="min-w-0">
           <div class="font-noto-serif text-lg sm:text-xl font-bold tracking-tight text-primary leading-none">Половинки</div>
           <div class="font-work-sans text-[11px] sm:text-xs uppercase tracking-[0.18em] text-secondary mt-1">домашняя кондитерская</div>
@@ -276,9 +276,10 @@
               <span class="material-symbols-outlined">shopping_cart</span>
               Сделать заказ
             </a>
-            <a href="#reviews" class="inline-flex items-center gap-2 rounded-2xl border border-outline-variant/50 bg-white/60 px-7 py-4 text-base font-work-sans font-medium text-primary hover:bg-white transition-all">
+            <a href="#reviews" class="inline-flex items-center gap-2 rounded-2xl border border-outline-variant/50 bg-white/60 px-7 py-4 text-base font-work-sans font-medium text-primary hover:bg-white transition-all" aria-label="Перейти к отзывам">
               <span class="material-symbols-outlined">format_quote</span>
-              <span id="heroReviewsLabel">Читать отзывы</span>
+              <span id="heroReviewsLabel">Отзывы</span>
+              <span id="heroReviewsCount" aria-live="polite" class="rounded-full bg-secondary-container px-2.5 py-1 text-xs font-work-sans font-semibold text-on-secondary-container">…</span>
             </a>
           </div>
         </div>
@@ -289,7 +290,14 @@
             <div class="absolute -bottom-10 -left-8 h-36 w-36 rounded-full bg-primary-fixed/60 blur-3xl animate-pulseSoft"></div>
 
             <div class="relative rounded-[2rem] overflow-hidden shadow-warm rotate-[1.5deg] bg-surface-container-low border border-outline-variant/20">
-              <img src="https://img.povar.ru/main-micro/8e/c4/11/b0/pechene_quotoreshkiquot_so_sgushenkoi-867958.jpg" alt="Орешки Половинки" class="aspect-[4/5] w-full object-cover" />
+              <div class="absolute left-5 top-5 z-10 flex items-center gap-3 rounded-2xl bg-white/90 px-3 py-2 shadow-soft backdrop-blur-md">
+                <img src="logo.png" alt="Логотип Половинки" class="h-12 w-12 rounded-xl object-contain p-1 bg-white" onerror="this.onerror=null;this.src='logo-placeholder.svg';" />
+                <div class="hidden sm:block">
+                  <div class="font-noto-serif text-base font-bold leading-none text-primary">Половинки</div>
+                  <div class="mt-1 font-work-sans text-[10px] uppercase tracking-[0.16em] text-secondary">орешки</div>
+                </div>
+              </div>
+              <img src="https://img.povar.ru/main-micro/8e/c4/11/b0/pechene_quotoreshkiquot_so_sgushenkoi-867958.jpg" alt="Реальные домашние орешки со сгущёнкой в коробочке" class="aspect-[4/5] w-full object-cover" loading="eager" decoding="async" referrerpolicy="no-referrer" />
             </div>
 
             <div class="relative -mt-10 sm:-mt-14 ml-4 sm:ml-10 rounded-[1.5rem] panel-surface p-5 sm:p-6 max-w-md animate-floatSlow">
@@ -347,8 +355,8 @@
       <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
         <div class="reveal relative">
           <div class="grid grid-cols-2 gap-4 sm:gap-5">
-            <img src="https://cook-s.ru/images/stories/vypechka/pechenie_oreshki_so_sguzhenkoi_iz_detstva/pechenie_oreshki_so_sguzhenkoi_iz_detstva_z.jpg" alt="Домашние орешки со сгущёнкой" class="rounded-[1.5rem] shadow-soft rotate-[-2deg] w-full h-full object-cover" />
-            <img src="https://shamanim.com/uploads/posts/2024-02/224-vmesto-oreshkov-so-sguschenkoj-esche-vkusnee-i-forma-ne-nuzhna-nezhnoe-karamelnoe-pechene-s-nachinkoj-5.jpg" alt="Орешек с карамельной начинкой крупным планом" class="rounded-[1.5rem] shadow-soft translate-y-8 rotate-[3deg] w-full h-full object-cover" />
+            <img src="https://cook-s.ru/images/stories/vypechka/pechenie_oreshki_so_sguzhenkoi_iz_detstva/pechenie_oreshki_so_sguzhenkoi_iz_detstva_z.jpg" alt="Реальные домашние орешки со сгущёнкой" class="rounded-[1.5rem] shadow-soft rotate-[-2deg] w-full h-full object-cover" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+            <img src="https://img.povar.ru/main-micro/8e/c4/11/b0/pechene_quotoreshkiquot_so_sgushenkoi-867958.jpg" alt="Реальные орешки с варёной сгущёнкой крупным планом" class="rounded-[1.5rem] shadow-soft translate-y-8 rotate-[3deg] w-full h-full object-cover" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
           </div>
         </div>
 
@@ -356,7 +364,7 @@
           <p class="font-work-sans text-xs uppercase tracking-[0.2em] text-secondary">Почему выбирают нас</p>
           <h2 class="mt-4 font-noto-serif text-4xl sm:text-5xl font-bold tracking-tight text-primary text-balance">Вкус детства, оформленный в более премиальной подаче.</h2>
           <div class="mt-6 space-y-4 text-lg sm:text-xl leading-relaxed text-on-surface-variant">
-            <p>Теперь в оформлении используются более аппетитные фотографии реальных орешков, чтобы визуально сразу передавать вкус, начинку и домашнюю подачу десерта.</p>
+            <p>В оформлении используются реальные фотографии орешков, чтобы сразу передавать домашнюю подачу, золотистую скорлупку и нежную начинку десерта.</p>
             <p class="italic text-secondary">"Каждый орешек — это момент, которым хочется поделиться."</p>
           </div>
 
@@ -781,7 +789,7 @@
         const heroReviewsLabel = document.getElementById('heroReviewsLabel');
         const openAllBtnLabel = document.getElementById('openAllBtnLabel');
         if (heroReviewsCount) heroReviewsCount.textContent = String(items.length || 0);
-        if (heroReviewsLabel) heroReviewsLabel.textContent = 'Читать отзывы';
+        if (heroReviewsLabel) heroReviewsLabel.textContent = items.length ? 'Читать отзывы' : 'Отзывы';
         if (openAllBtnLabel) openAllBtnLabel.textContent = items.length ? `Все отзывы (${items.length})` : 'Все отзывы';
 
         if (!items.length) {
@@ -824,7 +832,7 @@
         console.error(e);
         const heroReviewsCount = document.getElementById('heroReviewsCount');
         const openAllBtnLabel = document.getElementById('openAllBtnLabel');
-        if (heroReviewsCount) heroReviewsCount.textContent = '0';
+        if (heroReviewsCount) heroReviewsCount.textContent = '—';
         if (openAllBtnLabel) openAllBtnLabel.textContent = 'Все отзывы';
         trackEl.innerHTML = '<div class="review-card-mini rounded-[1.25rem] bg-white p-5 shadow-soft"><div class="text-base text-on-surface-variant">Не удалось загрузить отзывы.</div></div>';
         allContainer.innerHTML = '<p class="font-work-sans text-sm text-red-600">Не удалось загрузить отзывы.</p>';
