@@ -1,0 +1,106 @@
+<dialog id="reviewModal">
+    <div class="bg-white rounded-[1.25rem] p-6 sm:p-8 text-left">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div>
+          <h3 id="modalName" class="font-noto-serif text-2xl text-primary">Гость</h3>
+          <div id="modalDate" class="mt-1 font-work-sans text-sm text-on-surface-variant"></div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div id="modalStars" class="text-amber-500 text-sm tracking-wide">★★★★★</div>
+          <button id="modalClose" type="button" class="rounded-xl border border-outline-variant/30 bg-surface-container-low px-4 py-2 font-work-sans text-sm text-primary hover:bg-white transition-colors">Закрыть</button>
+        </div>
+      </div>
+      <div id="modalText" class="mt-5 text-lg leading-relaxed text-on-surface-variant whitespace-pre-wrap"></div>
+    </div>
+  </dialog>
+
+  <dialog id="allReviewsModal">
+    <div class="bg-white rounded-[1.25rem] p-6 sm:p-8 text-left">
+      <div class="flex items-center justify-between gap-4">
+        <h3 class="font-noto-serif text-2xl text-primary">Все отзывы</h3>
+        <button id="allClose" type="button" class="rounded-xl border border-outline-variant/30 bg-surface-container-low px-4 py-2 font-work-sans text-sm text-primary hover:bg-white transition-colors">Закрыть</button>
+      </div>
+      <div id="allReviewsContainer" class="mt-6 max-h-[72vh] overflow-auto pr-1"></div>
+    </div>
+  </dialog>
+
+  <dialog id="privacyModal" aria-labelledby="privacyTitle">
+    <div class="bg-white rounded-[1.25rem] p-6 sm:p-8 text-left">
+      <div class="flex items-start justify-between gap-5">
+        <div>
+          <p class="font-work-sans text-xs uppercase tracking-[0.18em] text-secondary">Конфиденциальность</p>
+          <h3 id="privacyTitle" class="mt-2 font-noto-serif text-2xl sm:text-3xl text-primary">Как используются ваши данные</h3>
+        </div>
+        <button id="privacyClose" type="button" class="rounded-xl border border-outline-variant/30 bg-surface-container-low px-4 py-2 font-work-sans text-sm text-primary hover:bg-white transition-colors">Закрыть</button>
+      </div>
+      <div class="mt-5 space-y-4 text-base sm:text-lg leading-relaxed text-on-surface-variant">
+        <p>Имя, телефон, контакт в мессенджере, адрес доставки и комментарий используются только для обработки заказа, связи с вами и организации получения товара.</p>
+        <p>Отправляя форму, вы добровольно передаёте указанные сведения. Для доставки и технической отправки заявки данные могут обрабатываться сервисами, подключёнными к сайту.</p>
+        <p>Не указывайте в комментарии лишние персональные или конфиденциальные сведения. По вопросам, связанным с вашими данными, свяжитесь с нами через контакты на сайте.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="mt-10 bg-primary text-white px-5 sm:px-8 pt-14 pb-8 border-t border-white/10">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <div class="flex items-center gap-4">
+            <div class="h-14 w-14 rounded-2xl bg-white/95 p-2 shadow-soft">
+              <img src="logo.png" alt="Логотип Половинки" class="h-full w-full object-contain" />
+            </div>
+            <div>
+              <div class="font-noto-serif text-3xl font-bold">Половинки</div>
+              <div class="mt-1 font-work-sans text-xs uppercase tracking-[0.18em] text-primary-fixed-dim">Домашняя кондитерская КМВ</div>
+            </div>
+          </div>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">Орешки с варёной сгущёнкой и грецким орехом, приготовленные небольшими партиями специально к вашему заказу.</p>
+          <p class="mt-4 font-noto-serif text-xl italic text-primary-fixed-dim">Каждый орешек — это момент, которым хочется поделиться.</p>
+        </div>
+
+        <div class="lg:col-span-3">
+          <h3 class="font-work-sans text-xs font-semibold uppercase tracking-[0.2em] text-primary-fixed-dim">Навигация</h3>
+          <nav class="mt-5 grid gap-3 font-work-sans text-sm text-white/75" aria-label="Навигация в подвале">
+            <a href="#about" class="hover:text-white transition-colors">О десерте</a>
+            <a href="#conditions" class="hover:text-white transition-colors">Сроки, доставка и качество</a>
+            <a href="#order" class="hover:text-white transition-colors">Оформить заказ</a>
+            <a href="#reviews" class="hover:text-white transition-colors">Отзывы</a>
+          </nav>
+        </div>
+
+        <div class="lg:col-span-4">
+          <h3 class="font-work-sans text-xs font-semibold uppercase tracking-[0.2em] text-primary-fixed-dim">Связь и информация</h3>
+          <div class="mt-5 grid gap-3 font-work-sans text-sm text-white/75">
+            <a href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy" target="_blank" rel="noopener nofollow" class="inline-flex items-center gap-2 hover:text-white transition-colors"><span class="material-symbols-outlined text-lg">photo_camera</span>Instagram</a>
+            <button id="privacyFooterBtn" type="button" class="inline-flex items-center gap-2 text-left hover:text-white transition-colors"><span class="material-symbols-outlined text-lg">shield</span>Конфиденциальность</button>
+            <p class="inline-flex items-start gap-2"><span class="material-symbols-outlined text-lg mt-0.5">location_on</span><span>Самовывоз и доставка по КМВ по предварительной договорённости</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between font-work-sans text-xs text-white/55">
+        <p>© <span id="currentYear"></span> «Половинки». Домашнее изготовление по индивидуальным заказам.</p>
+        <a href="#top" class="inline-flex items-center gap-1 hover:text-white transition-colors">Наверх <span class="material-symbols-outlined text-base">arrow_upward</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <aside id="privacyNotice" class="privacy-notice fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-xl z-50 rounded-[1.5rem] border border-outline-variant/30 p-5 hidden" role="status" aria-live="polite">
+    <div class="flex items-start gap-4">
+      <div class="hidden sm:flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary-container text-on-secondary-container">
+        <span class="material-symbols-outlined">shield</span>
+      </div>
+      <div class="min-w-0 flex-1">
+        <p class="font-work-sans font-semibold text-primary">Уведомление о конфиденциальности</p>
+        <p class="mt-2 text-base leading-relaxed text-on-surface-variant">Данные из форм используются для обработки заказа, связи с вами и публикации оставленного отзыва.</p>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <button id="privacyAccept" type="button" class="rounded-xl bg-primary px-5 py-2.5 font-work-sans text-sm font-semibold text-white hover:bg-primary-container transition-colors">Понятно</button>
+          <button id="privacyMore" type="button" class="font-work-sans text-sm font-medium text-secondary hover:text-primary transition-colors">Подробнее</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <a href="#order" class="sticky-fab fixed bottom-6 right-6 z-40 inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white shadow-warm hover:scale-105 transition-transform" aria-label="Быстрый переход к заказу">
+    <span class="material-symbols-outlined text-[30px]">shopping_cart</span>
+  </a>
