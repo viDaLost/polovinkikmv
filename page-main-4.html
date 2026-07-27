@@ -1,0 +1,55 @@
+-3xl mx-auto">
+          <p class="font-work-sans text-xs uppercase tracking-[0.2em] text-secondary">Отзывы</p>
+          <h2 class="mt-4 font-noto-serif text-4xl sm:text-5xl font-bold tracking-tight text-primary">Поделитесь впечатлениями</h2>
+          <p class="mt-4 text-lg sm:text-xl leading-relaxed text-on-surface-variant">Это помогает нам становиться лучше и показывает новым гостям, каким получается ваш заказ.</p>
+        </div>
+
+        <div class="reveal mt-10 panel-surface rounded-[2rem] p-5 sm:p-8 lg:p-10">
+          <form id="reviewForm" class="grid gap-4" novalidate>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block mb-2 font-work-sans text-sm text-on-surface-variant" for="reviewName">Ваше имя</label>
+                <input id="reviewName" type="text" name="name" maxlength="60" required autocomplete="name" class="input-luxe" />
+              </div>
+              <div>
+                <label class="block mb-2 font-work-sans text-sm text-on-surface-variant" for="rating">Оценка</label>
+                <select id="rating" name="rating" class="select-luxe">
+                  <option value="5">⭐️⭐️⭐️⭐️⭐️ — 5</option>
+                  <option value="4">⭐️⭐️⭐️⭐️ — 4</option>
+                  <option value="3">⭐️⭐️⭐️ — 3</option>
+                  <option value="2">⭐️⭐️ — 2</option>
+                  <option value="1">⭐️ — 1</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block mb-2 font-work-sans text-sm text-on-surface-variant" for="reviewText">Ваш отзыв</label>
+              <textarea id="reviewText" name="text" required maxlength="2000" rows="5" class="textarea-luxe" placeholder="Напишите пару слов о заказе"></textarea>
+            </div>
+
+            <input type="text" name="company" style="display:none" />
+
+            <div class="flex flex-wrap items-center gap-4">
+              <button type="submit" class="inline-flex items-center gap-2 rounded-2xl bg-primary px-7 py-4 text-base font-work-sans font-semibold text-white shadow-soft hover:-translate-y-1 hover:bg-primary-container transition-all">
+                <span class="material-symbols-outlined">rate_review</span>
+                Отправить отзыв
+              </button>
+              <small id="reviewStatus" class="font-work-sans text-sm text-on-surface-variant" aria-live="polite"></small>
+            </div>
+          </form>
+
+          <div class="mt-8 rounded-[1.5rem] border border-outline-variant/20 bg-surface-container-high p-4 sm:p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <div id="reviewsTitleText" class="font-work-sans text-sm uppercase tracking-[0.18em] text-secondary">Последние отзывы</div>
+              <div class="flex items-center gap-3">
+                <button id="openAllBtn" type="button" class="rounded-full border border-outline-variant/30 bg-white px-4 py-2 font-work-sans text-sm text-primary hover:bg-surface-container-low transition-colors"><span id="openAllBtnLabel">Все отзывы</span></button>
+                <button id="hideAllBtn" type="button" class="hidden rounded-full border border-outline-variant/30 bg-white px-4 py-2 font-work-sans text-sm text-primary hover:bg-surface-container-low transition-colors">Скрыть</button>
+              </div>
+            </div>
+            <div id="reviewsTrack" class="review-track" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
