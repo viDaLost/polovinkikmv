@@ -1,0 +1,97 @@
+При заказе менее 15 упаковок доставка оплачивается отдельно.</p>
+          </article>
+
+          <article class="reveal panel-surface rounded-[1.75rem] p-7">
+            <div class="w-14 h-14 rounded-2xl bg-secondary-container flex items-center justify-center text-on-secondary-container mb-5">
+              <span class="material-symbols-outlined">verified</span>
+            </div>
+            <h3 class="font-noto-serif text-2xl text-primary">Гарантия качества</h3>
+            <p class="mt-3 text-lg leading-relaxed text-on-surface-variant">Готовим после оформления заказа и внимательно проверяем каждую коробочку перед передачей. Если с заказом что-то не так, сообщите нам как можно скорее — обязательно разберёмся и предложим решение.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="order" class="py-16 sm:py-24 px-5 sm:px-8 bg-surface-container-high">
+      <div class="max-w-5xl mx-auto">
+        <div class="reveal text-center max-w-3xl mx-auto">
+          <p class="font-work-sans text-xs uppercase tracking-[0.2em] text-secondary">Оформление заказа</p>
+          <h2 class="mt-4 font-noto-serif text-4xl sm:text-5xl font-bold tracking-tight text-primary">Закажите орешки онлайн</h2>
+          <p class="mt-4 text-lg sm:text-xl leading-relaxed text-on-surface-variant">Товар: <strong>Коробочка орешков (6 шт)</strong> — <strong>250 ₽ за коробку</strong>.</p>
+        </div>
+
+        <div class="reveal mt-10 panel-surface rounded-[2rem] p-5 sm:p-8 lg:p-10">
+          <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <label for="name" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Имя и фамилия*</label>
+                <input id="name" name="name" required autocomplete="name" class="input-luxe" />
+              </div>
+              <div>
+                <label for="phone" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Телефон для связи*</label>
+                <input id="phone" name="phone" inputmode="tel" required placeholder="+7 999 123-45-67" pattern="^[\\d\\+\\-\\s\\(\\)]{7,}$" autocomplete="tel" class="input-luxe" />
+              </div>
+              <div>
+                <label for="social" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Соцсети (WhatsApp/Telegram)</label>
+                <input id="social" name="social" placeholder="+7 999 123-45-67 или @username" class="input-luxe" />
+              </div>
+              <div>
+                <label for="qty" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Количество коробочек*</label>
+                <select id="qty" name="qty" required class="select-luxe">
+                  <option value="1" selected>1 коробка — 6 шт</option>
+                  <option value="2">2 коробки — 12 шт</option>
+                  <option value="3">3 коробки — 18 шт</option>
+                  <option value="4">4 коробки — 24 шт</option>
+                  <option value="5">5 коробок — 30 шт</option>
+                </select>
+              </div>
+              <div>
+                <label for="date" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Желаемая дата получения*</label>
+                <input type="date" id="date" name="date" required class="input-luxe" />
+              </div>
+              <div>
+                <label for="time" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Время (ориентир)</label>
+                <input type="time" id="time" name="time" class="input-luxe" />
+              </div>
+              <div class="md:col-span-2">
+                <label for="method" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Способ получения (если заказ &lt; 15 упаковок, доставка платная)</label>
+                <select id="method" name="method" class="select-luxe">
+                  <option value="pickup" selected>Самовывоз</option>
+                  <option value="delivery">Доставка</option>
+                </select>
+              </div>
+              <div id="address-row" class="md:col-span-2 hidden">
+                <label for="address" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Адрес доставки</label>
+                <input id="address" name="address" placeholder="Город, улица, дом, подъезд" autocomplete="street-address" class="input-luxe" />
+              </div>
+              <div class="md:col-span-2">
+                <label for="comment" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Комментарий к заказу</label>
+                <textarea id="comment" name="comment" rows="4" placeholder="Пожелания по времени, подписать открытку и т.д." class="textarea-luxe"></textarea>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-[1.25rem] border border-dashed border-outline-variant/40 bg-white/70 px-5 py-4">
+              <div class="text-lg text-primary">Итого: <strong id="total-text">250 ₽</strong></div>
+              <div class="font-work-sans text-sm text-on-surface-variant">250 ₽ × <span id="qty-text">1</span> короб.</div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              <button id="submit-btn" type="submit" class="inline-flex items-center gap-2 rounded-2xl bg-primary px-7 py-4 text-base font-work-sans font-semibold text-white shadow-soft hover:-translate-y-1 hover:bg-primary-container transition-all">
+                <span class="material-symbols-outlined">send</span>
+                Отправить заказ
+              </button>
+              <a href="https://www.instagram.com/polovinki_kmv?igsh=Nm4wN3A0YnRlZDMy" target="_blank" rel="noopener nofollow" class="inline-flex items-center gap-2 rounded-2xl border border-outline-variant/40 bg-white/70 px-6 py-4 font-work-sans text-sm text-primary hover:bg-white transition-all">
+                <span class="material-symbols-outlined">photo_camera</span>
+                Мы в Instagram
+              </a>
+            </div>
+
+            <p id="form-status" class="mt-4 text-sm font-work-sans text-on-surface-variant hidden"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews" class="py-16 sm:py-24 px-5 sm:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal text-center max-w-
