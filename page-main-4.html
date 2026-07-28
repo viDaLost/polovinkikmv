@@ -5,7 +5,7 @@
         </div>
 
         <div class="reveal mt-10 panel-surface rounded-[2rem] p-5 sm:p-8 lg:p-10">
-          <form id="reviewForm" class="grid gap-4" novalidate>
+          <form id="reviewForm" class="grid gap-4">
             <div class="grid md:grid-cols-2 gap-4">
               <div>
                 <label class="block mb-2 font-work-sans text-sm text-on-surface-variant" for="reviewName">Ваше имя</label>
@@ -29,6 +29,13 @@
             </div>
 
             <input type="text" name="company" style="display:none" />
+
+            <label for="review-consent" class="flex items-start gap-3 rounded-[1.25rem] border border-outline-variant/40 bg-white/70 px-5 py-4 cursor-pointer">
+              <input id="review-consent" name="review_publication_consent" type="checkbox" value="Согласие дано" required class="mt-1 h-5 w-5 shrink-0 accent-current" />
+              <span class="font-work-sans text-sm leading-relaxed text-on-surface-variant">
+                Я ознакомился(ась) с <a href="privacy.html" target="_blank" rel="noopener" class="font-semibold text-secondary underline underline-offset-2 hover:text-primary">Политикой обработки персональных данных</a> и даю согласие на обработку и публикацию моего имени, оценки и текста отзыва на сайте. *
+              </span>
+            </label>
 
             <div class="flex flex-wrap items-center gap-4">
               <button type="submit" class="inline-flex items-center gap-2 rounded-2xl bg-primary px-7 py-4 text-base font-work-sans font-semibold text-white shadow-soft hover:-translate-y-1 hover:bg-primary-container transition-all">
