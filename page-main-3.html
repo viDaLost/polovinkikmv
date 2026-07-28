@@ -21,7 +21,7 @@
         </div>
 
         <div class="reveal mt-10 panel-surface rounded-[2rem] p-5 sm:p-8 lg:p-10">
-          <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on" novalidate>
+          <form id="order-form" action="https://formspree.io/f/xgvleerr" method="POST" autocomplete="on">
             <div class="grid md:grid-cols-2 gap-5">
               <div>
                 <label for="name" class="block mb-2 font-work-sans text-sm text-on-surface-variant">Имя и фамилия*</label>
@@ -70,6 +70,13 @@
               </div>
             </div>
 
+            <label for="personal-data-consent" class="mt-6 flex items-start gap-3 rounded-[1.25rem] border border-outline-variant/40 bg-white/70 px-5 py-4 cursor-pointer">
+              <input id="personal-data-consent" name="personal_data_consent" type="checkbox" value="Согласие дано" required class="mt-1 h-5 w-5 shrink-0 accent-current" />
+              <span class="font-work-sans text-sm leading-relaxed text-on-surface-variant">
+                Я ознакомился(ась) с Политикой обработки персональных данных и даю согласие на сбор и обработку указанных мной данных, включая имя и номер телефона, для оформления заказа и связи со мной. *
+              </span>
+            </label>
+
             <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-[1.25rem] border border-dashed border-outline-variant/40 bg-white/70 px-5 py-4">
               <div class="text-lg text-primary">Итого: <strong id="total-text">250 ₽</strong></div>
               <div class="font-work-sans text-sm text-on-surface-variant">250 ₽ × <span id="qty-text">1</span> короб.</div>
@@ -98,4 +105,4 @@
 
     <section id="reviews" class="py-16 sm:py-24 px-5 sm:px-8">
       <div class="max-w-6xl mx-auto">
-        <div class="reveal text-center max-w-
+        <div class="reveal text-center max-w-3xl mx-auto">
